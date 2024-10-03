@@ -1,0 +1,1 @@
+- Fixed - Lua errors from missing dependency - [BLU_Cata.toc]

@@ -11,9 +11,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - Initial release of BLU Classic
-- Forked from BLU v5.2.4 specifically for World of Warcraft Classic
-- Support for Classic Era (Vanilla, Hardcore, Season of Discovery)
-- Support for Cataclysm Classic
+- Forked from BLU v5.2.4 to support ALL World of Warcraft versions
+- Support for ALL WoW versions with dedicated TOC files:
+  - `BLU_Classic.toc` - Default/Retail/The War Within (Interface: 110105)
+  - `BLU_Classic_Vanilla.toc` - Classic Era/Vanilla/Hardcore/SoD (Interface: 11507)
+  - `BLU_Classic_BCC.toc` - Burning Crusade Classic (Interface: 20504)
+  - `BLU_Classic_Wrath.toc` - Wrath of the Lich King Classic (Interface: 30403)
+  - `BLU_Classic_Cata.toc` - Cataclysm Classic (Interface: 40402)
+  - `BLU_Classic_Mists.toc` - Mists of Pandaria Classic (Interface: 50500)
+  - `BLU_Classic_Classic.toc` - Generic Classic version support
 - RGX Mods branding and community integration
 - Professional README with Discord community links
 - GitHub Actions workflow for automated releases
@@ -22,10 +28,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Slash commands: `/blu`, `/blu help`, `/blu debug`, `/blu welcome`
 
 ### Changed
-- Renamed addon from "BLU" to "BLU Classic"
+- Renamed addon from "BLU" to "BLU Classic" (supports ALL versions)
 - Updated version numbering to start fresh at v1.0.0
-- Modified TOC files for Classic-specific versions
+- Created TOC files for every WoW version
 - Enhanced documentation with RGX Mods branding
+- Updated author email to 60427166+donniedice@users.noreply.github.com
+- Updated addon paths from BLU to BLU_Classic
 
 ### Removed
 - Battle Pet level-up sounds (Retail only)

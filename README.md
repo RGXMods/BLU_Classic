@@ -10,9 +10,9 @@
 ### 🌟 **Join the <span style="color:#ff6b6b">R</span>ealmGX Community - <span style="color:#4ecdc4">G</span>amers e<span style="color:#4ecdc4">X</span>treme!** 🌟
 [![Discord](https://img.shields.io/discord/YOUR_DISCORD_ID?color=7289da&label=Join%20Our%20Discord&logo=discord&logoColor=white&style=for-the-badge)](https://discord.gg/N7kdKAHVVF)
 
-### 🎵 *Experience level-up sounds from your favorite games in WoW Classic!* 🎵
+### 🎵 *Experience level-up sounds from your favorite games in WoW - ALL VERSIONS!* 🎵
 
-**Professional World of Warcraft Classic addon that replaces default sounds with iconic audio from 50+ games, with extensive customization options.**
+**Professional World of Warcraft addon that replaces default sounds with iconic audio from 50+ games, with extensive customization options.**
 
 **🎯 Connect with fellow gamers, get support, and be part of the RGX Mods family!**
 
@@ -34,8 +34,12 @@
 [![WoWInterface Downloads](https://img.shields.io/badge/WoWInterface-Downloads-blue?style=flat-square&logo=worldofwarcraft)](https://www.wowinterface.com/downloads/info26465-BLU-Classic.html)
 
 <!-- WoW Compatibility -->
-[![WoW Classic](https://img.shields.io/badge/WoW-Classic%20Era-green?style=flat-square&logo=worldofwarcraft)](https://worldofwarcraft.com)
+[![WoW Retail](https://img.shields.io/badge/WoW-The%20War%20Within-green?style=flat-square&logo=worldofwarcraft)](https://worldofwarcraft.com)
+[![WoW Mists](https://img.shields.io/badge/WoW-Mists%20of%20Pandaria%20Classic-green?style=flat-square&logo=worldofwarcraft)](https://worldofwarcraft.com)
 [![WoW Cataclysm](https://img.shields.io/badge/WoW-Cataclysm%20Classic-green?style=flat-square&logo=worldofwarcraft)](https://worldofwarcraft.com)
+[![WoW Wrath](https://img.shields.io/badge/WoW-Wrath%20Classic-green?style=flat-square&logo=worldofwarcraft)](https://worldofwarcraft.com)
+[![WoW TBC](https://img.shields.io/badge/WoW-TBC%20Classic-green?style=flat-square&logo=worldofwarcraft)](https://worldofwarcraft.com)
+[![WoW Classic](https://img.shields.io/badge/WoW-Classic%20Era-green?style=flat-square&logo=worldofwarcraft)](https://worldofwarcraft.com)
 
 </div>
 
@@ -78,7 +82,7 @@
 
 ## 🎯 What is BLU Classic?
 
-**BLU Classic | Better Level-Up! Classic** is a specialized version of the popular BLU addon designed exclusively for World of Warcraft Classic players. It brings customizable sounds from over 50 games to enhance your Classic WoW experience, replacing repetitive default sounds with memorable audio from your favorite games.
+**BLU Classic | Better Level-Up! Classic** is the universal version of the popular BLU addon that supports ALL World of Warcraft versions - from Classic Era to Retail. It brings customizable sounds from over 50 games to enhance your WoW experience across every version, replacing repetitive default sounds with memorable audio from your favorite games.
 
 ## ✨ Features
 
@@ -100,10 +104,10 @@
 ## 🚀 Quick Start
 
 1. **Install** BLU Classic from your preferred platform
-2. **Launch** World of Warcraft Classic
+2. **Launch** World of Warcraft (any version!)
 3. **Type** `/blu` to open the options panel
 4. **Choose** your favorite sounds for each event
-5. **Enjoy** your personalized WoW Classic experience!
+5. **Enjoy** your personalized WoW experience!
 
 ## 📋 Command Reference
 
@@ -169,10 +173,16 @@ Each sound type has three volume levels:
 
 <div align="center">
 
+### 🌍 **Universal Support - ALL WoW Versions!**
+
 | WoW Version | Interface | Status | TOC File |
 |-------------|-----------|--------|----------|
-| Classic Era / Hardcore / SoD | 11507 | ✅ Fully Supported | `BLU_Classic.toc` |
+| The War Within (Retail) | 110105 | ✅ Fully Supported | `BLU_Classic.toc` |
+| Mists of Pandaria Classic | 50500 | ✅ Fully Supported | `BLU_Classic_Mists.toc` |
 | Cataclysm Classic | 40402 | ✅ Fully Supported | `BLU_Classic_Cata.toc` |
+| Wrath of the Lich King Classic | 30403 | ✅ Fully Supported | `BLU_Classic_Wrath.toc` |
+| Burning Crusade Classic | 20504 | ✅ Fully Supported | `BLU_Classic_BCC.toc` |
+| Classic Era / Hardcore / SoD | 11507 | ✅ Fully Supported | `BLU_Classic_Vanilla.toc` |
 
 **Note**: Classic Era, Hardcore, and Season of Discovery all use the same interface version.
 
@@ -187,8 +197,9 @@ Each sound type has three volume levels:
    - [GitHub](https://github.com/donniedice/BLU_Classic)
 
 2. **Extract** to your WoW AddOns directory:
-   - **Classic Era**: `World of Warcraft/_classic_era_/Interface/AddOns`
+   - **Retail**: `World of Warcraft/_retail_/Interface/AddOns`
    - **Classic**: `World of Warcraft/_classic_/Interface/AddOns`
+   - **Classic Era**: `World of Warcraft/_classic_era_/Interface/AddOns`
 
 3. **Restart** WoW and enable in AddOns menu
 
@@ -198,11 +209,11 @@ Each sound type has three volume levels:
 <summary><strong>v1.0.0 - Initial Classic Release</strong></summary>
 
 ### v1.0.0 - Initial Classic Release
-- **Created**: Dedicated Classic version of BLU
-- **Removed**: Retail-only features (Battle Pets, Trading Post, Honor, Renown)
-- **Optimized**: Code specifically for Classic WoW performance
-- **Added**: Support for Classic Era and Cataclysm Classic
-- **Updated**: All sounds and functionality for Classic compatibility
+- **Created**: Universal version supporting ALL WoW versions
+- **Added**: TOC files for every WoW version (Retail, Mists, Cata, Wrath, TBC, Classic)
+- **Optimized**: Code for cross-version compatibility
+- **Enhanced**: RGX Mods branding and community integration
+- **Updated**: All sounds and functionality for universal support
 
 </details>
 
@@ -254,7 +265,7 @@ Contributions are welcome! Feel free to:
 
 ---
 
-## 📨 Project Metrics
+## 📈 Project Metrics
 
 <div align="center">
 

@@ -10,9 +10,9 @@
 
 ## X-Category: UI Media, Questing & Leveling, Audio & Video, Miscellaneous
 ## X-Website: https://github.com/donniedice/BLU_Classic
-## X-Curse-Project-ID: 697841
-## X-Wago-ID: vEGPgWK1
-## X-WoWI-ID: 26465
+## X-Curse-Project-ID: 1114093
+## X-Wago-ID: qGYM2MGg
+## X-WoWI-ID: 26945
 
 ## Libraries
 Libs\LibStub\LibStub.lua

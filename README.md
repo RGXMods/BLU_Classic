@@ -1,5 +1,5 @@
 # 🎮 BLU Classic | Better Level-Up! Classic
-## 🎮 **Classic Edition** - *For World of Warcraft Classic Players*
+## 🎮 **RGX Mods** - *RealmGX Community Project*
 
 <div align="center">
 
@@ -7,9 +7,14 @@
 
 [![BLU Classic Icon](https://img.shields.io/badge/BLU%20Classic-Better%20Level%20Up!%20Classic-05dffa?style=for-the-badge&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==&logoColor=white)](https://github.com/donniedice/BLU_Classic)
 
+### 🌟 **Join the <span style="color:#ff6b6b">R</span>ealmGX Community - <span style="color:#4ecdc4">G</span>amers e<span style="color:#4ecdc4">X</span>treme!** 🌟
+[![Discord](https://img.shields.io/discord/YOUR_DISCORD_ID?color=7289da&label=Join%20Our%20Discord&logo=discord&logoColor=white&style=for-the-badge)](https://discord.gg/N7kdKAHVVF)
+
 ### 🎵 *Experience level-up sounds from your favorite games in WoW Classic!* 🎵
 
 **Professional World of Warcraft Classic addon that replaces default sounds with iconic audio from 50+ games, with extensive customization options.**
+
+**🎯 Connect with fellow gamers, get support, and be part of the RGX Mods family!**
 
 <!-- GitHub Stats & Badges -->
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/donniedice/BLU_Classic?style=for-the-badge&logo=github&color=success)](https://github.com/donniedice/BLU_Classic/releases)
@@ -34,11 +39,31 @@
 
 </div>
 
-## 💖 Support BLU Classic
+## 🌟 Join the RGX Mods Community!
 
 <div align="center">
 
-**Your support helps keep BLU Classic alive and constantly improving!**
+### 💬 **RealmGX Discord - Your Gaming Home!**
+
+[![Join Discord](https://img.shields.io/badge/Join%20Our%20Discord-RealmGX%20Community-7289da?style=for-the-badge&logo=discord&logoColor=white&labelColor=5865F2)](https://discord.gg/N7kdKAHVVF)
+
+**🎮 <span style="color:#ff6b6b">R</span>ealm <span style="color:#4ecdc4">G</span>amers e<span style="color:#4ecdc4">X</span>treme - Where WoW Enthusiasts Unite!**
+
+✨ **What awaits you in our Discord:**
+- 🛠️  **Instant addon support** from the RGX Mods team
+- 🎯 **Feature requests** and direct dev communication
+- 🚀 **Beta testing** opportunities for new releases
+- 🤝 **Community of WoW players** sharing tips and experiences
+- 📢 **First to know** about new RGX Mods releases
+- 🎉 **Events, giveaways**, and community activities
+
+</div>
+
+## 💖 Support RGX Mods
+
+<div align="center">
+
+**Your support helps keep RGX Mods alive and constantly improving!**
 
 <a href="https://www.buymeacoffee.com/donniedice" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 
@@ -97,22 +122,31 @@
 
 <div align="center">
 
-| Classic Games | Modern Games | RPGs |
-|---------------|--------------|------|
-| Altered Beast | Assassin's Creed | Diablo 2 |
-| Castlevania | DotA 2 | Dragon Quest |
-| EverQuest | Elden Ring | Fallout 3 |
-| Final Fantasy | Fortnite | Fallout: New Vegas |
-| Fire Emblem | GTA: San Andreas | Morrowind |
-| Kirby | Kingdom Hearts 3 | Path of Exile |
-| Legend of Zelda | League of Legends | Pokemon |
-| Maplestory | Metal Gear Solid | Ragnarok Online |
-| Sonic | Minecraft | Skyrim |
-| Spyro | Modern Warfare 2 | The Witcher 3 |
-| Super Mario Bros 3 | Old School RuneScape | World of Warcraft 3 |
-| | Palworld | |
+### 🎮 **50+ Games Available!**
 
-*And many more! Over 50 games in total.*
+| | | |
+|---|---|---|
+| Altered Beast | Fly For Fun | Old School Runescape |
+| Assassin's Creed | Fortnite | Palworld |
+| Castlevania | GTA - San Andreas | Path of Exile |
+| Diablo 2 | Kingdom Hearts 3 | Pokemon |
+| Dragon Quest | Kirby | Ragnarok Online |
+| DotA 2 | League of Legends | Shining Force 2 |
+| Elden Ring | Legend of Zelda | Shining Force 3 |
+| EverQuest | Maplestory | Skyrim |
+| Fallout - New Vegas | Metal Gear Solid 5 | Sonic the Hedgehog |
+| Fallout 3 | Minecraft | Spyro The Dragon |
+| Final Fantasy | Modern Warfare 2 | Super Mario Bros 3 |
+| Fire Emblem | Morrowind | Warcraft 3 |
+| Fire Emblem Awakening | | The Witcher 3 |
+
+*`Note`: Each game includes Low, Medium, and High volume variants for all sound types.*
+
+### 🎯 **Special Sound Collections**
+- **Elden Ring**: 6 unique variations
+- **Shining Force 3**: 11 different battle themes
+- **Warcraft 3**: Multiple unit acknowledgment sounds
+- **The Witcher 3**: Quest completion variations
 
 </div>
 
@@ -198,17 +232,79 @@ Contributions are welcome! Feel free to:
 - Suggest new game sounds to add
 - Help with translations
 
-## 📊 Project Statistics
+## 📊 Repository Statistics
+
+<div align="center">
+
+<a href="https://github.com/donniedice/BLU_Classic">
+  <img align="center" src="https://github-readme-stats.vercel.app/api?username=donniedice&show_icons=true&include_all_commits=true&theme=radical&hide_border=true" alt="DonnieDice's GitHub Stats" />
+</a>
+
+<a href="https://github.com/donniedice/BLU_Classic">
+  <img align="center" src="https://github-readme-stats.vercel.app/api/top-langs/?username=donniedice&layout=compact&theme=radical&hide_border=true" alt="Top Languages" />
+</a>
+
+</div>
+
+<div align="center">
+
+[![GitHub Activity Graph](https://github-readme-activity-graph.vercel.app/graph?username=donniedice&theme=react-dark&hide_border=true)](https://github.com/donniedice/BLU_Classic)
+
+</div>
+
+---
+
+## 📨 Project Metrics
 
 <div align="center">
 
 | Metric | Value |
 |--------|-------|
-| **Total Game Sounds** | 50+ |
-| **Sound Files** | 198 |
-| **Supported Events** | 5 |
-| **Code Lines** | 2,000+ |
-| **Active Since** | 2024 |
+| **Total Lines of Code** | ![Lines of code](https://img.shields.io/tokei/lines/github/donniedice/BLU_Classic?style=flat-square) |
+| **Repository Size** | ![GitHub repo size](https://img.shields.io/github/repo-size/donniedice/BLU_Classic?style=flat-square) |
+| **Last Commit** | ![GitHub last commit](https://img.shields.io/github/last-commit/donniedice/BLU_Classic?style=flat-square) |
+| **Open Issues** | ![GitHub issues](https://img.shields.io/github/issues/donniedice/BLU_Classic?style=flat-square) |
+| **Pull Requests** | ![GitHub pull requests](https://img.shields.io/github/issues-pr/donniedice/BLU_Classic?style=flat-square) |
+| **Contributors** | ![GitHub contributors](https://img.shields.io/github/contributors/donniedice/BLU_Classic?style=flat-square) |
+| **Total Game Sounds** | 50+ unique games |
+| **Sound Files** | 198 audio files |
+| **Supported Events** | 5 event types |
+| **Languages** | ![GitHub top language](https://img.shields.io/github/languages/top/donniedice/BLU_Classic?style=flat-square) |
+| **Watchers** | ![GitHub watchers](https://img.shields.io/github/watchers/donniedice/BLU_Classic?style=flat-square) |
+
+</div>
+
+---
+
+## 🤝 Contributors
+
+<div align="center">
+
+Thanks to all the amazing people who have contributed to BLU Classic! 🎉
+
+<a href="https://github.com/donniedice/BLU_Classic/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=donniedice/BLU_Classic" alt="Contributors" />
+</a>
+
+</div>
+
+---
+
+## 🏆 GitHub Achievements
+
+<div align="center">
+
+[![trophy](https://github-profile-trophy.vercel.app/?username=donniedice&theme=radical&no-frame=true&row=1&column=6)](https://github.com/donniedice/BLU_Classic)
+
+</div>
+
+---
+
+## 🔥 Streak Stats
+
+<div align="center">
+
+[![GitHub Streak](https://github-readme-streak-stats.herokuapp.com?user=donniedice&theme=radical&hide_border=true)](https://github.com/donniedice/BLU_Classic)
 
 </div>
 
@@ -216,16 +312,23 @@ Contributions are welcome! Feel free to:
 
 <div align="center">
 
-## 🌟 **Thank you for choosing BLU Classic!** 🌟
+## 🌟 **Thank you for choosing RGX Mods!** 🌟
 
-**Made with ❤️ by [DonnieDice](https://github.com/donniedice)**
+**Made with ❤️ by the RealmGX Community**
+**Lead Developer: [DonnieDice](https://github.com/donniedice)**
 
 *"Make every level count with sounds that matter!"*
 
-[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-Support%20Development-yellow?style=for-the-badge)](https://www.buymeacoffee.com/donniedice)
+<div align="center">
+
+[![Join Discord](https://img.shields.io/badge/🎮%20Join%20RealmGX%20Discord-Realm%20Gamers%20eXtreme-7289da?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/N7kdKAHVVF)
+
+[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-Support%20RGX%20Mods-yellow?style=for-the-badge)](https://www.buymeacoffee.com/donniedice)
 [![GitHub Stars](https://img.shields.io/github/stars/donniedice/BLU_Classic?style=for-the-badge&logo=github)](https://github.com/donniedice/BLU_Classic)
 
-**🎮 BLU Classic - Your Classic WoW, Your Sounds**
+**🎮 RGX Mods - Powered by RealmGX Community**
+
+</div>
 
 </div>
 

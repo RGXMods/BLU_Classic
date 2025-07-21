@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.2] - 2025-01-21
+
+### Fixed
+- Updated .pkgmeta file for proper BLU_Classic packaging
+- Fixed BigWigs packager configuration to package as BLU_Classic
+- Corrected manual-changelog path to use CHANGELOG.md
+
 ## [1.0.1] - 2025-01-21
 
 ### Fixed
@@ -48,6 +55,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [Issue Tracker](https://github.com/donniedice/BLU_Classic/issues)
 - [Discord Community](https://discord.gg/N7kdKAHVVF)
 
-[Unreleased]: https://github.com/donniedice/BLU_Classic/compare/v1.0.1...HEAD
+[Unreleased]: https://github.com/donniedice/BLU_Classic/compare/v1.0.2...HEAD
+[1.0.2]: https://github.com/donniedice/BLU_Classic/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/donniedice/BLU_Classic/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/donniedice/BLU_Classic/releases/tag/v1.0.0

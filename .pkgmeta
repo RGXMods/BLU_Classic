@@ -1,2 +1,19 @@
-package-as: BLU
-manual-changelog: docs/CHANGES.md
+package-as: BLU_Classic
+
+enable-nolib-creation: no
+
+ignore:
+  - .github
+  - .gitignore
+  - README.md
+  - SETUP_NOTES.md
+  - .pkgmeta
+
+plain-copy:
+  - LICENSE
+
+manual-changelog:
+  filename: CHANGELOG.md
+  markup-type: markdown
+
+license-output: LICENSE

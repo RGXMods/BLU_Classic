@@ -7,12 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [1.0.0] - 2024-01-20
+## [1.0.1] - 2025-01-21
+
+### Fixed
+- Removed incorrect BLU (non-Classic) TOC files from repository
+- Cleaned up repository to only contain BLU_Classic TOC files
+
+### Changed
+- Repository now properly contains only BLU_Classic addon files
+
+## [1.0.0] - 2025-01-21
 
 ### Added
 - Initial release of BLU Classic
-- Forked from BLU v5.2.4 to support ALL World of Warcraft versions
-- Support for ALL WoW versions with dedicated TOC files:
+- Universal support for ALL World of Warcraft versions
+- Dedicated TOC files for each WoW version:
   - `BLU_Classic.toc` - Default/Retail/The War Within (Interface: 110105)
   - `BLU_Classic_Vanilla.toc` - Classic Era/Vanilla/Hardcore/SoD (Interface: 11507)
   - `BLU_Classic_BCC.toc` - Burning Crusade Classic (Interface: 20504)
@@ -21,34 +30,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `BLU_Classic_Mists.toc` - Mists of Pandaria Classic (Interface: 50500)
   - `BLU_Classic_Classic.toc` - Generic Classic version support
 - RGX Mods branding and community integration
-- Professional README with Discord community links
-- GitHub Actions workflow for automated releases
 - Over 50 game sounds to choose from
 - Individual volume controls for each sound type
 - Slash commands: `/blu`, `/blu help`, `/blu debug`, `/blu welcome`
-
-### Changed
-- Renamed addon from "BLU" to "BLU Classic" (supports ALL versions)
-- Updated version numbering to start fresh at v1.0.0
-- Created TOC files for every WoW version
-- Enhanced documentation with RGX Mods branding
-- Updated author email to 60427166+donniedice@users.noreply.github.com
-- Updated addon paths from BLU to BLU_Classic
-
-### Removed
-- Battle Pet level-up sounds (Retail only)
-- Trading Post activity sounds (Retail only)
-- Honor rank sounds (Retail only)
-- Renown reputation sounds (Retail only)
-- Delve Companion sounds (Retail only)
-
-### Fixed
-- Ensured all paths reference BLU_Classic instead of BLU
-- Updated icon texture paths in TOC files
-
-## Pre-Fork History
-
-For changes prior to the Classic fork, please see the original [BLU changelog](https://github.com/donniedice/BLU/blob/main/docs/changelog.txt).
 
 ---
 
@@ -64,5 +48,6 @@ For changes prior to the Classic fork, please see the original [BLU changelog](h
 - [Issue Tracker](https://github.com/donniedice/BLU_Classic/issues)
 - [Discord Community](https://discord.gg/N7kdKAHVVF)
 
-[Unreleased]: https://github.com/donniedice/BLU_Classic/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/donniedice/BLU_Classic/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/donniedice/BLU_Classic/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/donniedice/BLU_Classic/releases/tag/v1.0.0

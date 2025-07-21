@@ -1,0 +1,18 @@
+# Windows
+Thumbs.db
+Desktop.ini
+
+# MacOS
+.DS_Store
+
+# Temporary files
+*.tmp
+*.bak
+*~
+
+# WoW SavedVariables
+WTF/
+
+# Project-specific
+SETUP_NOTES.md
+.github/workflows/release.yml

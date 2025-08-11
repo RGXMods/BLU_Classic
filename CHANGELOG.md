@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.3] - 2025-08-11
+
+### Fixed
+- Fixed VersionNumber nil error by correcting addon name reference
+- Fixed optionsFrame nil error with proper initialization checks
+- Added missing HandleBattlePetLevelUp function
+
+### Added
+- Added full MoP Classic support with battle pets, honor system, and achievements
+- Improved version detection for all current WoW versions
+
 ## [1.0.2] - 2025-01-21
 
 ### Fixed
@@ -55,7 +66,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [Issue Tracker](https://github.com/donniedice/BLU_Classic/issues)
 - [Discord Community](https://discord.gg/N7kdKAHVVF)
 
-[Unreleased]: https://github.com/donniedice/BLU_Classic/compare/v1.0.2...HEAD
+[Unreleased]: https://github.com/donniedice/BLU_Classic/compare/v1.0.3...HEAD
+[1.0.3]: https://github.com/donniedice/BLU_Classic/compare/v1.0.2...v1.0.3
 [1.0.2]: https://github.com/donniedice/BLU_Classic/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/donniedice/BLU_Classic/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/donniedice/BLU_Classic/releases/tag/v1.0.0

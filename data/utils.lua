@@ -150,7 +150,25 @@ function BLU:HandleSlashCommands(input)
     input = input:trim():lower()  -- Convert input to lowercase
 
     if input == "" then
-        Settings.OpenToCategory(self.optionsFrame.name)
+        -- Make sure options are initialized first
+        if not self.optionsFrame then
+            self:InitializeOptions()
+        end
+        
+        if self.optionsFrame then
+            -- Try modern Settings API first, fall back to older API
+            if Settings and Settings.OpenToCategory then
+                Settings.OpenToCategory(self.optionsFrame.name)
+            elseif InterfaceOptionsFrame_OpenToCategory then
+                InterfaceOptionsFrame_OpenToCategory(self.optionsFrame.name)
+                InterfaceOptionsFrame_OpenToCategory(self.optionsFrame.name)  -- Call twice for older versions
+            else
+                print(BLU_PREFIX .. "Options panel not available")
+            end
+        else
+            print(BLU_PREFIX .. "Options not initialized. Please reload UI.")
+        end
+        
         if self.debugMode then
             self:PrintDebugMessage("OPTIONS_PANEL_OPENED")
         end

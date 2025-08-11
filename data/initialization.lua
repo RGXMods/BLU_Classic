@@ -6,7 +6,7 @@ BLU = LibStub("AceAddon-3.0"):NewAddon("BLU", "AceEvent-3.0", "AceConsole-3.0")
 --=====================================================================================
 -- Version Number
 --=====================================================================================
-BLU.VersionNumber = C_AddOns.GetAddOnMetadata("BLU", "Version")
+BLU.VersionNumber = C_AddOns.GetAddOnMetadata("BLU_Classic", "Version") or GetAddOnMetadata("BLU_Classic", "Version")
 
 --=====================================================================================
 -- Libraries and Variables
@@ -29,14 +29,22 @@ BLU_L = BLU_L or {}
 function BLU:GetGameVersion()
     local _, _, _, interfaceVersion = GetBuildInfo()
 
-    if interfaceVersion < 20000 then
-        return "vanilla"
+    if interfaceVersion >= 110000 then
+        return "retail"  -- Retail (The War Within)
+    elseif interfaceVersion >= 100000 and interfaceVersion < 110000 then
+        return "retail"  -- Retail (Dragonflight)
+    elseif interfaceVersion >= 50000 and interfaceVersion < 60000 then
+        return "mists"  -- Mists of Pandaria Classic (50500)
     elseif interfaceVersion >= 40000 and interfaceVersion < 50000 then
-        return "cata"
-    elseif interfaceVersion >= 100000 then
-        return "retail"
+        return "cata"  -- Cataclysm Classic (40400)
+    elseif interfaceVersion >= 30000 and interfaceVersion < 40000 then
+        return "wrath"  -- Wrath Classic (30405)
+    elseif interfaceVersion >= 20000 and interfaceVersion < 30000 then
+        return "tbc"  -- Burning Crusade Classic (20504)
+    elseif interfaceVersion >= 10000 and interfaceVersion < 20000 then
+        return "vanilla"  -- Classic Era (11507)
     else
-        self:PrintDebugMessage("ERROR_UNKNOWN_GAME_VERSION") 
+        self:PrintDebugMessage("ERROR_UNKNOWN_GAME_VERSION: " .. tostring(interfaceVersion))
         return "unknown"
     end
 end
@@ -55,25 +63,27 @@ function BLU:RegisterSharedEvents()
         CHAT_MSG_SYSTEM = "ReputationChatFrameHook",
     }
 
+    -- Add version-specific events
     if version == "retail" then
-        events.MAJOR_FACTION_RENOWN_LEVEL_CHANGED = "HandleRenownLevelChanged"
-        events.PERKS_ACTIVITY_COMPLETED = "HandlePerksActivityCompleted"
+        -- All modern features
         events.ACHIEVEMENT_EARNED = "HandleAchievementEarned"
         events.HONOR_LEVEL_UPDATE = "HandleHonorLevelUpdate"
-
-        -- Delve Compantion events for retail
-        events.TRAIT_CONFIG_UPDATED = "OnDelveCompanionLevelUp"
-        events.UPDATE_FACTION = "OnDelveCompanionLevelUp"
-        events.CHAT_MSG_SYSTEM = "OnDelveCompanionLevelUp"
-
-        -- Battle pet events for retail
-        events.UNIT_SPELLCAST_SUCCEEDED = "HandleBattlePetLevelUp"  -- Used for pet battle items
+        events.MAJOR_FACTION_RENOWN_LEVEL_CHANGED = "HandleRenownLevelChanged"
+        events.PERKS_ACTIVITY_COMPLETED = "HandlePerksActivityCompleted"
         events.PET_BATTLE_LEVEL_CHANGED = "HandleBattlePetLevelUp"
-        events.UNIT_PET_EXPERIENCE = "HandleBattlePetLevelUp"
         events.PET_JOURNAL_LIST_UPDATE = "HandleBattlePetLevelUp"
-    elseif version == "cata" then
+    elseif version == "mists" then
+        -- MoP Classic features
+        events.ACHIEVEMENT_EARNED = "HandleAchievementEarned"
+        events.PLAYER_PVP_KILLS_CHANGED = "HandleHonorLevelUpdate"
+        events.PLAYER_PVP_RANK_CHANGED = "HandleHonorLevelUpdate"
+        events.PET_BATTLE_LEVEL_CHANGED = "HandleBattlePetLevelUp"
+        events.PET_JOURNAL_LIST_UPDATE = "HandleBattlePetLevelUp"
+    elseif version == "cata" or version == "wrath" then
+        -- Cata and Wrath have achievements
         events.ACHIEVEMENT_EARNED = "HandleAchievementEarned"
     end
+    -- Vanilla and TBC have no additional events beyond base ones
 
     for event, handler in pairs(events) do
         if type(self[handler]) == "function" then
@@ -166,57 +176,59 @@ function BLU:InitializeOptions()
 end
 
 function BLU:IsGroupCompatibleWithVersion(group, version)
-    -- Logic to determine if the group is compatible with the current game version
-    if version == "retail" then
-        return true
-    elseif version == "cata" then
-        if group.name and (group.name:match("Honor Rank%-Up!") or
-                           group.name:match("Battle Pet Level%-Up!") or
-                           group.name:match("Delve Companion Level%-Up!") or
-                           group.name:match("Renown Rank%-Up!") or
-                           group.name:match("Post%-Sound Select")) then
-            return false
-        end
-    elseif version == "vanilla" then
-        if group.name and (group.name:match("Achievement") or
-                           group.name:match("Honor Rank%-Up!") or
-                           group.name:match("Battle Pet Level%-Up!") or
-                           group.name:match("Delve Companion Level%-Up!") or
-                           group.name:match("Renown Rank%-Up!") or
-                           group.name:match("Post%-Sound Select")) then
+    if not group or not group.name then return true end
+    
+    local incompatible = {
+        retail = {},  -- Retail has everything
+        mists = {"Delve Companion", "Renown", "Post%-Sound"},
+        cata = {"Battle Pet", "Honor Rank", "Delve Companion", "Renown", "Post%-Sound"},
+        wrath = {"Battle Pet", "Honor Rank", "Delve Companion", "Renown", "Post%-Sound"},
+        tbc = {"Achievement", "Battle Pet", "Honor Rank", "Delve Companion", "Renown", "Post%-Sound"},
+        vanilla = {"Achievement", "Battle Pet", "Honor Rank", "Delve Companion", "Renown", "Post%-Sound"},
+    }
+    
+    local patterns = incompatible[version] or {}
+    for _, pattern in ipairs(patterns) do
+        if group.name:match(pattern) then
             return false
         end
     end
+    
     return true
 end
 
 function BLU:RemoveOptionsForVersion(version)
     local args = self.options.args
-
-    if version == "vanilla" then
-        args.group2 = nil
-        args.group3 = nil
-        args.group4 = nil
-        args.group5 = nil
-        args.group9 = nil
-        args.group11 = nil
+    
+    -- Define which groups to remove for each version
+    local groupsToRemove = {
+        vanilla = {"group2", "group3", "group4", "group5", "group9", "group11"},
+        tbc = {"group2", "group3", "group4", "group5", "group9", "group11"},
+        wrath = {"group3", "group4", "group5", "group9", "group11"},
+        cata = {"group3", "group4", "group5", "group9", "group11"},
+        mists = {"group5", "group9", "group11"},
+        retail = {},  -- Keep all groups for retail
+    }
+    
+    -- Remove incompatible groups
+    local toRemove = groupsToRemove[version] or {}
+    for _, groupName in ipairs(toRemove) do
+        args[groupName] = nil
+    end
+    
+    -- Clean up profile settings for removed features
+    if version ~= "retail" then
+        if version ~= "mists" then
+            self.db.profile.BattlePetLevelSoundSelect = nil
+            self.db.profile.HonorSoundSelect = nil
+        end
+        self.db.profile.DelveLevelUpSoundSelect = nil
+        self.db.profile.RenownSoundSelect = nil
+        self.db.profile.PostSoundSelect = nil
+    end
+    
+    if version == "vanilla" or version == "tbc" then
         self.db.profile.AchievementSoundSelect = nil
-        self.db.profile.BattlePetLevelSoundSelect = nil
-        self.db.profile.DelveLevelUpSoundSelect = nil
-        self.db.profile.HonorSoundSelect = nil
-        self.db.profile.RenownSoundSelect = nil
-        self.db.profile.PostSoundSelect = nil
-    elseif version == "cata" then
-        args.group3 = nil
-        args.group4 = nil
-        args.group5 = nil
-        args.group9 = nil
-        args.group11 = nil
-        self.db.profile.BattlePetLevelSoundSelect = nil
-        self.db.profile.DelveLevelUpSoundSelect = nil
-        self.db.profile.HonorSoundSelect = nil
-        self.db.profile.RenownSoundSelect = nil
-        self.db.profile.PostSoundSelect = nil
     end
 end
 

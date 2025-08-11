@@ -25,6 +25,10 @@ function BLU:HandleHonorLevelUpdate()
     self:HandleEvent("HONOR_LEVEL_UPDATE", "HonorSoundSelect", "HonorVolume", defaultSounds[5], "HONOR_LEVEL_UPDATE_TRIGGERED")
 end
 
+function BLU:HandleBattlePetLevelUp()
+    self:HandleEvent("PET_BATTLE_LEVEL_CHANGED", "BattlePetLevelSoundSelect", "BattlePetLevelVolume", defaultSounds[2], "BATTLE_PET_LEVEL_UP_TRIGGERED")
+end
+
 function BLU:HandleRenownLevelChanged()
     self:HandleEvent("MAJOR_FACTION_RENOWN_LEVEL_CHANGED", "RenownSoundSelect", "RenownVolume", defaultSounds[6], "MAJOR_FACTION_RENOWN_LEVEL_CHANGED_TRIGGERED")
 end

@@ -3,12 +3,13 @@
 
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/donniedice/BLU_Classic/main/images/icon.tga" alt="BLU Classic Logo" width="128" height="128">
+<!-- Logo placeholder - icon.tga needs to be converted to PNG for web display -->
+<img src="https://via.placeholder.com/128x128/05dffa/ffffff?text=BLU" alt="BLU Classic Logo" width="128" height="128">
 
 [![BLU Classic Icon](https://img.shields.io/badge/BLU%20Classic-Better%20Level%20Up!%20Classic-05dffa?style=for-the-badge&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==&logoColor=white)](https://github.com/donniedice/BLU_Classic)
 
 ### 🌟 **Join the <span style="color:#ff6b6b">R</span>ealmGX Community - <span style="color:#4ecdc4">G</span>amers e<span style="color:#4ecdc4">X</span>treme!** 🌟
-[![Discord](https://img.shields.io/discord/YOUR_DISCORD_ID?color=7289da&label=Join%20Our%20Discord&logo=discord&logoColor=white&style=for-the-badge)](https://discord.gg/N7kdKAHVVF)
+[![Discord](https://img.shields.io/badge/Discord-Join%20Our%20Server-7289da?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/N7kdKAHVVF)
 
 ### 🎵 *Experience level-up sounds from your favorite games in WoW - ALL VERSIONS!* 🎵
 

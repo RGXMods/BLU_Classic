@@ -1,2 +1,2 @@
-- Fixed: Standardized version numbers across all TOC files
-- Updated: Moved changelog to docs folder and reorganized documentation
+- Added: Discord webhook notifications for releases
+- Fixed: GitHub Actions workflow permissions for automated releases

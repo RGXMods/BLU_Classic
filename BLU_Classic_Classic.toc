@@ -1,5 +1,5 @@
 ## Interface: 11507, 11506, 11505, 11504, 11503, 11502, 11501, 11500, 11404, 11403, 11402, 11401, 11400, 11307, 11306, 11305, 11304, 11303, 11302, 11300
-## Version: v1.0.3
+## Version: v1.0.4
 ## Title: |cff05dffaB|r|cffffffffetter|r |cff05dffaL|r|cffffffffevel-|r|cff05dffaU|r|cffffffffp!|r |cffFFD700Classic|r - |cff8080ffv1.0.0|r 
 ## Notes: Play sounds from other games in Classic WoW!  |n|r  |cff05dffa/blu -|r Open options panel  |n|r   |cff05dffaBy DonnieDice|r
 ## Author: DonnieDice

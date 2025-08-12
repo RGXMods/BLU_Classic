@@ -13,7 +13,7 @@ plain-copy:
   - LICENSE
 
 manual-changelog:
-  filename: CHANGELOG.md
+  filename: docs/CHANGES.md
   markup-type: markdown
 
 license-output: LICENSE

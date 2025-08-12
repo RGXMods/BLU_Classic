@@ -156,14 +156,19 @@ function BLU:HandleSlashCommands(input)
         end
         
         if self.optionsFrame then
-            -- Try modern Settings API first, fall back to older API
-            if Settings and Settings.OpenToCategory then
+            -- Get game version to determine which API to use
+            local version = self:GetGameVersion()
+            
+            -- Modern API (Retail)
+            if version == "retail" and Settings and Settings.OpenToCategory then
                 Settings.OpenToCategory(self.optionsFrame.name)
+            -- Legacy API (Classic versions)
             elseif InterfaceOptionsFrame_OpenToCategory then
                 InterfaceOptionsFrame_OpenToCategory(self.optionsFrame.name)
-                InterfaceOptionsFrame_OpenToCategory(self.optionsFrame.name)  -- Call twice for older versions
+                InterfaceOptionsFrame_OpenToCategory(self.optionsFrame.name)  -- Call twice for reliability
+            -- Fallback
             else
-                print(BLU_PREFIX .. "Options panel not available")
+                print(BLU_PREFIX .. "Options panel not available for this WoW version")
             end
         else
             print(BLU_PREFIX .. "Options not initialized. Please reload UI.")

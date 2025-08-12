@@ -1,1 +1,2 @@
-- Fixed - Lua errors from missing dependency - [BLU_Cata.toc]
+- Fixed: Standardized version numbers across all TOC files
+- Updated: Moved changelog to docs folder and reorganized documentation

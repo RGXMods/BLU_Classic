@@ -1,3 +1,38 @@
+v1.0.6-------------------------------------------------------------------
+- Fixed - Standardized version numbers across all TOC files to v1.0.6
+- Fixed - Inconsistent version display in Title lines for BCC, Classic, and Wrath TOC files
+- Changed - Updated all addon versions to v1.0.6 for consistency
+v1.0.5-------------------------------------------------------------------
+- Changed - Version bump to v1.0.5
+v1.0.4-------------------------------------------------------------------
+- Added - Discord webhook notifications to release workflow
+- Fixed - Logo display issues in README
+- Fixed - Renamed logo file to BLU_Logo.png
+- Changed - Various workflow improvements and optimizations
+v1.0.3-------------------------------------------------------------------
+- Fixed - VersionNumber nil error by correcting addon name reference
+- Fixed - optionsFrame nil error with proper initialization checks
+- Added - Missing HandleBattlePetLevelUp function
+- Added - Full MoP Classic support with battle pets, honor system, and achievements
+- Changed - Improved version detection for all current WoW versions
+v1.0.2-------------------------------------------------------------------
+- Fixed - Updated .pkgmeta file for proper BLU_Classic packaging
+- Fixed - BigWigs packager configuration to package as BLU_Classic
+- Fixed - Corrected manual-changelog path to use CHANGELOG.md
+v1.0.1-------------------------------------------------------------------
+- Fixed - Removed incorrect BLU (non-Classic) TOC files from repository
+- Fixed - Cleaned up repository to only contain BLU_Classic TOC files
+- Changed - Repository now properly contains only BLU_Classic addon files
+v1.0.0-------------------------------------------------------------------
+- Added - Initial release of BLU Classic
+- Added - Universal support for ALL World of Warcraft versions
+- Added - Dedicated TOC files for each WoW version
+- Added - RGX Mods branding and community integration
+- Added - Over 50 game sounds to choose from
+- Added - Individual volume controls for each sound type
+- Added - Slash commands: /blu, /blu help, /blu debug, /blu welcome
+
+===== Previous BLU (non-Classic) History Below =====
 v5.1.9-------------------------------------------------------------------
 - Fixed - Lua errors from missing dependency - [BLU_Cata.toc]
 v5.1.8-------------------------------------------------------------------

@@ -21,3 +21,8 @@ SETUP_NOTES.md
 .env
 .env.local
 *.env
+
+# Scripts
+*.bat
+*.ps1
+*.sh

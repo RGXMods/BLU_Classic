@@ -33,7 +33,7 @@ local colors = {
     warning = "|cffffcc00"      -- Warning Color
 }
 
-BLU_PREFIX = string.format("|Tinterface/addons/blu/images/icon:16:16|t - [%sBLU|r] ", colors.prefix)
+BLU_PREFIX = string.format("|Tinterface/addons/BLU_Classic/images/icon:16:16|t - [%sBLU|r] ", colors.prefix)
 DEBUG_PREFIX = string.format("[%sDEBUG|r] ", colors.debug)
 
 -- =====================================================================================
@@ -46,7 +46,7 @@ BLU_L = {
     optionColor2 = colors.white,
 
     -- Option Labels and Descriptions
-    OPTIONS_PANEL_TITLE = string.format("|Tinterface/addons/blu/images/icon:16:16|t - %sBLU|r %s|| %sB|r%setter %sL|r%sevel-%sU|r%sp!",
+    OPTIONS_PANEL_TITLE = string.format("|Tinterface/addons/BLU_Classic/images/icon:16:16|t - %sBLU|r %s|| %sB|r%setter %sL|r%sevel-%sU|r%sp!",
         colors.prefix, colors.white, colors.prefix, colors.white, colors.prefix, colors.white, colors.prefix, colors.white),
 
     -- Profiles
@@ -60,13 +60,18 @@ BLU_L = {
     ERROR_UNKNOWN_GAME_VERSION = string.format("%sUnknown game version detected.|r", colors.error),
 
     -- BLU:OnInitialize()
+    INITIALIZING_FOR_VERSION = string.format("Initializing BLU for game version: %s%%s|r.", colors.info),
     WELCOME_MESSAGE = string.format("Welcome! Use %s/blu|r to open the options panel or %s/blu help|r for more commands.", colors.prefix, colors.prefix),
     VERSION = string.format("%sVersion:|r", "|cffffff00"),
+
+    -- BLU:RegisterSharedEvents()
+    EVENT_REGISTERED = string.format("Event %s%%s|r registered with handler %s%%s|r.", colors.info, colors.highlight),
+    EVENT_HANDLER_NOT_FOUND = string.format("%sEvent handler %%s not found for event %%s.|r", colors.error),
 
     -- BLU:InitializeOptions()
     ERROR_OPTIONS_NOT_INITIALIZED = string.format("%sOptions not initialized properly.|r", colors.error),
     SKIPPING_GROUP_NOT_COMPATIBLE = string.format("Incompatible or Unnamed Options Group", colors.error),
-    OPTIONS_LIST_MENU_TITLE = string.format("|Tinterface/addons/blu/images/icon:16:16|t - %sB|r%setter %sL|r%sevel-%sU|r%sp!",
+    OPTIONS_LIST_MENU_TITLE = string.format("|Tinterface/addons/BLU_Classic/images/icon:16:16|t - %sB|r%setter %sL|r%sevel-%sU|r%sp!",
         colors.prefix, colors.white, colors.prefix, colors.white, colors.prefix, colors.white),
     OPTIONS_ALREADY_REGISTERED = "Options already registered.",
 
@@ -141,6 +146,9 @@ BLU_L = {
     -- BLU:HandleRenownLevelChanged()
     MAJOR_FACTION_RENOWN_LEVEL_CHANGED_TRIGGERED = string.format("%sMAJOR_FACTION_RENOWN_LEVEL_CHANGED|r %striggered.|r", colors.info, colors.test),
 
+    -- BLU:HandleBattlePetLevelUp()
+    BATTLE_PET_LEVEL_UP_TRIGGERED = string.format("%sPET_BATTLE_LEVEL_CHANGED|r %striggered.|r", colors.info, colors.test),
+
     -- BLU:HandlePerksActivityCompleted()
     PERKS_ACTIVITY_COMPLETED_TRIGGERED = string.format("%sPERKS_ACTIVITY_COMPLETED|r %striggered.|r", colors.info, colors.test),
 
@@ -185,6 +193,7 @@ BLU_L = {
 
     -- BLU:ReputationRankIncrease()
     REPUTATION_RANK_TRIGGERED = string.format("Reputation rank increase triggered for rank: ",colors.info),
+    REPUTATION_RANK_INCREASE_TRIGGERED = string.format("%sREPUTATION_RANK_INCREASE|r %striggered.|r", colors.info, colors.test),
 
     -- BLU:OnDelveCompantionLevelUp(event, ...)
     DELVE_LEVEL_UP = string.format("%sBrann Bronzebeard has reached Level %%s|r", colors.info),
@@ -192,6 +201,7 @@ BLU_L = {
     
     -- BLU:TriggerDelveLevelUpSound(level)
     DELVE_LEVEL_UP_SOUND_TRIGGERED = string.format("Delve Level-Up sound triggered for Level ", colors.info),
+    DELVE_LEVEL_UP_TRIGGERED = string.format("%sDELVE_LEVEL_UP|r %striggered.|r", colors.info, colors.test),
 
     -- Option Labels and Descriptions for Volume Controls
     ACHIEVEMENT_EARNED = "Achievement Earned!",

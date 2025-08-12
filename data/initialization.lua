@@ -6,7 +6,12 @@ BLU = LibStub("AceAddon-3.0"):NewAddon("BLU", "AceEvent-3.0", "AceConsole-3.0")
 --=====================================================================================
 -- Version Number
 --=====================================================================================
-BLU.VersionNumber = C_AddOns.GetAddOnMetadata("BLU_Classic", "Version") or GetAddOnMetadata("BLU_Classic", "Version")
+-- Version detection with proper API compatibility
+if C_AddOns and C_AddOns.GetAddOnMetadata then
+    BLU.VersionNumber = C_AddOns.GetAddOnMetadata("BLU_Classic", "Version")
+else
+    BLU.VersionNumber = GetAddOnMetadata("BLU_Classic", "Version")
+end
 
 --=====================================================================================
 -- Libraries and Variables
@@ -65,7 +70,7 @@ function BLU:RegisterSharedEvents()
 
     -- Add version-specific events
     if version == "retail" then
-        -- All modern features
+        -- All modern features (retail only)
         events.ACHIEVEMENT_EARNED = "HandleAchievementEarned"
         events.HONOR_LEVEL_UPDATE = "HandleHonorLevelUpdate"
         events.MAJOR_FACTION_RENOWN_LEVEL_CHANGED = "HandleRenownLevelChanged"
@@ -73,14 +78,12 @@ function BLU:RegisterSharedEvents()
         events.PET_BATTLE_LEVEL_CHANGED = "HandleBattlePetLevelUp"
         events.PET_JOURNAL_LIST_UPDATE = "HandleBattlePetLevelUp"
     elseif version == "mists" then
-        -- MoP Classic features
+        -- MoP Classic features (achievements and battle pets only)
         events.ACHIEVEMENT_EARNED = "HandleAchievementEarned"
-        events.PLAYER_PVP_KILLS_CHANGED = "HandleHonorLevelUpdate"
-        events.PLAYER_PVP_RANK_CHANGED = "HandleHonorLevelUpdate"
         events.PET_BATTLE_LEVEL_CHANGED = "HandleBattlePetLevelUp"
         events.PET_JOURNAL_LIST_UPDATE = "HandleBattlePetLevelUp"
     elseif version == "cata" or version == "wrath" then
-        -- Cata and Wrath have achievements
+        -- Cata and Wrath have achievements only
         events.ACHIEVEMENT_EARNED = "HandleAchievementEarned"
     end
     -- Vanilla and TBC have no additional events beyond base ones
@@ -88,6 +91,9 @@ function BLU:RegisterSharedEvents()
     for event, handler in pairs(events) do
         if type(self[handler]) == "function" then
             self:RegisterEvent(event, handler)
+            self:PrintDebugMessage("EVENT_REGISTERED", event, handler)
+        else
+            self:PrintDebugMessage("EVENT_HANDLER_NOT_FOUND", event, handler)
         end
     end
 end
@@ -97,6 +103,10 @@ end
 -- Initialization, Mute Sounds, and Welcome Message
 --=====================================================================================
 function BLU:OnInitialize()
+    -- Get game version early for version-specific initialization
+    local version = self:GetGameVersion()
+    self:PrintDebugMessage("INITIALIZING_FOR_VERSION", version)
+    
     -- Initialize the database with defaults
     self.db = LibStub("AceDB-3.0"):New("BLUDB", self.defaults, true)
 
@@ -106,13 +116,15 @@ function BLU:OnInitialize()
             self.db.profile[key] = value
         end
     end
+    
+    -- Clean up version-incompatible saved variables immediately after initialization
+    self:CleanupIncompatibleSavedVariables(version)
 
     self.debugMode = self.db.profile.debugMode
     self.showWelcomeMessage = self.db.profile.showWelcomeMessage
 
-    -- Register slash commands and events
+    -- Register slash commands
     self:RegisterChatCommand("blu", "HandleSlashCommands")
-    self:RegisterSharedEvents()
 
     -- Initialize options
     self:InitializeOptions()
@@ -124,11 +136,49 @@ function BLU:OnInitialize()
             MuteSoundFile(soundID)
         end
     end
+end
 
+--=====================================================================================
+-- OnEnable Function - Called after OnInitialize when addon is fully loaded
+--=====================================================================================
+function BLU:OnEnable()
+    -- Register events after addon is fully enabled
+    self:RegisterSharedEvents()
+    
     -- Display the welcome message if enabled
     if self.showWelcomeMessage then
         print(BLU_PREFIX .. BLU_L["WELCOME_MESSAGE"])
         print(BLU_PREFIX .. BLU_L["VERSION"], "|cff8080ff", BLU.VersionNumber)
+    end
+end
+
+--=====================================================================================
+-- Saved Variables Cleanup for Version Compatibility
+--=====================================================================================
+function BLU:CleanupIncompatibleSavedVariables(version)
+    -- Clean up profile settings for features that don't exist in this version
+    if version ~= "retail" then
+        -- Honor, Delves, Renown, and Trading Post are retail-only
+        self.db.profile.HonorSoundSelect = nil
+        self.db.profile.HonorVolume = nil
+        self.db.profile.DelveLevelUpSoundSelect = nil
+        self.db.profile.DelveLevelUpVolume = nil
+        self.db.profile.RenownSoundSelect = nil
+        self.db.profile.RenownVolume = nil
+        self.db.profile.PostSoundSelect = nil
+        self.db.profile.PostVolume = nil
+        
+        -- Battle pets only available in Mists and Retail
+        if version ~= "mists" then
+            self.db.profile.BattlePetLevelSoundSelect = nil
+            self.db.profile.BattlePetLevelVolume = nil
+        end
+    end
+    
+    -- Achievements only available in Wrath, Cata, Mists, and Retail
+    if version == "vanilla" or version == "tbc" then
+        self.db.profile.AchievementSoundSelect = nil
+        self.db.profile.AchievementVolume = nil
     end
 end
 
@@ -178,13 +228,15 @@ end
 function BLU:IsGroupCompatibleWithVersion(group, version)
     if not group or not group.name then return true end
     
+    -- Features incompatible with each version
+    -- Honor Ranks, Delves, Renown, and Trading Post are retail-only
     local incompatible = {
         retail = {},  -- Retail has everything
-        mists = {"Delve Companion", "Renown", "Post%-Sound"},
-        cata = {"Battle Pet", "Honor Rank", "Delve Companion", "Renown", "Post%-Sound"},
-        wrath = {"Battle Pet", "Honor Rank", "Delve Companion", "Renown", "Post%-Sound"},
-        tbc = {"Achievement", "Battle Pet", "Honor Rank", "Delve Companion", "Renown", "Post%-Sound"},
-        vanilla = {"Achievement", "Battle Pet", "Honor Rank", "Delve Companion", "Renown", "Post%-Sound"},
+        mists = {"Honor", "Delve", "Renown", "Post"},
+        cata = {"Battle Pet", "Honor", "Delve", "Renown", "Post"},
+        wrath = {"Battle Pet", "Honor", "Delve", "Renown", "Post"},
+        tbc = {"Achievement", "Battle Pet", "Honor", "Delve", "Renown", "Post"},
+        vanilla = {"Achievement", "Battle Pet", "Honor", "Delve", "Renown", "Post"},
     }
     
     local patterns = incompatible[version] or {}
@@ -200,13 +252,14 @@ end
 function BLU:RemoveOptionsForVersion(version)
     local args = self.options.args
     
-    -- Define which groups to remove for each version
+    -- Define which groups to remove for each version based on corrected feature availability
+    -- Honor Ranks, Delves, Renown, and Trading Post are retail-only
     local groupsToRemove = {
-        vanilla = {"group2", "group3", "group4", "group5", "group9", "group11"},
-        tbc = {"group2", "group3", "group4", "group5", "group9", "group11"},
-        wrath = {"group3", "group4", "group5", "group9", "group11"},
-        cata = {"group3", "group4", "group5", "group9", "group11"},
-        mists = {"group5", "group9", "group11"},
+        vanilla = {"group2", "group3", "group4", "group5", "group9", "group11"},  -- Remove achievements, battle pets, honor, delves, renown, trading post
+        tbc = {"group2", "group3", "group4", "group5", "group9", "group11"},     -- Remove achievements, battle pets, honor, delves, renown, trading post  
+        wrath = {"group3", "group4", "group5", "group9", "group11"},             -- Remove battle pets, honor, delves, renown, trading post
+        cata = {"group3", "group4", "group5", "group9", "group11"},              -- Remove battle pets, honor, delves, renown, trading post
+        mists = {"group4", "group5", "group9", "group11"},                       -- Remove honor, delves, renown, trading post (keep achievements and battle pets)
         retail = {},  -- Keep all groups for retail
     }
     
@@ -218,15 +271,19 @@ function BLU:RemoveOptionsForVersion(version)
     
     -- Clean up profile settings for removed features
     if version ~= "retail" then
-        if version ~= "mists" then
-            self.db.profile.BattlePetLevelSoundSelect = nil
-            self.db.profile.HonorSoundSelect = nil
-        end
+        -- Honor, Delves, Renown, and Trading Post are retail-only
+        self.db.profile.HonorSoundSelect = nil
         self.db.profile.DelveLevelUpSoundSelect = nil
         self.db.profile.RenownSoundSelect = nil
         self.db.profile.PostSoundSelect = nil
+        
+        -- Battle pets only available in Mists and Retail
+        if version ~= "mists" then
+            self.db.profile.BattlePetLevelSoundSelect = nil
+        end
     end
     
+    -- Achievements only available in Wrath, Cata, Mists, and Retail
     if version == "vanilla" or version == "tbc" then
         self.db.profile.AchievementSoundSelect = nil
     end

@@ -18,6 +18,27 @@ jobs:
       contents: write
       packages: write
     steps:
+      - name: Check Secrets Configuration
+        run: |
+          echo "Checking required secrets..."
+          if [ -z "${{ secrets.CF_API_KEY }}" ]; then
+            echo "⚠️ WARNING: CF_API_KEY not set - CurseForge upload will be skipped"
+          else
+            echo "✓ CF_API_KEY is configured"
+          fi
+          if [ -z "${{ secrets.WOWI_API_TOKEN }}" ]; then
+            echo "⚠️ WARNING: WOWI_API_TOKEN not set - WoWInterface upload will be skipped"
+          else
+            echo "✓ WOWI_API_TOKEN is configured"
+          fi
+          if [ -z "${{ secrets.WAGO_API_TOKEN }}" ]; then
+            echo "⚠️ WARNING: WAGO_API_TOKEN not set - Wago.io upload will be skipped"
+          else
+            echo "✓ WAGO_API_TOKEN is configured"
+          fi
+          echo "GitHub release will always be created."
+          echo ""
+
       - name: Clone Project
         uses: actions/checkout@v4
         with:
@@ -52,9 +73,9 @@ jobs:
           release-type: ${{ steps.set_release_type.outputs.release_type }}
 
       - name: Send Discord Notification
-        if: success()
+        if: success() && (secrets.DISCORD_WEBHOOK != '' || true)
         env:
-          DISCORD_WEBHOOK: https://discord.com/api/webhooks/1404619741997563965/W99EcO9tGg1b9hz7rHYyHRJfsL1oeN1vOt0MMMOlsra5oGUDzbviiyILbKwnpxCvYZyJ
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK || 'https://discord.com/api/webhooks/1404619741997563965/W99EcO9tGg1b9hz7rHYyHRJfsL1oeN1vOt0MMMOlsra5oGUDzbviiyILbKwnpxCvYZyJ' }}
         run: |
           TAG_NAME=${GITHUB_REF#refs/tags/}
           ADDON_NAME="BLU Classic"

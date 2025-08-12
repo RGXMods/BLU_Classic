@@ -50,3 +50,47 @@ jobs:
         uses: BigWigsMods/packager@master
         with:
           release-type: ${{ steps.set_release_type.outputs.release_type }}
+
+      - name: Send Discord Notification
+        if: success()
+        env:
+          DISCORD_WEBHOOK: https://discord.com/api/webhooks/1404619741997563965/W99EcO9tGg1b9hz7rHYyHRJfsL1oeN1vOt0MMMOlsra5oGUDzbviiyILbKwnpxCvYZyJ
+        run: |
+          TAG_NAME=${GITHUB_REF#refs/tags/}
+          ADDON_NAME="BLU Classic"
+          CURSEFORGE_URL="https://www.curseforge.com/wow/addons/blu-classic"
+          WOWINTERFACE_URL="https://www.wowinterface.com/downloads/info26792-BLUClassic.html"
+          WAGO_URL="https://addons.wago.io/addons/blu-classic"
+          GITHUB_URL="https://github.com/DonnieDice/BLU_Classic/releases/tag/${TAG_NAME}"
+          
+          # Create Discord embed JSON
+          cat << EOF > discord_payload.json
+          {
+            "embeds": [{
+              "title": "🎮 ${ADDON_NAME} ${TAG_NAME} Released!",
+              "description": "A new version of **${ADDON_NAME}** has been released!",
+              "color": 393471,
+              "fields": [
+                {
+                  "name": "📦 Download Links",
+                  "value": "[CurseForge](${CURSEFORGE_URL})\n[WoWInterface](${WOWINTERFACE_URL})\n[Wago](${WAGO_URL})\n[GitHub](${GITHUB_URL})",
+                  "inline": false
+                },
+                {
+                  "name": "🎵 Features",
+                  "value": "Experience level-up sounds from your favorite games in WoW!",
+                  "inline": false
+                }
+              ],
+              "footer": {
+                "text": "RGX Mods - RealmGX Community Project"
+              },
+              "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%S.000Z)"
+            }]
+          }
+          EOF
+          
+          # Send to Discord
+          curl -X POST "${DISCORD_WEBHOOK}" \
+            -H "Content-Type: application/json" \
+            -d @discord_payload.json

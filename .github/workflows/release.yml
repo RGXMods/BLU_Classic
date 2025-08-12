@@ -63,6 +63,23 @@ jobs:
           WAGO_URL="https://addons.wago.io/addons/blu-classic"
           GITHUB_URL="https://github.com/DonnieDice/BLU_Classic/releases/tag/${TAG_NAME}"
           
+          # Extract release notes from CHANGELOG.md for this version
+          # Look for the section between this version and the next version header
+          RELEASE_NOTES=$(awk "/^## \[?${TAG_NAME}\]?/{flag=1; next} /^## \[?v[0-9]+\.[0-9]+\.[0-9]+\]?/{if(flag) exit} flag" CHANGELOG.md | head -20)
+          
+          # Format release notes for Discord (limit to 1024 chars for Discord embed field limit)
+          if [ -z "$RELEASE_NOTES" ]; then
+            RELEASE_NOTES="No release notes available."
+          else
+            # Truncate if too long and add ellipsis
+            if [ ${#RELEASE_NOTES} -gt 1000 ]; then
+              RELEASE_NOTES="${RELEASE_NOTES:0:1000}..."
+            fi
+          fi
+          
+          # Escape special characters for JSON
+          RELEASE_NOTES=$(echo "$RELEASE_NOTES" | sed 's/\\/\\\\/g' | sed 's/"/\\"/g' | sed ':a;N;$!ba;s/\n/\\n/g')
+          
           # Create Discord embed JSON
           cat << EOF > discord_payload.json
           {
@@ -71,6 +88,11 @@ jobs:
               "description": "A new version of **${ADDON_NAME}** has been released!",
               "color": 393471,
               "fields": [
+                {
+                  "name": "📝 Release Notes",
+                  "value": "${RELEASE_NOTES}",
+                  "inline": false
+                },
                 {
                   "name": "📦 Download Links",
                   "value": "[CurseForge](${CURSEFORGE_URL})\n[WoWInterface](${WOWINTERFACE_URL})\n[Wago](${WAGO_URL})\n[GitHub](${GITHUB_URL})",

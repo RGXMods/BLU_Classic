@@ -16,3 +16,8 @@ WTF/
 # Project-specific
 SETUP_NOTES.md
 .github/workflows/release.yml
+
+# Environment and secrets
+.env
+.env.local
+*.env

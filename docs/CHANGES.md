@@ -1,2 +1,2 @@
-- Fixed: Discord notification formatting to match RGX Mods standards
-- Added: All distribution links in Discord notifications
+- Fixed: Discord webhook to use RGX Mods standard format with username and avatar
+- Added: Inline fields for downloads, compatibility, and support in Discord embeds

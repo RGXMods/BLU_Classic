@@ -1,3 +1,7 @@
+v1.0.9-------------------------------------------------------------------
+- Fixed - Discord webhook to use RGX Mods standard format with username and avatar
+- Added - Inline fields for downloads, compatibility, and support in Discord embeds
+- Fixed - Proper formatting matching SRLU/FFLU/SQP Discord messages
 v1.0.8-------------------------------------------------------------------
 - Fixed - Discord notification formatting to match RGX Mods standards
 - Added - All distribution links in Discord notifications (CurseForge, WoWInterface, Wago, GitHub)

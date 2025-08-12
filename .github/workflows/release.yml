@@ -14,6 +14,8 @@ env:
 jobs:
   release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Clone Project
         uses: actions/checkout@v4
@@ -43,7 +45,82 @@ jobs:
           version=$(grep -oP '^## Version: \K(.*)' ./*.toc | head -1)
           echo "::set-output name=version::$version"
 
+      - name: Extract Changelog
+        id: extract_changelog
+        run: |
+          if [ -f "docs/CHANGES.md" ]; then
+            CHANGELOG=$(cat docs/CHANGES.md | head -20 | sed 's/"/\\"/g' | sed ':a;N;$!ba;s/\n/\\n/g')
+            echo "::set-output name=changelog::$CHANGELOG"
+          else
+            echo "::set-output name=changelog::No changelog available"
+          fi
+
       - name: Package and Release
         uses: BigWigsMods/packager@master
         with:
           release-type: ${{ steps.set_release_type.outputs.release_type }}
+
+      - name: Send Discord Notification
+        if: success()
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          if [ -z "$DISCORD_WEBHOOK" ]; then
+            echo "Discord webhook not configured, skipping notification"
+            exit 0
+          fi
+          
+          # Determine release type emoji and color
+          RELEASE_TYPE="${{ steps.set_release_type.outputs.release_type }}"
+          if [ "$RELEASE_TYPE" = "alpha" ]; then
+            EMOJI="🔬"
+            COLOR="16711680"  # Red
+            TYPE_TEXT="Alpha"
+          elif [ "$RELEASE_TYPE" = "beta" ]; then
+            EMOJI="🧪"
+            COLOR="16744448"  # Orange
+            TYPE_TEXT="Beta"
+          else
+            EMOJI="🎮"
+            COLOR="5814783"  # Blue for BLU Classic
+            TYPE_TEXT="Release"
+          fi
+          
+          # Format the changelog for Discord
+          CHANGELOG="${{ steps.extract_changelog.outputs.changelog }}"
+          
+          # Create the Discord embed
+          DISCORD_PAYLOAD=$(cat <<EOF
+          {
+            "embeds": [{
+              "title": "$EMOJI BLU Classic v${{ steps.extract_version.outputs.version }} $TYPE_TEXT",
+              "description": "A new version of Better Level Up! Classic has been released!",
+              "color": $COLOR,
+              "fields": [
+                {
+                  "name": "📝 Changelog",
+                  "value": "$CHANGELOG"
+                },
+                {
+                  "name": "📦 Download",
+                  "value": "[CurseForge](https://www.curseforge.com/wow/addons/blu-classic) • [GitHub](https://github.com/DonnieDice/BLU_Classic/releases/tag/${{ github.ref_name }})"
+                }
+              ],
+              "footer": {
+                "text": "RGX Mods Collection",
+                "icon_url": "https://raw.githubusercontent.com/DonnieDice/BLU_Classic/main/images/icon.tga"
+              },
+              "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%S.000Z)",
+              "thumbnail": {
+                "url": "https://raw.githubusercontent.com/DonnieDice/BLU_Classic/main/images/BLU_Logo.png"
+              }
+            }]
+          }
+          EOF
+          )
+          
+          # Send to Discord
+          curl -H "Content-Type: application/json" \
+               -X POST \
+               -d "$DISCORD_PAYLOAD" \
+               "$DISCORD_WEBHOOK"

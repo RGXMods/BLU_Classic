@@ -1,2 +1,3 @@
-- Fixed: Version extraction in workflow to show correct version number
-- Fixed: Discord notification version display issue
+- Fixed: Discord notifications now use RGX Mods standard format
+- Fixed: Version display in Discord messages (removed double 'v')
+- Added: Extended MoP Classic interface support (future-proofed with forward patch versions)

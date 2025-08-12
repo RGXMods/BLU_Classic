@@ -94,7 +94,7 @@ jobs:
                  \"username\": \"BLU Classic Update\",
                  \"avatar_url\": \"https://raw.githubusercontent.com/donniedice/BLU_Classic/main/images/BLU_Logo.png\",
                  \"embeds\": [{
-                   \"title\": \"$EMOJI BLU Classic | Better Level-Up! - v${{ steps.extract_version.outputs.version }} $TYPE_TEXT\",
+                   \"title\": \"$EMOJI BLU Classic | Better Level-Up! - ${{ steps.extract_version.outputs.version }} $TYPE_TEXT\",
                    \"description\": \"**Level up in style!** - A new version of BLU Classic has been released!\\n\\n🎵 **What's New:**\\n$CHANGELOG\\n\\n**Play sounds from legendary games when you level up, complete quests, or earn achievements!**\",
                    \"url\": \"https://github.com/donniedice/BLU_Classic/releases/tag/${{ github.ref_name }}\",
                    \"color\": 5814783,

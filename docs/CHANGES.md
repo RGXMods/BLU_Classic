@@ -1,2 +1,2 @@
-- Added: Discord webhook notifications for releases
-- Fixed: GitHub Actions workflow permissions for automated releases
+- Fixed: Discord notification formatting to match RGX Mods standards
+- Added: All distribution links in Discord notifications

@@ -103,16 +103,16 @@ jobs:
                 },
                 {
                   "name": "📦 Download",
-                  "value": "[CurseForge](https://www.curseforge.com/wow/addons/blu-classic) • [GitHub](https://github.com/DonnieDice/BLU_Classic/releases/tag/${{ github.ref_name }})"
+                  "value": "[CurseForge](https://www.curseforge.com/wow/addons/blu-classic) • [WoWInterface](https://www.wowinterface.com/downloads/info26945-BLUClassic.html) • [Wago](https://addons.wago.io/addons/blu-classic) • [GitHub](https://github.com/donniedice/BLU_Classic/releases/tag/${{ github.ref_name }})"
                 }
               ],
               "footer": {
                 "text": "RGX Mods Collection",
-                "icon_url": "https://raw.githubusercontent.com/DonnieDice/BLU_Classic/main/images/icon.tga"
+                "icon_url": "https://raw.githubusercontent.com/donniedice/BLU_Classic/main/images/BLU_Logo.png"
               },
               "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%S.000Z)",
               "thumbnail": {
-                "url": "https://raw.githubusercontent.com/DonnieDice/BLU_Classic/main/images/BLU_Logo.png"
+                "url": "https://raw.githubusercontent.com/donniedice/BLU_Classic/main/images/BLU_Logo.png"
               }
             }]
           }

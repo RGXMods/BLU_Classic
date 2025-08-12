@@ -1,2 +1,2 @@
-- Fixed: Discord webhook to use RGX Mods standard format with username and avatar
-- Added: Inline fields for downloads, compatibility, and support in Discord embeds
+- Fixed: Version extraction in workflow to show correct version number
+- Fixed: Discord notification version display issue

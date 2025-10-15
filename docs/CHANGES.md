@@ -1,3 +1,6 @@
+- Fixed: Several Lua errors on startup.
+- Changed: Reputation tracking to use a more reliable event-based system.
+- Fixed: Title color in options panel.
 - Fixed: Discord notifications now use RGX Mods standard format
 - Fixed: Version display in Discord messages (removed double 'v')
 - Added: Extended MoP Classic interface support (future-proofed with forward patch versions)

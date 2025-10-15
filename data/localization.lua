@@ -17,8 +17,8 @@
 
 -- Debug handling is automatic, non-debug messages need explicit localization references.
 
-BLU = BLU or {}  -- Ensure BLU is defined
-BLU_L = BLU_L or {}  -- Ensure the localization table exists
+
+
 
 local colors = {
     prefix = "|cff05dffa",      -- BLU Prefix Color
@@ -46,8 +46,8 @@ BLU_L = {
     optionColor2 = colors.white,
 
     -- Option Labels and Descriptions
-    OPTIONS_PANEL_TITLE = string.format("|Tinterface/addons/BLU_Classic/images/icon:16:16|t - %sBLU|r %s|| %sB|r%setter %sL|r%sevel-%sU|r%sp!",
-        colors.prefix, colors.white, colors.prefix, colors.white, colors.prefix, colors.white, colors.prefix, colors.white),
+    OPTIONS_PANEL_TITLE = string.format("|Tinterface/addons/BLU_Classic/images/icon:16:16|t - %sBLU|r %s|| %sB|r%setter %sL|r%sevel-%sU|r%sp%s!|r",
+        colors.prefix, colors.white, colors.prefix, colors.white, colors.prefix, colors.white, colors.prefix, colors.white, colors.prefix),
 
     -- Profiles
     PROFILES_TITLE = "Profiles",
@@ -71,8 +71,8 @@ BLU_L = {
     -- BLU:InitializeOptions()
     ERROR_OPTIONS_NOT_INITIALIZED = string.format("%sOptions not initialized properly.|r", colors.error),
     SKIPPING_GROUP_NOT_COMPATIBLE = string.format("Incompatible or Unnamed Options Group", colors.error),
-    OPTIONS_LIST_MENU_TITLE = string.format("|Tinterface/addons/BLU_Classic/images/icon:16:16|t - %sB|r%setter %sL|r%sevel-%sU|r%sp!",
-        colors.prefix, colors.white, colors.prefix, colors.white, colors.prefix, colors.white),
+    OPTIONS_LIST_MENU_TITLE = string.format("|Tinterface/addons/BLU_Classic/images/icon:16:16|t - %sB|r%setter %sL|r%sevel-%sU|r%sp%s!|r",
+        colors.prefix, colors.white, colors.prefix, colors.white, colors.prefix, colors.white, colors.prefix),
     OPTIONS_ALREADY_REGISTERED = "Options already registered.",
 
 -- =====================================================================================

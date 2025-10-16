@@ -1,5 +1,5 @@
 
-local BLU = BLU or {} 
+local addonName, BLU = ...
 BLU.previousPetLevels = {}
 BLU.currentPetLevels = {}
 BLU.dataInitialized = false

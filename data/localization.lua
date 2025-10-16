@@ -46,8 +46,7 @@ BLU_L = {
     optionColor2 = colors.white,
 
     -- Option Labels and Descriptions
-    OPTIONS_PANEL_TITLE = string.format("|Tinterface/addons/BLU_Classic/images/icon:16:16|t - %sBLU|r %s|| %sB|r%setter %sL|r%sevel-%sU|r%sp%s!|r",
-        colors.prefix, colors.white, colors.prefix, colors.white, colors.prefix, colors.white, colors.prefix, colors.white, colors.prefix),
+        OPTIONS_PANEL_TITLE = string.format("|Tinterface/addons/BLU_Classic/images/icon:16:16|t |cff00ff00-|r %sB|r%setter %sL|r%sevel-%sU|r%sp%s!|r", colors.prefix, colors.white, colors.prefix, colors.white, colors.prefix, colors.white, colors.prefix),
 
     -- Profiles
     PROFILES_TITLE = "Profiles",

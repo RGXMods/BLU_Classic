@@ -22,10 +22,18 @@ end
 -- Event Handling Functions
 --=====================================================================================
 function BLU:HandleEvent(eventName, soundSelectKey, volumeKey, defaultSound, debugMessage)
-    
     if self.functionsHalted then 
         self:PrintDebugMessage("FUNCTIONS_HALTED")
         return 
+    end
+
+    -- Mute the default sound for this event
+    local version = self:GetGameVersion()
+    local soundIDs = muteSoundIDs[version]
+    if soundIDs then
+        for _, soundID in ipairs(soundIDs) do
+            MuteSoundFile(soundID)
+        end
     end
     
     table.insert(BLU_EventQueue, {
@@ -166,8 +174,8 @@ function BLU:HandleSlashCommands(input)
                 Settings.OpenToCategory(self.optionsFrame.name)
             -- Legacy API (Classic versions) - use the string name, not .name property
             elseif InterfaceOptionsFrame_OpenToCategory then
-                InterfaceOptionsFrame_OpenToCategory(BLU_L["OPTIONS_LIST_MENU_TITLE"])
-                InterfaceOptionsFrame_OpenToCategory(BLU_L["OPTIONS_LIST_MENU_TITLE"])  -- Call twice for reliability
+                InterfaceOptionsFrame_OpenToCategory(BLU_L["OPTIONS_PANEL_TITLE"])
+                InterfaceOptionsFrame_OpenToCategory(BLU_L["OPTIONS_PANEL_TITLE"])  -- Call twice for reliability
             -- Fallback
             else
                 -- print(BLU_PREFIX .. "Options panel not available for this WoW version")

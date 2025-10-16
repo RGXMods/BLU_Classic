@@ -1,4 +1,4 @@
-BLU = LibStub("AceAddon-3.0"):NewAddon("BLU", "AceEvent-3.0", "AceConsole-3.0")
+BLU = LibStub("AceAddon-3.0"):NewAddon("BLU", "AceEvent-3.0", "AceConsole-3.0", "AceTimer-3.0")
 BLU_L = BLU_L or {}
 
 function BLU:GetGameVersion()
@@ -281,15 +281,14 @@ function BLU:InitializeOptions()
         end
     end
 
-    self:AssignGroupColors()
-
     if not self.optionsRegistered then
+        self:AssignGroupColors()
         AC:RegisterOptionsTable("BLU_Options", self.options)
-        self.optionsFrame = ACD:AddToBlizOptions("BLU_Options", "BLU") 
+        self.optionsFrame = ACD:AddToBlizOptions("BLU_Options", BLU_L["OPTIONS_PANEL_TITLE"]) 
 
         local profiles = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db)
         AC:RegisterOptionsTable("BLU_Profiles", profiles)
-        ACD:AddToBlizOptions("BLU_Profiles", BLU_L["PROFILES_TITLE"], "BLU")
+        ACD:AddToBlizOptions("BLU_Profiles", BLU_L["PROFILES_TITLE"], BLU_L["OPTIONS_PANEL_TITLE"])
 
         self.optionsRegistered = true
     else
@@ -384,6 +383,12 @@ end
 --=====================================================================================
 function BLU:OnInitialize()
     self.db = LibStub("AceDB-3.0"):New("BLUDB", self.defaults, true)
+
+    if C_AddOns and C_AddOns.GetAddOnMetadata then
+        self.VersionNumber = C_AddOns.GetAddOnMetadata("BLU_Classic", "Version")
+    else
+        self.VersionNumber = GetAddOnMetadata("BLU_Classic", "Version")
+    end
     
     local version = self:GetGameVersion()
     self:CleanupIncompatibleSavedVariables(version)
@@ -396,20 +401,63 @@ function BLU:OnInitialize()
         self.showWelcomeMessage = true
         self.db.profile.showWelcomeMessage = true
     end
+
+    self.functionsHalted = false
+    self.sortedOptions = {}
+    self.optionsRegistered = false
     
     self:RegisterChatCommand("blu", "HandleSlashCommands")
     self:InitializeOptions()
 end
 
 --=====================================================================================
--- Addon Enable
+-- Addon Enable/Disable
 --=====================================================================================
 function BLU:OnEnable()
     self:RegisterSharedEvents()
     self:InitializeReputationCache()
+    self:MuteSounds()
     
     if self.showWelcomeMessage then
         print(BLU_PREFIX .. BLU_L["WELCOME_MESSAGE"])
         print(BLU_PREFIX .. BLU_L["VERSION"] .. " " .. self.VersionNumber)
+    end
+end
+
+function BLU:OnDisable()
+    self:UnmuteSounds()
+end
+
+function BLU:MuteSounds()
+    local version = self:GetGameVersion()
+    local soundIDs = muteSoundIDs[version]
+    if soundIDs then
+        for _, soundID in ipairs(soundIDs) do
+            MuteSoundFile(soundID)
+        end
+    end
+end
+
+function BLU:UnmuteSounds()
+    local version = self:GetGameVersion()
+    local soundIDs = muteSoundIDs[version]
+    if soundIDs then
+        for _, soundID in ipairs(soundIDs) do
+            UnmuteSoundFile(soundID)
+        end
+    end
+end
+
+function BLU:OnDisable()
+    self:UnmuteSounds()
+end
+
+function BLU:UnmuteSounds()
+    local version = self:GetGameVersion()
+    local soundIDs = muteSoundIDs[version]
+    if soundIDs then
+        for _, soundID in ipairs(soundIDs) do
+            UnmuteSoundFile(soundID)
+        end
     end
 end

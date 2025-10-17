@@ -97,7 +97,7 @@ jobs:
             --arg username "BLU Classic Update" \
             --arg avatar_url "https://raw.githubusercontent.com/donniedice/BLU_Classic/main/images/BLU_Logo.png" \
             --arg title "$EMOJI BLU Classic | Better Level-Up! - $VERSION $TYPE_TEXT" \
-            --arg description_prefix "**Level up in style!** - A new version of BLU Classic has been released!\\n\\n🎵 **What's New:**\\n" \
+            --arg description_prefix "**Level up in style!** - A new version of BLU Classic has been released!\\n\\n🎵 **What'\''s New:**\\n" \
             --arg description_suffix "\\n\\n**Play sounds from legendary games when you level up, complete quests, or earn achievements!**" \
             --arg url "https://github.com/donniedice/BLU_Classic/releases/tag/$TAG_NAME" \
             --arg color 5814783 \

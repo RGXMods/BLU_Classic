@@ -49,12 +49,10 @@ jobs:
         id: extract_changelog
         run: |
           if [ -f "docs/CHANGES.md" ]; then
-            CHANGELOG_RAW=$(cat docs/CHANGES.md | head -20)
-            echo "CHANGELOG_CONTENT<<EOF" >> $GITHUB_ENV
-            echo "$CHANGELOG_RAW" >> $GITHUB_ENV
-            echo "EOF" >> $GITHUB_ENV
+            CHANGELOG=$(cat docs/CHANGES.md | head -20 | sed 's/"/\\"/g' | sed ':a;N;$!ba;s/\n/\\n/g')
+            echo "::set-output name=changelog::$CHANGELOG"
           else
-            echo "CHANGELOG_CONTENT=No changelog available" >> $GITHUB_ENV
+            echo "::set-output name=changelog::No changelog available"
           fi
 
       - name: Package and Release
@@ -66,7 +64,6 @@ jobs:
         if: success()
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-          CHANGELOG_CONTENT: ${{ env.CHANGELOG_CONTENT }}
         run: |
           if [ -z "$DISCORD_WEBHOOK" ]; then
             echo "Discord webhook not configured, skipping notification"
@@ -86,42 +83,46 @@ jobs:
             TYPE_TEXT=""
           fi
           
-          # Escape the raw changelog content for JSON
-          ESCAPED_CHANGELOG=$(echo "$CHANGELOG_CONTENT" | jq -Rs .)
+          # Format the changelog for Discord
+          CHANGELOG="${{ steps.extract_changelog.outputs.changelog }}"
           
           # Create RGX Mods standard Discord message
           curl -H "Content-Type: application/json" \
                -X POST \
-               -d "{\
-                 \"content\": \"\",\
-                 \"username\": \"BLU Classic Update\",\
-                 \"avatar_url\": \"https://raw.githubusercontent.com/donniedice/BLU_Classic/main/images/BLU_Logo.png\",\
-                 \"embeds\": [{\
-                   \"title\": \"$EMOJI BLU Classic | Better Level-Up! - ${{ steps.extract_version.outputs.version }} $TYPE_TEXT\",\
-                   \"description\": \"**Level up in style!** - A new version of BLU Classic has been released!\\n\\n🎵 **What'\''s New:**\\n$ESCAPED_CHANGELOG\\n\\n**Play sounds from legendary games when you level up, complete quests, or earn achievements!**\",\
-                   \"url\": \"https://github.com/donniedice/BLU_Classic/releases/tag/${{ github.ref_name }}\",\
-                   \"color\": 5814783,\
-                   \"thumbnail\": {\
-                     \"url\": \"https://raw.githubusercontent.com/donniedice/BLU_Classic/main/images/BLU_Logo.png\"\
-                   },\n                   \"fields\": [\
-                     {\
-                       \"name\": \"📥 Downloads\",\
-                       \"value\": \"[CurseForge](https://www.curseforge.com/wow/addons/blu-classic)\\n[WoWInterface](https://www.wowinterface.com/downloads/info26945)\\n[Wago.io](https://addons.wago.io/addons/blu-classic)\\n[GitHub](https://github.com/donniedice/BLU_Classic)\",\
-                       \"inline\": true\
-                     },\n                     {\
-                       \"name\": \"🎮 Compatibility\",\
-                       \"value\": \"✅ The War Within\\n✅ Classic Era\\n✅ Cataclysm\\n✅ MoP\\n✅ Wrath\\n✅ TBC\",\
-                       \"inline\": true\
-                     },\n                     {\
-                       \"name\": \"💬 Support\",\
-                       \"value\": \"[Join Discord](https://discord.gg/N7kdKAHVVF)\\n[Report Issues](https://github.com/donniedice/BLU_Classic/issues)\",\
-                       \"inline\": true\
-                     }\
-                   ],\
-                   \"footer\": {\
-                     \"text\": \"RGX Mods - RealmGX Community\",\
-                     \"icon_url\": \"https://raw.githubusercontent.com/donniedice/SimpleQuestPlates/main/images/kiwi.gif\"\
-                   },\n                   \"timestamp\": \"$(date -u +%Y-%m-%dT%H:%M:%S.000Z)\"\
-                 }]\
+               -d "{
+                 \"content\": \"\",
+                 \"username\": \"BLU Classic Update\",
+                 \"avatar_url\": \"https://raw.githubusercontent.com/donniedice/BLU_Classic/main/images/BLU_Logo.png\",
+                 \"embeds\": [{
+                   \"title\": \"$EMOJI BLU Classic | Better Level-Up! - ${{ steps.extract_version.outputs.version }} $TYPE_TEXT\",
+                   \"description\": \"**Level up in style!** - A new version of BLU Classic has been released!\\n\\n🎵 **What's New:**\\n$CHANGELOG\\n\\n**Play sounds from legendary games when you level up, complete quests, or earn achievements!**\",
+                   \"url\": \"https://github.com/donniedice/BLU_Classic/releases/tag/${{ github.ref_name }}\",
+                   \"color\": 5814783,
+                   \"thumbnail\": {
+                     \"url\": \"https://raw.githubusercontent.com/donniedice/BLU_Classic/main/images/BLU_Logo.png\"
+                   },
+                   \"fields\": [
+                     {
+                       \"name\": \"📥 Downloads\",
+                       \"value\": \"[CurseForge](https://www.curseforge.com/wow/addons/blu-classic)\\n[WoWInterface](https://www.wowinterface.com/downloads/info26945)\\n[Wago.io](https://addons.wago.io/addons/blu-classic)\\n[GitHub](https://github.com/donniedice/BLU_Classic)\",
+                       \"inline\": true
+                     },
+                     {
+                       \"name\": \"🎮 Compatibility\",
+                       \"value\": \"✅ The War Within\\n✅ Classic Era\\n✅ Cataclysm\\n✅ MoP\\n✅ Wrath\\n✅ TBC\",
+                       \"inline\": true
+                     },
+                     {
+                       \"name\": \"💬 Support\",
+                       \"value\": \"[Join Discord](https://discord.gg/N7kdKAHVVF)\\n[Report Issues](https://github.com/donniedice/BLU_Classic/issues)\",
+                       \"inline\": true
+                     }
+                   ],
+                   \"footer\": {
+                     \"text\": \"RGX Mods - RealmGX Community\",
+                     \"icon_url\": \"https://raw.githubusercontent.com/donniedice/SimpleQuestPlates/main/images/kiwi.gif\"
+                   },
+                   \"timestamp\": \"$(date -u +%Y-%m-%dT%H:%M:%S.000Z)\"
+                 }]
                }" \
                "$DISCORD_WEBHOOK"

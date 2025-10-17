@@ -92,13 +92,12 @@ jobs:
           TAG_NAME="${{ github.ref_name }}" # e.g., v1.1.2
           
           # Construct JSON payload using jq
-          JSON_PAYLOAD=$(jq -n \
+          JSON_PAYLOAD=$(echo "$CHANGELOG_CONTENT" | jq -R -s '.' | jq -n \
             --arg content "" \
             --arg username "BLU Classic Update" \
             --arg avatar_url "https://raw.githubusercontent.com/donniedice/BLU_Classic/main/images/BLU_Logo.png" \
             --arg title "$EMOJI BLU Classic | Better Level-Up! - $VERSION $TYPE_TEXT" \
             --arg description_prefix "**Level up in style!** - A new version of BLU Classic has been released!\\n\\n🎵 **What's New:**\\n" \
-            --arg changelog_raw "$CHANGELOG_CONTENT" \
             --arg description_suffix "\\n\\n**Play sounds from legendary games when you level up, complete quests, or earn achievements!**" \
             --arg url "https://github.com/donniedice/BLU_Classic/releases/tag/$TAG_NAME" \
             --arg color 5814783 \
@@ -111,7 +110,7 @@ jobs:
               avatar_url: $avatar_url, \
               embeds: [{ \
                 title: $title, \
-                description: ($description_prefix + $changelog_raw + $description_suffix), \
+                description: ($description_prefix + input + $description_suffix), \
                 url: $url, \
                 color: $color, \
                 thumbnail: { url: $thumbnail_url }, \

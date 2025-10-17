@@ -50,9 +50,11 @@ jobs:
         run: |
           if [ -f "docs/CHANGES.md" ]; then
             CHANGELOG_RAW=$(cat docs/CHANGES.md | head -20)
-            echo "::set-output name=changelog::$CHANGELOG_RAW"
+            echo "CHANGELOG_CONTENT<<EOF" >> $GITHUB_ENV
+            echo "$CHANGELOG_RAW" >> $GITHUB_ENV
+            echo "EOF" >> $GITHUB_ENV
           else
-            echo "::set-output name=changelog::No changelog available"
+            echo "CHANGELOG_CONTENT=No changelog available" >> $GITHUB_ENV
           fi
 
       - name: Package and Release
@@ -64,6 +66,7 @@ jobs:
         if: success()
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+          CHANGELOG_CONTENT: ${{ env.CHANGELOG_CONTENT }}
         run: |
           if [ -z "$DISCORD_WEBHOOK" ]; then
             echo "Discord webhook not configured, skipping notification"
@@ -84,7 +87,7 @@ jobs:
           fi
           
           # Get changelog and version
-          CHANGELOG_RAW_CONTENT="${{ steps.extract_changelog.outputs.changelog }}"
+          # CHANGELOG_CONTENT is now an environment variable
           VERSION="${{ steps.extract_version.outputs.version }}"
           TAG_NAME="${{ github.ref_name }}" # e.g., v1.1.2
           
@@ -95,7 +98,7 @@ jobs:
             --arg avatar_url "https://raw.githubusercontent.com/donniedice/BLU_Classic/main/images/BLU_Logo.png" \
             --arg title "$EMOJI BLU Classic | Better Level-Up! - $VERSION $TYPE_TEXT" \
             --arg description_prefix "**Level up in style!** - A new version of BLU Classic has been released!\\n\\n🎵 **What's New:**\\n" \
-            --arg changelog_raw "$CHANGELOG_RAW_CONTENT" \
+            --arg changelog_raw "$CHANGELOG_CONTENT" \
             --arg description_suffix "\\n\\n**Play sounds from legendary games when you level up, complete quests, or earn achievements!**" \
             --arg url "https://github.com/donniedice/BLU_Classic/releases/tag/$TAG_NAME" \
             --arg color 5814783 \

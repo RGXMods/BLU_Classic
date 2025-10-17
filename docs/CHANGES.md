@@ -1,13 +1,1 @@
-- Fixed: Discord notification failure due to invalid JSON in changelog content.
-- Fixed: Addon initialization error ("Addon 'BLU' already exists") by ensuring BLU object is created only once.
-- Fixed: Slash command /blu not opening options panel on Classic clients.
-- Fixed: Default sounds remaining muted after addon disable by correctly implementing mute/unmute logic.
-- Fixed: Options panel 'GetValue' method not found error.
-- Fixed: Repeated color-coding of options panel group names.
-- Fixed: 'ScheduleTimer' (a nil value) error by ensuring AceTimer-3.0 library is embedded.
-- Fixed: 'GetAddOnMetadata' (a nil value) error on older clients by reverting dynamic title assignment.
-- Fixed: Options panel title display in the left-hand navigation list.
-- Fixed: "parent category 'BLU' not found" error for Profiles sub-panel.
-- Changed: Addon title in all .toc files to remove icon texture string for better display in Addons list.
-- Changed: Options panel title in localization.lua to remove redundant "BLU" text.
-- Added: Yellow dash between icon and title text in options panel.
+- Fixed - Discord notification failure due to invalid JSON in changelog content.

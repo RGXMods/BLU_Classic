@@ -32,27 +32,28 @@ jobs:
         run: |
           TAG_NAME=${{ github.ref }}
           if [[ "$TAG_NAME" == *"beta"* ]]; then
-            echo "::set-output name=release_type::beta"
+            echo "release_type=beta" >> $GITHUB_OUTPUT
           elif [[ "$TAG_NAME" == *"alpha"* ]]; then
-            echo "::set-output name=release_type::alpha"
+            echo "release_type=alpha" >> $GITHUB_OUTPUT
           else
-            echo "::set-output name=release_type::release"
+            echo "release_type=release" >> $GITHUB_OUTPUT
           fi
 
       - name: Extract Version from TOC
         id: extract_version
         run: |
           version=$(grep "^## Version:" BLU_Classic.toc | sed 's/## Version: //')
-          echo "::set-output name=version::$version"
+          echo "version=$version" >> $GITHUB_OUTPUT
 
       - name: Extract Changelog
         id: extract_changelog
         run: |
           if [ -f "docs/CHANGES.md" ]; then
-            CHANGELOG=$(cat docs/CHANGES.md | head -20 | sed 's/"/\\"/g' | sed ':a;N;$!ba;s/\n/\\n/g')
-            echo "::set-output name=changelog::$CHANGELOG"
+            # Read the changelog and properly escape it for JSON
+            CHANGELOG=$(cat docs/CHANGES.md | head -20 | jq -Rs .)
+            echo "changelog=$CHANGELOG" >> $GITHUB_OUTPUT
           else
-            echo "::set-output name=changelog::No changelog available"
+            echo "changelog=\"No changelog available\"" >> $GITHUB_OUTPUT
           fi
 
       - name: Package and Release
@@ -83,46 +84,55 @@ jobs:
             TYPE_TEXT=""
           fi
           
-          # Format the changelog for Discord
-          CHANGELOG="${{ steps.extract_changelog.outputs.changelog }}"
+          # Get the changelog (already JSON-escaped from previous step)
+          CHANGELOG='${{ steps.extract_changelog.outputs.changelog }}'
           
-          # Create RGX Mods standard Discord message
+          # Build the JSON payload using jq for proper escaping
+          JSON_PAYLOAD=$(jq -n \
+            --arg emoji "$EMOJI" \
+            --arg type_text "$TYPE_TEXT" \
+            --arg version "${{ steps.extract_version.outputs.version }}" \
+            --arg tag "${{ github.ref_name }}" \
+            --argjson changelog "$CHANGELOG" \
+            '{
+              "content": "",
+              "username": "BLU Classic Update",
+              "avatar_url": "https://raw.githubusercontent.com/donniedice/BLU_Classic/main/images/BLU_Logo.png",
+              "embeds": [{
+                "title": "\($emoji) BLU Classic | Better Level-Up! - \($version) \($type_text)",
+                "description": "**Level up in style!** - A new version of BLU Classic has been released!\n\n🎵 **What'\''s New:**\n\($changelog)\n\n**Play sounds from legendary games when you level up, complete quests, or earn achievements!**",
+                "url": "https://github.com/donniedice/BLU_Classic/releases/tag/\($tag)",
+                "color": 5814783,
+                "thumbnail": {
+                  "url": "https://raw.githubusercontent.com/donniedice/BLU_Classic/main/images/BLU_Logo.png"
+                },
+                "fields": [
+                  {
+                    "name": "📥 Downloads",
+                    "value": "[CurseForge](https://www.curseforge.com/wow/addons/blu-classic)\n[WoWInterface](https://www.wowinterface.com/downloads/info26945)\n[Wago.io](https://addons.wago.io/addons/blu-classic)\n[GitHub](https://github.com/donniedice/BLU_Classic)",
+                    "inline": true
+                  },
+                  {
+                    "name": "🎮 Compatibility",
+                    "value": "✅ The War Within\n✅ Classic Era\n✅ Cataclysm\n✅ MoP\n✅ Wrath\n✅ TBC",
+                    "inline": true
+                  },
+                  {
+                    "name": "💬 Support",
+                    "value": "[Join Discord](https://discord.gg/N7kdKAHVVF)\n[Report Issues](https://github.com/donniedice/BLU_Classic/issues)",
+                    "inline": true
+                  }
+                ],
+                "footer": {
+                  "text": "RGX Mods - RealmGX Community",
+                  "icon_url": "https://raw.githubusercontent.com/donniedice/SimpleQuestPlates/main/images/kiwi.gif"
+                },
+                "timestamp": "'$(date -u +%Y-%m-%dT%H:%M:%S.000Z)'"
+              }]
+            }')
+          
+          # Send to Discord
           curl -H "Content-Type: application/json" \
                -X POST \
-               -d "{
-                 \"content\": \"\",
-                 \"username\": \"BLU Classic Update\",
-                 \"avatar_url\": \"https://raw.githubusercontent.com/donniedice/BLU_Classic/main/images/BLU_Logo.png\",
-                 \"embeds\": [{
-                   \"title\": \"$EMOJI BLU Classic | Better Level-Up! - ${{ steps.extract_version.outputs.version }} $TYPE_TEXT\",
-                   \"description\": \"**Level up in style!** - A new version of BLU Classic has been released!\\n\\n🎵 **What's New:**\\n$CHANGELOG\\n\\n**Play sounds from legendary games when you level up, complete quests, or earn achievements!**\",
-                   \"url\": \"https://github.com/donniedice/BLU_Classic/releases/tag/${{ github.ref_name }}\",
-                   \"color\": 5814783,
-                   \"thumbnail\": {
-                     \"url\": \"https://raw.githubusercontent.com/donniedice/BLU_Classic/main/images/BLU_Logo.png\"
-                   },
-                   \"fields\": [
-                     {
-                       \"name\": \"📥 Downloads\",
-                       \"value\": \"[CurseForge](https://www.curseforge.com/wow/addons/blu-classic)\\n[WoWInterface](https://www.wowinterface.com/downloads/info26945)\\n[Wago.io](https://addons.wago.io/addons/blu-classic)\\n[GitHub](https://github.com/donniedice/BLU_Classic)\",
-                       \"inline\": true
-                     },
-                     {
-                       \"name\": \"🎮 Compatibility\",
-                       \"value\": \"✅ The War Within\\n✅ Classic Era\\n✅ Cataclysm\\n✅ MoP\\n✅ Wrath\\n✅ TBC\",
-                       \"inline\": true
-                     },
-                     {
-                       \"name\": \"💬 Support\",
-                       \"value\": \"[Join Discord](https://discord.gg/N7kdKAHVVF)\\n[Report Issues](https://github.com/donniedice/BLU_Classic/issues)\",
-                       \"inline\": true
-                     }
-                   ],
-                   \"footer\": {
-                     \"text\": \"RGX Mods - RealmGX Community\",
-                     \"icon_url\": \"https://raw.githubusercontent.com/donniedice/SimpleQuestPlates/main/images/kiwi.gif\"
-                   },
-                   \"timestamp\": \"$(date -u +%Y-%m-%dT%H:%M:%S.000Z)\"
-                 }]
-               }" \
+               -d "$JSON_PAYLOAD" \
                "$DISCORD_WEBHOOK"

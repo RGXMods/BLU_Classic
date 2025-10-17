@@ -49,11 +49,8 @@ jobs:
         id: extract_changelog
         run: |
           if [ -f "docs/CHANGES.md" ]; then
-            # Read the raw changelog content
             CHANGELOG_RAW=$(cat docs/CHANGES.md | head -20)
-            # Escape the raw changelog for JSON using jq
-            CHANGELOG_ESCAPED=$(jq -Rs . <<< "$CHANGELOG_RAW")
-            echo "::set-output name=changelog::$CHANGELOG_ESCAPED"
+            echo "::set-output name=changelog::$CHANGELOG_RAW"
           else
             echo "::set-output name=changelog::No changelog available"
           fi
@@ -87,7 +84,7 @@ jobs:
           fi
           
           # Get changelog and version
-          CHANGELOG_CONTENT="${{ steps.extract_changelog.outputs.changelog }}"
+          CHANGELOG_RAW_CONTENT="${{ steps.extract_changelog.outputs.changelog }}"
           VERSION="${{ steps.extract_version.outputs.version }}"
           TAG_NAME="${{ github.ref_name }}" # e.g., v1.1.2
           
@@ -98,7 +95,7 @@ jobs:
             --arg avatar_url "https://raw.githubusercontent.com/donniedice/BLU_Classic/main/images/BLU_Logo.png" \
             --arg title "$EMOJI BLU Classic | Better Level-Up! - $VERSION $TYPE_TEXT" \
             --arg description_prefix "**Level up in style!** - A new version of BLU Classic has been released!\\n\\n🎵 **What's New:**\\n" \
-            --arg changelog "$CHANGELOG_CONTENT" \
+            --arg changelog_raw "$CHANGELOG_RAW_CONTENT" \
             --arg description_suffix "\\n\\n**Play sounds from legendary games when you level up, complete quests, or earn achievements!**" \
             --arg url "https://github.com/donniedice/BLU_Classic/releases/tag/$TAG_NAME" \
             --arg color 5814783 \
@@ -111,7 +108,7 @@ jobs:
               avatar_url: $avatar_url, \
               embeds: [{ \
                 title: $title, \
-                description: ($description_prefix + $changelog + $description_suffix), \
+                description: ($description_prefix + $changelog_raw + $description_suffix), \
                 url: $url, \
                 color: $color, \
                 thumbnail: { url: $thumbnail_url }, \

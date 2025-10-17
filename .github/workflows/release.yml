@@ -52,7 +52,7 @@ jobs:
             # Read the raw changelog content
             CHANGELOG_RAW=$(cat docs/CHANGES.md | head -20)
             # Escape the raw changelog for JSON using jq
-            CHANGELOG_ESCAPED=$(jq -Rsa . <<< "$CHANGELOG_RAW")
+            CHANGELOG_ESCAPED=$(jq -Rs . <<< "$CHANGELOG_RAW")
             echo "::set-output name=changelog::$CHANGELOG_ESCAPED"
           else
             echo "::set-output name=changelog::No changelog available"

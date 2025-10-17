@@ -1,1 +1,1 @@
-- Fixed - Discord notification failure due to invalid JSON in changelog content.
+- Changed - Formatting of Discord notification [/.github/workflows/releas.yml]

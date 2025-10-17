@@ -1,3 +1,6 @@
+v1.1.2-------------------------------------------------------------------
+- Fixed - Discord notification failure due to invalid JSON in changelog content.
+
 v1.1.1-------------------------------------------------------------------
 - Fixed - Addon initialization error ("Addon 'BLU' already exists") by ensuring BLU object is created only once.
 - Fixed - Slash command /blu not opening options panel on Classic clients.

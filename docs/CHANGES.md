@@ -1,3 +1,4 @@
+- Fixed: Discord notification failure due to invalid JSON in changelog content.
 - Fixed: Addon initialization error ("Addon 'BLU' already exists") by ensuring BLU object is created only once.
 - Fixed: Slash command /blu not opening options panel on Classic clients.
 - Fixed: Default sounds remaining muted after addon disable by correctly implementing mute/unmute logic.

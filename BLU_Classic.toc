@@ -1,5 +1,5 @@
 ## Interface: 110200, 110107, 110105, 110100, 110007, 110005, 110002, 110000, 100207, 100206, 100205, 100200, 100107, 100105, 100100, 100007, 100005, 100002, 100000, 90207, 90205, 90200, 90105, 90100, 90005, 90002, 90001, 50500, 40402, 40401, 40400, 30405, 30404, 30403, 30402, 30401, 20504, 20503, 20502, 20501, 11507
-## Version: v1.1.1
+## Version: v1.1.2
 ## Title: |cff05dffaB|r|cffffffffetter|r |cff05dffaL|r|cffffffffevel-|r|cff05dffaU|r|cffffffffp|cff05dffa!|r |cffFFD700Classic|r - |cff8080ffv1.1.1|r
 ## Notes: Play sounds from other games!  |n|r  |cff05dffa/blu -|r Open options panel  |n|r   |cff05dffaBy DonnieDice|r
 ## Author: DonnieDice

@@ -1,1 +1,3 @@
-- Changed - Formatting of Discord notification [/.github/workflows/releas.yml]
+- Fixed - Slash command `/blu` not opening options panel on Classic clients.
+- Fixed - Options panel title display in the left-hand navigation list.
+- Updated - All TOC to past and future proof BLU_Classic for all WoW Versions.

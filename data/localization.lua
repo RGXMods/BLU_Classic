@@ -46,8 +46,9 @@ BLU_L = {
     optionColor2 = colors.white,
 
     -- Option Labels and Descriptions
-        OPTIONS_PANEL_TITLE = string.format("|Tinterface/addons/BLU_Classic/images/icon:16:16|t |cff00ff00-|r %sB|r%setter %sL|r%sevel-%sU|r%sp%s!|r", colors.prefix, colors.white, colors.prefix, colors.white, colors.prefix, colors.white, colors.prefix),
-
+    OPTIONS_PANEL_TITLE = string.format("|Tinterface/addons/BLU_Classic/images/icon:16:16|t %sB|r%setter %sL|r%sevel-%sU|r%sp%s!|r", colors.prefix, colors.white, colors.prefix, colors.white, colors.prefix, colors.white, colors.prefix),
+    OPTIONS_LIST_MENU_TITLE = string.format("|Tinterface/addons/BLU_Classic/images/icon:16:16|t %sB|r%setter %sL|r%sevel%sU|r%sp%s!|r",
+        colors.prefix, colors.white, colors.prefix, colors.white, colors.prefix, colors.white, colors.prefix),
     -- Profiles
     PROFILES_TITLE = "Profiles",
 
@@ -70,8 +71,7 @@ BLU_L = {
     -- BLU:InitializeOptions()
     ERROR_OPTIONS_NOT_INITIALIZED = string.format("%sOptions not initialized properly.|r", colors.error),
     SKIPPING_GROUP_NOT_COMPATIBLE = string.format("Incompatible or Unnamed Options Group", colors.error),
-    OPTIONS_LIST_MENU_TITLE = string.format("|Tinterface/addons/BLU_Classic/images/icon:16:16|t - %sB|r%setter %sL|r%sevel-%sU|r%sp%s!|r",
-        colors.prefix, colors.white, colors.prefix, colors.white, colors.prefix, colors.white, colors.prefix),
+    
     OPTIONS_ALREADY_REGISTERED = "Options already registered.",
 
 -- =====================================================================================

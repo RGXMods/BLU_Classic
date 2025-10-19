@@ -155,9 +155,8 @@ end
 --=====================================================================================
 -- Slash Command Registration
 --=====================================================================================
-
 function BLU:HandleSlashCommands(input)
-    input = input:trim():lower()  -- Convert input to lowercase
+    input = input:trim():lower()
 
     if input == "" then
         -- Make sure options are initialized first
@@ -166,19 +165,19 @@ function BLU:HandleSlashCommands(input)
         end
         
         if self.optionsFrame then
-            -- Get game version to determine which API to use
-            local version = self:GetGameVersion()
-            
-            -- Modern API (Retail)
-            if version == "retail" and Settings and Settings.OpenToCategory then
+            -- Try modern API first (Retail)
+            if Settings and Settings.OpenToCategory then
                 Settings.OpenToCategory(self.optionsFrame.name)
-            -- Legacy API (Classic versions) - use the string name, not .name property
+            -- Try legacy API (all Classic versions)
             elseif InterfaceOptionsFrame_OpenToCategory then
-                InterfaceOptionsFrame_OpenToCategory(BLU_L["OPTIONS_PANEL_TITLE"])
-                InterfaceOptionsFrame_OpenToCategory(BLU_L["OPTIONS_PANEL_TITLE"])  -- Call twice for reliability
-            -- Fallback
+                if InterfaceAddOnsList_Update then
+                    InterfaceAddOnsList_Update()
+                end
+                InterfaceOptionsFrame_OpenToCategory(self.optionsFrame.name)
+                InterfaceOptionsFrame_OpenToCategory(self.optionsFrame.name)
             else
-                -- print(BLU_PREFIX .. "Options panel not available for this WoW version")
+                print(BLU_PREFIX .. "InterfaceOptionsFrame_OpenToCategory not found")
+                print(BLU_PREFIX .. "Type: " .. tostring(type(InterfaceOptionsFrame_OpenToCategory)))
             end
         else
             print(BLU_PREFIX .. "Options not initialized. Please reload UI.")

@@ -344,3 +344,4 @@ Thanks to all the amazing people who have contributed to BLU Classic! 🎉
 </div>
 
 </div>
+

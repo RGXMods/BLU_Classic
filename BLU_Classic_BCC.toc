@@ -1,4 +1,4 @@
-## Interface: 20504, 20503, 20502, 20501, 20444, 20443, 20442, 20441, 20440, 20340, 20338, 20337, 20336, 20335, 20334, 20333, 20332, 20331, 20330
+## Interface: 20504, 20503, 20502, 20501, 20404, 20403, 20402, 20401, 20400, 20340, 20338, 20337, 20336, 20335, 20334, 20333, 20332, 20331, 20330
 ## Version: v1.1.8
 ## Title: |cff05dffaB|r|cffffffffetter|r |cff05dffaL|r|cffffffffevel-|r|cff05dffaU|r|cffffffffp|cff05dffa!|r |cffFFD700(Classic)|r - |cff8080ffv1.1.8|r
 ## Notes: Play sounds from other games!  |n|r  |cff05dffa/blu -|r Open options panel  |n|r   |cff05dffaBy DonnieDice|r

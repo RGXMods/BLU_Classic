@@ -1,4 +1,9 @@
-## Interface: 120207, 120206, 120205, 120200, 120107, 120105, 120100, 120000, 110207, 110206, 110205, 110200, 110107, 110105, 110100, 110000
+## Interface: 110207
+## Interface-Retail: 110207
+## Interface-Classic: 11505
+## Interface-BCC: 20504
+## Interface-Wrath: 30403
+## Interface-Cata: 40400
 ## Version: v1.1.8
 ## Title: |cff05dffaB|r|cffffffffetter|r |cff05dffaL|r|cffffffffevel-|r|cff05dffaU|r|cffffffffp|cff05dffa!|r |cffFFD700(Classic)|r - |cff8080ffv1.1.8|r
 ## Notes: Play sounds from other games!  |n|r  |cff05dffa/blu -|r Open options panel  |n|r   |cff05dffaBy DonnieDice|r

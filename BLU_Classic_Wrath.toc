@@ -1,4 +1,4 @@
-## Interface: 30405, 30404, 30403, 30402, 30401, 30305, 30304, 30303, 30302, 30301, 30300
+## Interface: 30403
 ## Version: v1.1.8
 ## Title: |cff05dffaB|r|cffffffffetter|r |cff05dffaL|r|cffffffffevel-|r|cff05dffaU|r|cffffffffp|cff05dffa!|r |cffFFD700(Classic)|r - |cff8080ffv1.1.8|r
 ## Notes: Play sounds from other games!  |n|r  |cff05dffa/blu -|r Open options panel  |n|r   |cff05dffaBy DonnieDice|r

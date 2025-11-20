@@ -1,6 +1,7 @@
-# v1.1.9
-- Updated - Ace3 libraries.
-- Updated - TOC interface value for retail.
+# v1.2.0
+- Implemented nested dropdown menu for sound selection.
+- Refactored sound data structure.
+- Fixed several bugs related to addon initialization and saved variables.
 
 # v1.1.8
 - Fixed - Slash command `/blu` not opening options panel on Classic clients.

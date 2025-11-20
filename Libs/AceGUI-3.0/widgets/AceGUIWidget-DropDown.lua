@@ -563,8 +563,7 @@ do
 		if not exists then error(("The given item type, %q, does not exist within AceGUI-3.0"):format(tostring(itemType)), 2) end
 
 		local item = AceGUI:Create(itemType)
-		item:SetText(text)
-		item.userdata.obj = self
+		            item:SetText(text and tostring(text) or "")		item.userdata.obj = self
 		item.userdata.value = value
 		item:SetCallback("OnValueChanged", OnItemValueChanged)
 		self.pullout:AddItem(item)

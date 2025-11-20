@@ -86,7 +86,7 @@ function BLU:ProcessEventQueue()
     end
 
     -- Play the selected sound after debug message is printed
-    self:PlaySelectedSound(sound, volumeLevel, event.defaultSound)
+    self:PlaySelectedSound(sound, volumeLevel, defaultSounds[event.defaultSound])
 
     -- Continue processing the queue after a 1-second delay
     C_Timer.After(1, function() self:ProcessEventQueue() end)
@@ -285,15 +285,7 @@ function BLU:RandomSoundID()
     local validSoundIDs = {}
 
     for soundID, soundList in pairs(sounds) do
-        for _, _ in pairs(soundList) do
-            table.insert(validSoundIDs, {table = sounds, id = soundID})
-        end
-    end
-
-    for soundID, soundList in pairs(defaultSounds) do
-        for _, _ in pairs(soundList) do
-            table.insert(validSoundIDs, {table = defaultSounds, id = soundID})
-        end
+        table.insert(validSoundIDs, {table = sounds, id = soundID})
     end
 
     if #validSoundIDs == 0 then
@@ -314,7 +306,7 @@ end
 function BLU:SelectSound(soundID)
     self:PrintDebugMessage("SELECTING_SOUND", "|cff8080ff" .. tostring(soundID) .. "|r")
 
-    if not soundID or soundID == 2 then
+    if not soundID or soundID == "random" then
         local randomSoundID = self:RandomSoundID()
         if randomSoundID then
             self:PrintDebugMessage("USING_RANDOM_SOUND_ID", "|cff8080ff" .. randomSoundID.id .. "|r")
@@ -349,7 +341,12 @@ function BLU:PlaySelectedSound(sound, volumeLevel, defaultTable)
         return
     end
 
-    local soundFile = sound.id == 1 and defaultTable[volumeLevel] or sound.table[sound.id][volumeLevel]
+    local soundFile
+    if sound.id == "default" then
+        soundFile = defaultTable[volumeLevel]
+    elseif sound.table and sound.table[sound.id] then
+        soundFile = sound.table[sound.id][volumeLevel]
+    end
 
     self:PrintDebugMessage("SOUND_FILE_TO_PLAY", "|cffce9178" .. tostring(soundFile) .. "|r")
 

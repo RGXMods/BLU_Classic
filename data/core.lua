@@ -378,11 +378,103 @@ function BLU:AssignGroupColors()
     end
 end
 
+function BLU:MigrateDB()
+    local profile = self.db.profile
+    if not profile.db_version or profile.db_version < 2 then
+        local oldToNew = {
+            [3] = "altered_beast",
+            [4] = "assassins_creed",
+            [5] = "castlevania",
+            [6] = "diablo_2",
+            [7] = "dragon_quest",
+            [8] = "dota_2",
+            [9] = "elden_ring_1",
+            [10] = "elden_ring_2",
+            [11] = "elden_ring_3",
+            [12] = "elden_ring_4",
+            [13] = "elden_ring_5",
+            [14] = "elden_ring_6",
+            [15] = "everquest",
+            [16] = "fallout_new_vegas",
+            [17] = "fallout_3",
+            [18] = "final_fantasy",
+            [19] = "fire_emblem",
+            [20] = "fire_emblem_awakening",
+            [21] = "fly_for_fun",
+            [22] = "fortnite",
+            [23] = "gta_san_andreas",
+            [24] = "kingdom_hearts_3",
+            [25] = "kirby_1",
+            [26] = "kirby_2",
+            [27] = "league_of_legends",
+            [28] = "legend_of_zelda",
+            [29] = "maplestory",
+            [30] = "metal_gear_solid",
+            [31] = "minecraft",
+            [32] = "modern_warfare_2",
+            [33] = "morrowind",
+            [34] = "old_school_runescape",
+            [35] = "palworld",
+            [36] = "path_of_exile",
+            [37] = "pokemon",
+            [38] = "ragnarok_online",
+            [39] = "shining_force_2",
+            [40] = "shining_force_3_1",
+            [41] = "shining_force_3_2",
+            [42] = "shining_force_3_3",
+            [43] = "shining_force_3_4",
+            [44] = "shining_force_3_5",
+            [45] = "shining_force_3_6",
+            [46] = "shining_force_3_7",
+            [47] = "shining_force_3_8",
+            [48] = "shining_force_3_9",
+            [49] = "shining_force_3_10",
+            [50] = "shining_force_3_11",
+            [51] = "skyrim",
+            [52] = "sonic_the_hedgehog",
+            [53] = "spyro_the_dragon",
+            [54] = "super_mario_bros_3",
+            [55] = "warcraft_3_1",
+            [56] = "warcraft_3_2",
+            [57] = "warcraft_3_3",
+            [58] = "witcher_3_1",
+            [59] = "witcher_3_2",
+        }
+
+        local soundSelectKeys = {
+            "AchievementSoundSelect", "BattlePetLevelSoundSelect", "DelveLevelUpSoundSelect",
+            "HonorSoundSelect", "LevelSoundSelect", "PostSoundSelect",
+            "QuestAcceptSoundSelect", "QuestSoundSelect", "RenownSoundSelect", "RepSoundSelect"
+        }
+
+        for _, key in ipairs(soundSelectKeys) do
+            local oldValue = profile[key]
+            if type(oldValue) == "number" then
+                if oldValue == 1 then
+                    profile[key] = "default"
+                elseif oldValue == 2 then
+                    profile[key] = "random"
+                else
+                    local newValue = oldToNew[oldValue]
+                    if newValue then
+                        profile[key] = newValue
+                    else
+                        profile[key] = "default" -- Fallback
+                    end
+                end
+            end
+        end
+        profile.db_version = 2
+    end
+end
+
 --=====================================================================================
 -- Addon Initialization
 --=====================================================================================
 function BLU:OnInitialize()
     self.db = LibStub("AceDB-3.0"):New("BLUDB", self.defaults, true)
+
+    self:MigrateDB()
 
     if C_AddOns and C_AddOns.GetAddOnMetadata then
         self.VersionNumber = C_AddOns.GetAddOnMetadata("BLU_Classic", "Version")
@@ -414,6 +506,7 @@ end
 -- Addon Enable/Disable
 --=====================================================================================
 function BLU:OnEnable()
+    print("OnEnable, self is a", type(self))
     self:RegisterSharedEvents()
     self:InitializeReputationCache()
     self:MuteSounds()

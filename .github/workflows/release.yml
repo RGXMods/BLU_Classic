@@ -118,7 +118,7 @@ jobs:
               "username": "BLU Release",
               "avatar_url": "https://raw.githubusercontent.com/donniedice/BLU/main/images/BLU_Logo.png",
               "embeds": [{
-                "title": "\($emoji) BLU | Better Level-Up! - \($version)\($type_text)",
+                "title": "\($emoji) BLU | Better Level-Up! - (Classic) - \($version)\($type_text)",
                 "description": "**Level up in style!** A new version of BLU has been released!\n\n🎵 **What'\''s New:**\n\($changelog)\n\n**Play sounds from legendary games when you level up, complete quests, or earn achievements!**",
                 "url": "https://github.com/donniedice/BLU/releases/tag/\($tag)",
                 "color": $color,

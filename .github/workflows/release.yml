@@ -42,7 +42,16 @@ jobs:
       - name: Extract Version from TOC
         id: extract_version
         run: |
-          version=$(grep "^## Version:" BLU.toc | sed 's/## Version: //')
+          # Try to get version from TOC file, fallback to tag name
+          if [ -f "BLU.toc" ]; then
+            version=$(grep -E "^## Version:" BLU.toc | awk '{print $3}')
+            if [ -z "$version" ]; then
+              version="${{ github.ref_name }}"
+            fi
+          else
+            version="${{ github.ref_name }}"
+          fi
+          echo "Extracted version: $version"
           echo "version=$version" >> $GITHUB_OUTPUT
 
       - name: Extract Changelog
@@ -75,16 +84,22 @@ jobs:
           RELEASE_TYPE="${{ steps.set_release_type.outputs.release_type }}"
           if [ "$RELEASE_TYPE" = "alpha" ]; then
             EMOJI="🔬"
-            TYPE_TEXT="Alpha"
+            TYPE_TEXT=" Alpha"
             COLOR=16711680
           elif [ "$RELEASE_TYPE" = "beta" ]; then
             EMOJI="🧪"
-            TYPE_TEXT="Beta"
+            TYPE_TEXT=" Beta"
             COLOR=16744448
           else
             EMOJI="🎮"
             TYPE_TEXT=""
             COLOR=5814783
+          fi
+          
+          # Get version - use tag name as fallback
+          VERSION="${{ steps.extract_version.outputs.version }}"
+          if [ -z "$VERSION" ]; then
+            VERSION="${{ github.ref_name }}"
           fi
           
           # Get the changelog (already JSON-escaped from previous step)
@@ -94,7 +109,7 @@ jobs:
           JSON_PAYLOAD=$(jq -n \
             --arg emoji "$EMOJI" \
             --arg type_text "$TYPE_TEXT" \
-            --arg version "${{ steps.extract_version.outputs.version }}" \
+            --arg version "$VERSION" \
             --arg tag "${{ github.ref_name }}" \
             --argjson changelog "$CHANGELOG" \
             --argjson color "$COLOR" \
@@ -103,8 +118,8 @@ jobs:
               "username": "BLU Release",
               "avatar_url": "https://raw.githubusercontent.com/donniedice/BLU/main/images/BLU_Logo.png",
               "embeds": [{
-                "title": "\($emoji) BLU | Better Level-Up! - \($version) \($type_text)",
-                "description": "**Level up in style!** - A new version of BLU has been released!\n\n🎵 **What'\''s New:**\n\($changelog)\n\n**Play sounds from legendary games when you level up, complete quests, or earn achievements!**",
+                "title": "\($emoji) BLU | Better Level-Up! - \($version)\($type_text)",
+                "description": "**Level up in style!** A new version of BLU has been released!\n\n🎵 **What'\''s New:**\n\($changelog)\n\n**Play sounds from legendary games when you level up, complete quests, or earn achievements!**",
                 "url": "https://github.com/donniedice/BLU/releases/tag/\($tag)",
                 "color": $color,
                 "thumbnail": {
@@ -134,6 +149,9 @@ jobs:
                 "timestamp": "'$(date -u +%Y-%m-%dT%H:%M:%S.000Z)'"
               }]
             }')
+          
+          echo "Sending Discord notification..."
+          echo "Version: $VERSION"
           
           # Send to Discord
           curl -H "Content-Type: application/json" \

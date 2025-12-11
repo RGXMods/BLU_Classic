@@ -1,1 +1,2 @@
+- Update release.yml
 - Mirror of BLU

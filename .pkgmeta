@@ -6,7 +6,6 @@ ignore:
   - .github
   - .gitignore
   - README.md
-  - SETUP_NOTES.md
   - .pkgmeta
 
 plain-copy:

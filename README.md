@@ -301,26 +301,6 @@ Thanks to all the amazing people who have contributed to BLU Classic! 🎉
 
 ---
 
-## 🏆 GitHub Achievements
-
-<div align="center">
-
-[![trophy](https://github-profile-trophy.vercel.app/?username=donniedice&theme=radical&no-frame=true&row=1&column=6)](https://github.com/donniedice/BLU_Classic)
-
-</div>
-
----
-
-## 🔥 Streak Stats
-
-<div align="center">
-
-[![GitHub Streak](https://github-readme-streak-stats.herokuapp.com?user=donniedice&theme=radical&hide_border=true)](https://github.com/donniedice/BLU_Classic)
-
-</div>
-
----
-
 <div align="center">
 
 ## 🌟 **Thank you for choosing RGX Mods!** 🌟

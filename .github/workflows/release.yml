@@ -42,7 +42,7 @@ jobs:
       - name: Extract Version from TOC
         id: extract_version
         run: |
-          version=$(grep "^## Version:" BLU_Classic.toc | sed 's/## Version: //')
+          version=$(grep "^## Version:" BLU.toc | sed 's/## Version: //')
           echo "version=$version" >> $GITHUB_OUTPUT
 
       - name: Extract Changelog
@@ -76,12 +76,15 @@ jobs:
           if [ "$RELEASE_TYPE" = "alpha" ]; then
             EMOJI="🔬"
             TYPE_TEXT="Alpha"
+            COLOR=16711680
           elif [ "$RELEASE_TYPE" = "beta" ]; then
             EMOJI="🧪"
             TYPE_TEXT="Beta"
+            COLOR=16744448
           else
             EMOJI="🎮"
             TYPE_TEXT=""
+            COLOR=5814783
           fi
           
           # Get the changelog (already JSON-escaped from previous step)
@@ -94,32 +97,33 @@ jobs:
             --arg version "${{ steps.extract_version.outputs.version }}" \
             --arg tag "${{ github.ref_name }}" \
             --argjson changelog "$CHANGELOG" \
+            --argjson color "$COLOR" \
             '{
               "content": "",
-              "username": "BLU_Classic Release",
-              "avatar_url": "https://raw.githubusercontent.com/donniedice/BLU_Classic/main/images/BLU_Logo.png",
+              "username": "BLU Release",
+              "avatar_url": "https://raw.githubusercontent.com/donniedice/BLU/main/images/BLU_Logo.png",
               "embeds": [{
-                "title": "\($emoji) RGX | Better Level-Up! - Classic - \($version) \($type_text)",
-                "description": "**Level up in style!** - A new version of BLU Classic has been released!\n\n🎵 **What'\''s New:**\n\($changelog)\n\n**Play sounds from legendary games when you level up, complete quests, or earn achievements!**",
-                "url": "https://github.com/donniedice/BLU_Classic/releases/tag/\($tag)",
-                "color": 5814783,
+                "title": "\($emoji) BLU | Better Level-Up! - \($version) \($type_text)",
+                "description": "**Level up in style!** - A new version of BLU has been released!\n\n🎵 **What'\''s New:**\n\($changelog)\n\n**Play sounds from legendary games when you level up, complete quests, or earn achievements!**",
+                "url": "https://github.com/donniedice/BLU/releases/tag/\($tag)",
+                "color": $color,
                 "thumbnail": {
-                  "url": "https://raw.githubusercontent.com/donniedice/BLU_Classic/main/images/BLU_Logo.png"
+                  "url": "https://raw.githubusercontent.com/donniedice/BLU/main/images/BLU_Logo.png"
                 },
                 "fields": [
                   {
                     "name": "📥 Downloads",
-                    "value": "[CurseForge](https://www.curseforge.com/wow/addons/blu-classic)\n[WoWInterface](https://www.wowinterface.com/downloads/info26945)\n[Wago.io](https://addons.wago.io/addons/blu-classic)\n[GitHub](https://github.com/donniedice/BLU_Classic)",
+                    "value": "[CurseForge](https://www.curseforge.com/wow/addons/blu)\n[WoWInterface](https://www.wowinterface.com/downloads/info26465)\n[Wago.io](https://addons.wago.io/addons/vEGPgWK1)\n[GitHub](https://github.com/donniedice/BLU)",
                     "inline": true
                   },
                   {
                     "name": "🎮 Compatibility",
-                    "value": "✅ The War Within\n✅ Classic Era\n✅ Cataclysm\n✅ MoP\n✅ Wrath\n✅ TBC",
+                    "value": "✅ The War Within\n✅ Classic Era\n✅ Cataclysm\n✅ MoP Remix",
                     "inline": true
                   },
                   {
                     "name": "💬 Support",
-                    "value": "[Join Discord](https://discord.gg/N7kdKAHVVF)\n[Report Issues](https://github.com/donniedice/BLU_Classic/issues)",
+                    "value": "[Join Discord](https://discord.gg/N7kdKAHVVF)\n[Report Issues](https://github.com/donniedice/BLU/issues)",
                     "inline": true
                   }
                 ],

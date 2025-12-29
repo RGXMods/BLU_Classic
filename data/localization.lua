@@ -1,11 +1,11 @@
 -- =====================================================================================
--- BLU | Better Level-Up! - localization.lua
+-- BLU_Classic | Better Level-Up! - localization.lua
 -- =====================================================================================
 -- Localization in Debug Messages and Non-Debug Messages
 
 -- 1. Debug Messages:
--- PrintDebugMessage automatically looks up keys from BLU.L, 
--- so you don't need to prefix with BLU.L.
+-- PrintDebugMessage automatically looks up keys from BLU_L, 
+-- so you don't need to prefix with BLU_L.
 -- Example:
 -- self:PrintDebugMessage("ERROR_SOUND_NOT_FOUND", tostring(event.soundSelectKey))
 
@@ -13,12 +13,9 @@
 -- Direct print() statements require explicit BLU.L references 
 -- since there's no automatic lookup.
 -- Example:
--- print(BLU_PREFIX .. BLU.L["UNKNOWN_SLASH_COMMAND"])
+-- print(BLU_PREFIX .. BLU_L["UNKNOWN_SLASH_COMMAND"])
 
 -- Debug handling is automatic, non-debug messages need explicit localization references.
-
-
-
 
 local colors = {
     prefix = "|cff05dffa",      -- BLU Prefix Color
@@ -33,7 +30,7 @@ local colors = {
     warning = "|cffffcc00"      -- Warning Color
 }
 
-BLU_PREFIX = string.format("|Tinterface/addons/BLU/images/icon:16:16|t - [%sBLU|r] ", colors.prefix)
+BLU_Classic_PREFIX = string.format("|Tinterface/addons/BLU_Classic/images/icon:16:16|t - [%sBLU_Classic|r] ", colors.prefix)
 DEBUG_PREFIX = string.format("[%sDEBUG|r] ", colors.debug)
 
 -- =====================================================================================
@@ -46,8 +43,8 @@ BLU_L = {
     optionColor2 = colors.white,
 
     -- Option Labels and Descriptions
-    OPTIONS_PANEL_TITLE = string.format("|Tinterface/addons/BLU/images/icon:16:16|t %sB|r%setter %sL|r%sevel-%sU|r%sp%s!|r", colors.prefix, colors.white, colors.prefix, colors.white, colors.prefix, colors.white, colors.prefix),
-    OPTIONS_LIST_MENU_TITLE = string.format("|Tinterface/addons/BLU/images/icon:16:16|t %sB|r%setter %sL|r%sevel%sU|r%sp%s!|r",
+    OPTIONS_PANEL_TITLE = string.format("|Tinterface/addons/BLU_Classic/images/icon:16:16|t %sB|r%setter %sL|r%sevel-%sU|r%sp%s!|r Classic", colors.prefix, colors.white, colors.prefix, colors.white, colors.prefix, colors.white, colors.prefix),
+    OPTIONS_LIST_MENU_TITLE = string.format("|Tinterface/addons/BLU_Classic/images/icon:16:16|t %sB|r%setter %sL|r%sevel%sU|r%sp%s!|r Classic",
         colors.prefix, colors.white, colors.prefix, colors.white, colors.prefix, colors.white, colors.prefix),
     -- Profiles
     PROFILES_TITLE = "Profiles",
@@ -60,8 +57,8 @@ BLU_L = {
     ERROR_UNKNOWN_GAME_VERSION = string.format("%sUnknown game version detected.|r", colors.error),
 
     -- BLU:OnInitialize()
-    INITIALIZING_FOR_VERSION = string.format("Initializing BLU for game version: %s%%s|r.", colors.info),
-    WELCOME_MESSAGE = string.format("Welcome! Use %s/blu|r to open the options panel or %s/blu help|r for more commands.", colors.prefix, colors.prefix),
+    INITIALIZING_FOR_VERSION = string.format("Initializing BLU_Classic for game version: %s%%s|r.", colors.info),
+    WELCOME_MESSAGE = string.format("Welcome! Use %s/bluc|r to open the options panel or %s/bluc help|r for more commands.", colors.prefix, colors.prefix),
     VERSION = string.format("%sVersion:|r", "|cffffff00"),
 
     -- BLU:RegisterSharedEvents()
@@ -93,9 +90,9 @@ BLU_L = {
 
     -- BLU:DisplayBLUHelp()
     HELP_COMMAND = string.format("%sAvailable commands:", "|cffffff00"),
-    HELP_DEBUG = " " .. colors.prefix .. "/blu debug|r - Toggle debug mode.",
-    HELP_WELCOME = " " .. colors.prefix .. "/blu welcome|r - Toggles the welcome message on/off.",
-    HELP_PANEL = " " .. colors.prefix .. "/blu|r - Open the options panel.",
+    HELP_DEBUG = " " .. colors.prefix .. "/bluc debug|r - Toggle debug mode.",
+    HELP_WELCOME = " " .. colors.prefix .. "/bluc welcome|r - Toggles the welcome message on/off.",
+    HELP_PANEL = " " .. colors.prefix .. "/bluc|r - Open the options panel.",
 
     -- BLU:ToggleDebugMode()
     DEBUG_MODE_ENABLED = string.format("%sDebug Mode Enabled|r", colors.success),
@@ -109,8 +106,8 @@ BLU_L = {
     CURRENT_DB_SETTING = string.format("Current DB setting: %%s.|r", colors.info),
 
     -- BLU:RandomSoundID()
-    SELECTING_RANDOM_SOUND = "Selecting Random SoundID",
-    NO_VALID_SOUND_IDS = string.format("No valid sound IDs found.", colors.error),
+    SELECTING_RANDOM_SOUND_ID = "Selecting Random SoundID",
+    NO_VALID_SOUND_IDS = string.format("%sNo valid sound IDs found.|r", colors.error),
     RANDOM_SOUND_ID_SELECTED = "Random sound ID selected: %s.",
 
     -- BLU:SelectSound()

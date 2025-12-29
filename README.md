@@ -88,16 +88,24 @@
 
 <div align="center">
 
-| Feature | Description |
-|---------|-------------|
-| 🎵 **50+ Game Sounds** | Choose from iconic sounds from games like Final Fantasy, Zelda, Mario, and more |
-| 🎯 **Event Coverage** | Level-up, achievements, quests, and reputation sounds |
-| 🔊 **Volume Control** | Independent volume adjustment for each sound type |
-| ⚙️ **Smart Management** | Automatically mutes default WoW sounds when replacing |
-| 💾 **Persistent Settings** | Your preferences are saved between sessions |
-| 🎨 **Professional UI** | Clean options panel with intuitive controls |
-| 🛡️ **Error-Free** | Comprehensive error handling and validation |
-| 🔧 **Debug Mode** | Built-in debugging for troubleshooting |
+| Feature | Description | Availability |
+|---------|-------------|--------------|
+| 🎵 **50+ Game Sounds** | Choose from iconic sounds from games like Final Fantasy, Zelda, Mario, and more | All Versions |
+| 🎯 **Event Coverage** | Level-up, achievements, quests, and reputation sounds | All Versions |
+| 🐾 **Battle Pets** | Custom sounds when leveling battle pets | Retail & Mists |
+| ⚔️ **Delve Companion** | Sounds for Delve Companion level-ups | Retail Only |
+| 🏆 **Honor Ranks** | Audio feedback for honor rank gains | Retail Only |
+| ⭐ **Level-Up** | Replace default level-up sounds | All Versions |
+| 👑 **Renown Ranks** | Sounds for renown reputation gains | Retail Only |
+| 📈 **Reputation** | Custom sounds for reputation increases | All Versions |
+| 📜 **Quests** | Unique sounds for quest accept/turn-in | All Versions |
+| 🛒 **Trading Post** | Sounds for Trading Post activities | Retail Only |
+| 🔊 **Volume Control** | Independent volume adjustment for each sound type | All Versions |
+| ⚙️ **Smart Management** | Automatically mutes default WoW sounds when replacing | All Versions |
+| 💾 **Persistent Settings** | Your preferences are saved between sessions | All Versions |
+| 🎨 **Professional UI** | Clean options panel with intuitive controls | All Versions |
+| 🛡️ **Error-Free** | Comprehensive error handling and validation | All Versions |
+| 🔧 **Debug Mode** | Built-in debugging for troubleshooting | All Versions |
 
 </div>
 
@@ -105,7 +113,7 @@
 
 1. **Install** BLU Classic from your preferred platform
 2. **Launch** World of Warcraft (any version!)
-3. **Type** `/blu` to open the options panel
+3. **Type** `/bluc` to open the options panel
 4. **Choose** your favorite sounds for each event
 5. **Enjoy** your personalized WoW experience!
 
@@ -115,10 +123,10 @@
 
 | Command | Description |
 |---------|-------------|
-| `/blu` | Open the options panel |
-| `/blu help` | Display help information |
-| `/blu debug` | Toggle debug mode on/off |
-| `/blu welcome` | Toggle welcome message on/off |
+| `/bluc` | Open the options panel |
+| `/bluc help` | Display help information |
+| `/bluc debug` | Toggle debug mode on/off |
+| `/bluc welcome` | Toggle welcome message on/off |
 
 </div>
 
@@ -162,6 +170,11 @@
 - **Quest Accept**: Custom sound when accepting quests
 - **Quest Complete**: Rewarding sounds for quest turn-ins
 - **Reputation Gains**: Audio feedback for reputation increases
+- **Battle Pet Level-Up**: Special sounds for pet leveling (Retail & Mists only)
+- **Trading Post**: Completion sounds for activities (Retail only)
+- **Honor Ranks**: Recognition for PvP progression (Retail only)
+- **Renown**: Sounds for renown reputation gains (Retail only)
+- **Delve Companion**: Level-up sounds for your companion (Retail only)
 
 ### Volume Options:
 Each sound type has three volume levels:
@@ -185,6 +198,7 @@ Each sound type has three volume levels:
 | Classic Era / Hardcore / SoD | 11507 | ✅ Fully Supported | `BLU_Classic_Vanilla.toc` |
 
 **Note**: Classic Era, Hardcore, and Season of Discovery all use the same interface version.
+**Note**: Some features are Retail-only due to game limitations.
 
 </div>
 
@@ -279,7 +293,7 @@ Contributions are welcome! Feel free to:
 | **Contributors** | ![GitHub contributors](https://img.shields.io/github/contributors/donniedice/BLU_Classic?style=flat-square) |
 | **Total Game Sounds** | 50+ unique games |
 | **Sound Files** | 198 audio files |
-| **Supported Events** | 5 event types |
+| **Supported Events** | 10 event types |
 | **Languages** | ![GitHub top language](https://img.shields.io/github/languages/top/donniedice/BLU_Classic?style=flat-square) |
 | **Watchers** | ![GitHub watchers](https://img.shields.io/github/watchers/donniedice/BLU_Classic?style=flat-square) |
 
@@ -322,6 +336,3 @@ Thanks to all the amazing people who have contributed to BLU Classic! 🎉
 </div>
 
 </div>
-
-</div>
-

@@ -1,26 +1,26 @@
+BLU_L = BLU_L or {}
 --=====================================================================================
--- BLU | Better Level-Up! - utils.lua
--- Utility functions for event handling, sound playback, and slash commands
+-- BLU_Classic | Better Level-Up! - utils.lua
 --=====================================================================================
 
--- Event queue for processing sounds
-BLU_EventQueue = {}
+-- Global table to hold the event queue
+BLU_Classic_EventQueue = {}
 
 --=====================================================================================
 -- Database Get/Set Functions
 --=====================================================================================
-function BLU:GetValue(info)
+function BLU_Classic:GetValue(info)
     return self.db.profile[info[#info]]
 end
 
-function BLU:SetValue(info, value)
+function BLU_Classic:SetValue(info, value)
     self.db.profile[info[#info]] = value
 end
 
 --=====================================================================================
 -- Event Handling
 --=====================================================================================
-function BLU:HandleEvent(eventName, soundSelectKey, volumeKey, defaultSound, debugMessage)
+function BLU_Classic:HandleEvent(eventName, soundSelectKey, volumeKey, defaultSound, debugMessage)
     if self.functionsHalted then 
         self:PrintDebugMessage("FUNCTIONS_HALTED")
         return 
@@ -36,7 +36,7 @@ function BLU:HandleEvent(eventName, soundSelectKey, volumeKey, defaultSound, deb
     end
     
     -- Queue the event
-    table.insert(BLU_EventQueue, {
+    table.insert(BLU_Classic_EventQueue, {
         eventName = eventName,
         soundSelectKey = soundSelectKey,
         volumeKey = volumeKey,
@@ -50,13 +50,16 @@ function BLU:HandleEvent(eventName, soundSelectKey, volumeKey, defaultSound, deb
     end
 end
 
-function BLU:ProcessEventQueue()
-    if #BLU_EventQueue == 0 then
+--=====================================================================================
+-- Process Event Queue
+--=====================================================================================
+function BLU_Classic:ProcessEventQueue()
+    if #BLU_Classic_EventQueue == 0 then
         self.isProcessingQueue = false
         return
     end
 
-    local event = table.remove(BLU_EventQueue, 1)
+    local event = table.remove(BLU_Classic_EventQueue, 1)
 
     if event.debugMessage then
         self:PrintDebugMessage(event.debugMessage)
@@ -81,11 +84,16 @@ end
 --=====================================================================================
 -- Player Entering World Handler
 --=====================================================================================
-function BLU:HandlePlayerEnteringWorld()
+function BLU_Classic:HandlePlayerEnteringWorld()
     self:HaltOperations()
 end
 
-function BLU:HaltOperations()
+--=====================================================================================
+-- Halt Operations
+--=====================================================================================
+function BLU_Classic:HaltOperations()
+
+    -- Ensure functions are halted
     if not self.functionsHalted then
         self.functionsHalted = true
     end
@@ -104,7 +112,12 @@ function BLU:HaltOperations()
     end, countdownTime)
 end
 
-function BLU:ResumeOperations()
+--=====================================================================================
+-- Resume Operations
+--=====================================================================================
+function BLU_Classic:ResumeOperations()
+
+    -- Lift the function halt
     if self.functionsHalted then
         self.functionsHalted = false
     end
@@ -120,8 +133,8 @@ end
 --=====================================================================================
 -- Slash Command Handler
 --=====================================================================================
-function BLU:HandleSlashCommands(input)
-    input = (input or ""):trim():lower()
+function BLU_Classic:HandleSlashCommands(input)
+    input = input:trim():lower()
 
     if input == "" then
         self:OpenOptionsPanel()
@@ -130,23 +143,23 @@ function BLU:HandleSlashCommands(input)
     elseif input == "welcome" then
         self:ToggleWelcomeMessage()
     elseif input == "help" then
-        self:DisplayHelp()
+        self:DisplayBLUHelp() -- Use DisplayBLUHelp from be75efd
     else
-        print(BLU_PREFIX .. (BLU_L["UNKNOWN_SLASH_COMMAND"] or "Unknown command. Type /blu help for available commands."))
+        print(BLU_Classic_PREFIX .. BLU_L["UNKNOWN_SLASH_COMMAND"])
     end
 end
 
 --=====================================================================================
--- Options Panel (Multi-version compatible)
+-- Open Options Panel (with Classic Era compatibility)
 --=====================================================================================
-function BLU:OpenOptionsPanel()
-    -- Ensure options are initialized
+function BLU_Classic:OpenOptionsPanel()
+    -- Make sure options are initialized first
     if not self.optionsFrame then
         self:InitializeOptions()
     end
     
     if not self.optionsFrame then
-        print(BLU_PREFIX .. "Options not initialized. Please reload UI with /reload")
+        print(BLU_Classic_PREFIX .. "Options not initialized. Please reload UI.")
         return
     end
     
@@ -154,20 +167,22 @@ function BLU:OpenOptionsPanel()
     
     -- Try modern API first (Retail 10.0+)
     if Settings and Settings.OpenToCategory then
-        local categoryName = self.optionsFrame.name or BLU_L["OPTIONS_PANEL_TITLE"] or "BLU"
+        -- In Retail, optionsFrame.name contains the category name
+        local categoryName = self.optionsFrame.name or BLU_L["OPTIONS_PANEL_TITLE"]
         Settings.OpenToCategory(categoryName)
         opened = true
     end
     
     -- Try legacy API (Classic Era, Classic, older Retail)
     if not opened and InterfaceOptionsFrame_OpenToCategory then
-        -- Classic needs the frame itself, called twice (Blizzard bug workaround)
+        -- Classic needs the frame itself, not just the name
+        -- Call twice to ensure it opens to the correct category (known Blizzard bug)
         InterfaceOptionsFrame_OpenToCategory(self.optionsFrame)
         InterfaceOptionsFrame_OpenToCategory(self.optionsFrame)
         opened = true
     end
     
-    -- Fallback: Show Interface Options frame directly
+    -- Fallback: Try to show the Interface Options frame directly
     if not opened then
         if InterfaceOptionsFrame then
             InterfaceOptionsFrame:Show()
@@ -178,69 +193,79 @@ function BLU:OpenOptionsPanel()
         end
     end
     
-    if not opened then
-        print(BLU_PREFIX .. "Unable to open options. Try /interface instead.")
+    if opened then
+        if self.debugMode then
+            self:PrintDebugMessage("OPTIONS_PANEL_OPENED")
+        end
+    else
+        print(BLU_Classic_PREFIX .. "Unable to open options panel. Try /interface instead.")
     end
 end
 
 --=====================================================================================
--- Help Display
+-- Display BLU Help
 --=====================================================================================
-function BLU:DisplayHelp()
-    print(BLU_PREFIX .. "|cff8080ffBLU Commands:|r")
-    print(BLU_PREFIX .. "  /blu - Open options panel")
-    print(BLU_PREFIX .. "  /blu debug - Toggle debug mode")
-    print(BLU_PREFIX .. "  /blu welcome - Toggle welcome message")
-    print(BLU_PREFIX .. "  /blu help - Show this help")
+function BLU_Classic:DisplayBLUHelp()
+    local helpCommand = BLU_L["HELP_COMMAND"] or "/bluc help - Displays help information."
+    local helpDebug = BLU_L["HELP_DEBUG"] or "/bluc debug - Toggles debug mode."
+    local helpWelcome = BLU_L["HELP_WELCOME"] or "/bluc welcome - Toggles welcome messages."
+    local helpPanel = BLU_L["HELP_PANEL"] or "/bluc - Opens the options panel."
+
+    print(BLU_Classic_PREFIX .. helpCommand)
+    print(BLU_Classic_PREFIX .. helpDebug)
+    print(BLU_Classic_PREFIX .. helpWelcome)
+    print(BLU_Classic_PREFIX .. helpPanel)
 end
 
 --=====================================================================================
 -- Toggle Functions
 --=====================================================================================
-function BLU:ToggleDebugMode()
+function BLU_Classic:ToggleDebugMode()
     self.debugMode = not self.debugMode
     self.db.profile.debugMode = self.debugMode
 
-    local status = self.debugMode 
-        and (BLU_L["DEBUG_MODE_ENABLED"] or "Debug mode |cff00ff00enabled|r") 
-        or (BLU_L["DEBUG_MODE_DISABLED"] or "Debug mode |cffff0000disabled|r")
-    print(BLU_PREFIX .. status)
+    -- Use the localized strings directly, assuming they are defined
+    local statusMessage = self.debugMode and BLU_L["DEBUG_MODE_ENABLED"] or BLU_L["DEBUG_MODE_DISABLED"]
+
+    print(BLU_Classic_PREFIX .. statusMessage)
+
+    -- Only print the debug message if debug mode is enabled
+    if self.debugMode then
+        self:PrintDebugMessage("DEBUG_MODE_TOGGLED", tostring(self.debugMode))
+    end
 end
 
-function BLU:ToggleWelcomeMessage()
+function BLU_Classic:ToggleWelcomeMessage()
     self.showWelcomeMessage = not self.showWelcomeMessage
     self.db.profile.showWelcomeMessage = self.showWelcomeMessage
 
-    local status = self.showWelcomeMessage 
-        and (BLU_L["WELCOME_MSG_ENABLED"] or "Welcome message |cff00ff00enabled|r") 
-        or (BLU_L["WELCOME_MSG_DISABLED"] or "Welcome message |cffff0000disabled|r")
-    print(BLU_PREFIX .. status)
+    local status = self.showWelcomeMessage and BLU_Classic_PREFIX .. BLU_L["WELCOME_MSG_ENABLED"] or BLU_Classic_PREFIX .. BLU_L["WELCOME_MSG_DISABLED"]
+    print(status)
+    self:PrintDebugMessage("SHOW_WELCOME_MESSAGE_TOGGLED", tostring(self.showWelcomeMessage))
+    self:PrintDebugMessage("CURRENT_DB_SETTING", tostring(self.db.profile.showWelcomeMessage))
 end
 
 --=====================================================================================
 -- Debug Messaging
 --=====================================================================================
-function BLU:DebugMessage(message)
+
+function BLU_Classic:DebugMessage(message)
     if self.debugMode then
-        print(BLU_PREFIX .. "|cffff8000[Debug]|r " .. message)
+        print(BLU_Classic_PREFIX .. DEBUG_PREFIX .. message)
     end
 end
 
-function BLU:PrintDebugMessage(key, ...)
-    if not self.debugMode then return end
-    
-    if BLU_L and BLU_L[key] then
+function BLU_Classic:PrintDebugMessage(key, ...)
+    if self.debugMode and BLU_L[key] then -- Changed BLU_Classic_L to BLU_L for consistency
         self:DebugMessage(BLU_L[key]:format(...))
-    else
-        -- Fallback: print key directly if no localization found
-        self:DebugMessage(tostring(key))
     end
 end
 
 --=====================================================================================
 -- Sound Selection
 --=====================================================================================
-function BLU:RandomSoundID()
+
+function BLU_Classic:RandomSoundID()
     self:PrintDebugMessage("SELECTING_RANDOM_SOUND_ID")
 
     local validSoundIDs = {}
@@ -268,8 +293,10 @@ function BLU:RandomSoundID()
     self:PrintDebugMessage("RANDOM_SOUND_ID_SELECTED", "|cff8080ff" .. selected.id .. "|r")
     return selected
 end
-
-function BLU:SelectSound(soundID)
+--=====================================================================================
+-- Select Sound
+--=====================================================================================
+function BLU_Classic:SelectSound(soundID)
     self:PrintDebugMessage("SELECTING_SOUND", "|cff8080ff" .. tostring(soundID) .. "|r")
 
     -- Random sound (value 2)
@@ -288,10 +315,9 @@ end
 --=====================================================================================
 -- Test Sound Function
 --=====================================================================================
-function BLU:TestSound(soundID, volumeKey, defaultSound, debugMessage)
-    if debugMessage then
-        self:PrintDebugMessage(debugMessage)
-    end
+
+function BLU_Classic:TestSound(soundID, volumeKey, defaultSound, debugMessage)
+    self:PrintDebugMessage(debugMessage)
 
     local sound = self:SelectSound(self.db.profile[soundID])
     if not sound then
@@ -310,8 +336,8 @@ end
 --=====================================================================================
 -- Sound Playback
 --=====================================================================================
-function BLU:PlaySelectedSound(sound, volumeLevel, defaultTable)
-    self:PrintDebugMessage("PLAYING_SOUND", tostring(sound.id), tostring(volumeLevel))
+function BLU_Classic:PlaySelectedSound(sound, volumeLevel, defaultTable)
+    self:PrintDebugMessage("PLAYING_SOUND", sound.id, volumeLevel)
 
     if volumeLevel == 0 then
         self:PrintDebugMessage("VOLUME_LEVEL_ZERO")

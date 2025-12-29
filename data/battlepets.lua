@@ -1,5 +1,5 @@
 -- =====================================================================================
--- BLU | Better Level-Up! - battlepets.lua
+-- BLU_Classic | Better Level-Up! - battlepets.lua
 -- =====================================================================================
 -- Optimized battle pet level-up detection
 -- 
@@ -12,14 +12,14 @@
 -- 6. Comprehensive item/spell ID list for all training stones
 -- 7. Properly ignores login/reload events
 
--- Wait for BLU to be available (it's created in core.lua which loads before this)
-local BLU = BLU
-if not BLU then
+-- Wait for BLU_Classic to be available (it's created in core.lua which loads before this)
+local BLU_Classic = BLU_Classic
+if not BLU_Classic then
     local waitFrame = CreateFrame("Frame")
     waitFrame:RegisterEvent("ADDON_LOADED")
     waitFrame:SetScript("OnEvent", function(self, event, addonName)
-        if addonName == "BLU" then
-            BLU = _G.BLU
+        if addonName == "BLU_Classic" then
+            BLU_Classic = _G.BLU_Classic
             self:UnregisterAllEvents()
         end
     end)
@@ -216,7 +216,7 @@ end
 -- Check if item ID is a pet battle item
 local function IsPetBattleItem(itemID)
     return PET_BATTLE_ITEMS[itemID] or false
-end
+}
 
 -- Check if spell ID is a pet battle spell
 local function IsPetBattleSpell(spellID)
@@ -229,8 +229,8 @@ local function UpdateSummonedPetTracking()
     summonedPetGUID = guid
     summonedPetLevel = level
     
-    if BLU.debugMode and guid then
-        BLU:PrintDebugMessage("Tracking summoned pet: Level " .. tostring(level))
+    if BLU_Classic.debugMode and guid then
+        BLU_Classic:PrintDebugMessage("Tracking summoned pet: Level " .. tostring(level))
     end
 end
 
@@ -241,7 +241,7 @@ local function CheckForLevelUp()
         return
     end
     
-    if BLU.functionsHalted then
+    if BLU_Classic.functionsHalted then
         pendingCheck = false
         return
     end
@@ -256,10 +256,10 @@ local function CheckForLevelUp()
     -- Only trigger if we have a previous level AND it increased
     -- This prevents false positives on initial tracking
     if guid == summonedPetGUID and summonedPetLevel and summonedPetLevel > 0 and newLevel > summonedPetLevel then
-        BLU:PrintDebugMessage("BATTLE_PET_LEVEL_UP_TRIGGERED")
+        BLU_Classic:PrintDebugMessage("BATTLE_PET_LEVEL_UP_TRIGGERED")
         
         if CanPlaySound() then
-            BLU:HandleEvent("PET_BATTLE_LEVEL_CHANGED", "BattlePetLevelSoundSelect", "BattlePetLevelVolume", defaultSounds[2], "BATTLE_PET_LEVEL_UP_TRIGGERED")
+            BLU_Classic:HandleEvent("PET_BATTLE_LEVEL_CHANGED", "BattlePetLevelSoundSelect", "BattlePetLevelVolume", defaultSounds[2], "BATTLE_PET_LEVEL_UP_TRIGGERED")
         end
     end
     
@@ -275,11 +275,11 @@ end
 local eventFrame = CreateFrame("Frame")
 
 eventFrame:SetScript("OnEvent", function(self, event, ...)
-    if not BLU then return end
+    if not BLU_Classic then return end
     
     if event == "PLAYER_LOGIN" then
         -- Initialize tracking after login
-        local version = BLU:GetGameVersion()
+        local version = BLU_Classic:GetGameVersion()
         if version == "retail" or version == "mists" then
             initialized = true
             
@@ -287,7 +287,7 @@ eventFrame:SetScript("OnEvent", function(self, event, ...)
             C_Timer.After(INIT_DELAY, function()
                 UpdateSummonedPetTracking()
                 initialLoadComplete = true
-                BLU:PrintDebugMessage("INIT_LOAD_COMPLETE")
+                BLU_Classic:PrintDebugMessage("INIT_LOAD_COMPLETE")
             end)
         end
         return
@@ -295,7 +295,7 @@ eventFrame:SetScript("OnEvent", function(self, event, ...)
     
     -- Ignore all events until initial load is complete
     if not initialLoadComplete then return end
-    if BLU.functionsHalted then return end
+    if BLU_Classic.functionsHalted then return end
     
     if event == "UNIT_SPELLCAST_SUCCEEDED" then
         local unitTarget, castGUID, spellID = ...
@@ -303,7 +303,7 @@ eventFrame:SetScript("OnEvent", function(self, event, ...)
         if unitTarget ~= "player" then return end
         if not IsPetBattleSpell(spellID) then return end
         
-        BLU:PrintDebugMessage("Pet training spell detected: " .. tostring(spellID))
+        BLU_Classic:PrintDebugMessage("Pet training spell detected: " .. tostring(spellID))
         
         -- Schedule a check after the spell effect applies
         pendingCheck = true
@@ -317,10 +317,10 @@ eventFrame:SetScript("OnEvent", function(self, event, ...)
         -- Direct level-up event (from actual pet battles)
         local petID, newLevel = ...
         
-        BLU:PrintDebugMessage("BATTLE_PET_LEVEL_UP_TRIGGERED")
+        BLU_Classic:PrintDebugMessage("BATTLE_PET_LEVEL_UP_TRIGGERED")
         
         if CanPlaySound() then
-            BLU:HandleEvent("PET_BATTLE_LEVEL_CHANGED", "BattlePetLevelSoundSelect", "BattlePetLevelVolume", defaultSounds[2], "BATTLE_PET_LEVEL_UP_TRIGGERED")
+            BLU_Classic:HandleEvent("PET_BATTLE_LEVEL_CHANGED", "BattlePetLevelSoundSelect", "BattlePetLevelVolume", defaultSounds[2], "BATTLE_PET_LEVEL_UP_TRIGGERED")
         end
         
         -- Update tracking if this was our summoned pet
@@ -358,7 +358,7 @@ eventFrame:RegisterEvent("PET_JOURNAL_LIST_UPDATE")
 -- Public Functions (can be called from core.lua if needed)
 -- =====================================================================================
 
-function BLU:InitializePetLevelCache()
+function BLU_Classic:InitializePetLevelCache()
     local version = self:GetGameVersion()
     if version ~= "retail" and version ~= "mists" then
         return
@@ -372,7 +372,7 @@ function BLU:InitializePetLevelCache()
     end)
 end
 
-function BLU:CleanupPetTracking()
+function BLU_Classic:CleanupPetTracking()
     summonedPetGUID = nil
     summonedPetLevel = nil
     pendingCheck = false
@@ -381,16 +381,16 @@ function BLU:CleanupPetTracking()
 end
 
 -- Expose check functions for external use
-function BLU:IsPetBattleItem(itemID)
+function BLU_Classic:IsPetBattleItem(itemID)
     return IsPetBattleItem(itemID)
 end
 
-function BLU:IsPetBattleSpell(spellID)
+function BLU_Classic:IsPetBattleSpell(spellID)
     return IsPetBattleSpell(spellID)
 end
 
 -- =====================================================================================
 -- Expose item/spell tables for debugging or external access
 -- =====================================================================================
-BLU.PET_BATTLE_ITEMS = PET_BATTLE_ITEMS
-BLU.PET_BATTLE_SPELLS = PET_BATTLE_SPELLS
+BLU_Classic.PET_BATTLE_ITEMS = PET_BATTLE_ITEMS
+BLU_Classic.PET_BATTLE_SPELLS = PET_BATTLE_SPELLS

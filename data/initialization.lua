@@ -1,17 +1,17 @@
 --=====================================================================================
--- BLU | Better Level-Up! - initialization.lua
+-- BLU_Classic | Better Level-Up! - initialization.lua
 --=====================================================================================
-BLU = LibStub("AceAddon-3.0"):NewAddon("BLU", "AceEvent-3.0", "AceConsole-3.0")
+BLU_Classic = LibStub("AceAddon-3.0"):NewAddon("BLU_Classic", "AceEvent-3.0", "AceConsole-3.0")
 
 --=====================================================================================
 -- Version Number (API differs between Retail and Classic)
 --=====================================================================================
 if C_AddOns and C_AddOns.GetAddOnMetadata then
     -- Retail 10.0+ API
-    BLU.VersionNumber = C_AddOns.GetAddOnMetadata("BLU", "Version")
+    BLU_Classic.VersionNumber = C_AddOns.GetAddOnMetadata("BLU_Classic", "Version")
 else
     -- Classic Era / Classic / older API
-    BLU.VersionNumber = GetAddOnMetadata("BLU", "Version")
+    BLU_Classic.VersionNumber = GetAddOnMetadata("BLU_Classic", "Version")
 end
 
 --=====================================================================================
@@ -20,18 +20,18 @@ end
 local AC = LibStub("AceConfig-3.0")
 local ACD = LibStub("AceConfigDialog-3.0")
 
-BLU.functionsHalted = false
-BLU.debugMode = false
-BLU.showWelcomeMessage = true
-BLU.sortedOptions = {}
-BLU.optionsRegistered = false
+BLU_Classic.functionsHalted = false
+BLU_Classic.debugMode = false
+BLU_Classic.showWelcomeMessage = true
+BLU_Classic.sortedOptions = {}
+BLU_Classic.optionsRegistered = false
 
 BLU_L = BLU_L or {}
 
 --=====================================================================================
 -- Game Version Handling
 --=====================================================================================
-function BLU:GetGameVersion()
+function BLU_Classic:GetGameVersion()
     local _, _, _, interfaceVersion = GetBuildInfo()
 
     -- Classic Era: 11500-11599 (1.15.x)
@@ -62,7 +62,7 @@ end
 --=====================================================================================
 -- Event Registration
 --=====================================================================================
-function BLU:RegisterSharedEvents()
+function BLU_Classic:RegisterSharedEvents()
     local version = self:GetGameVersion()
 
     -- Base events for all versions
@@ -99,7 +99,7 @@ function BLU:RegisterSharedEvents()
         else
             -- Debug: handler function doesn't exist
             if self.debugMode then
-                print("|cffff0000BLU Debug:|r Handler missing for " .. event .. ": " .. handler)
+                print("|cffff0000BLU_Classic Debug:|r Handler missing for " .. event .. ": " .. handler)
             end
         end
     end
@@ -109,9 +109,9 @@ end
 --=====================================================================================
 -- Initialization, Mute Sounds, and Welcome Message
 --=====================================================================================
-function BLU:OnInitialize()
+function BLU_Classic:OnInitialize()
     -- Initialize the database with defaults
-    self.db = LibStub("AceDB-3.0"):New("BLUDB", self.defaults, true)
+    self.db = LibStub("AceDB-3.0"):New("BLUClassicDB", self.defaults, true)
 
     -- Apply default values if they are not set
     for key, value in pairs(self.defaults.profile) do
@@ -124,36 +124,31 @@ function BLU:OnInitialize()
     self.showWelcomeMessage = self.db.profile.showWelcomeMessage
 
     -- Register slash commands and events
-    self:RegisterChatCommand("blu", "HandleSlashCommands")
+    self:RegisterChatCommand("bluc", "HandleSlashCommands")
     self:RegisterSharedEvents()
 
     -- Initialize options
     self:InitializeOptions()
     
-    -- Mute sounds based on game version
-    local soundsToMute = muteSoundIDs and muteSoundIDs[self:GetGameVersion()]
-    if soundsToMute and #soundsToMute > 0 then
-        for _, soundID in ipairs(soundsToMute) do
-            MuteSoundFile(soundID)
-        end
-    end
+    -- Muting sounds is handled in core.lua BLU_Classic:OnEnable(), not here
+    -- This file's OnInitialize should be minimal and focused on setting up basic variables and registering.
 
     -- Display the welcome message if enabled
     if self.showWelcomeMessage then
-        print(BLU_PREFIX .. (BLU_L["WELCOME_MESSAGE"] or "Welcome to BLU!"))
-        print(BLU_PREFIX .. (BLU_L["VERSION"] or "Version:"), "|cff8080ff", BLU.VersionNumber or "Unknown")
+        print(BLU_PREFIX .. (BLU_L["WELCOME_MESSAGE"] or "Welcome to BLU_Classic!"))
+        print(BLU_PREFIX .. (BLU_L["VERSION"] or "Version:"), "|cff8080ff", BLU_Classic.VersionNumber or "Unknown")
     end
 end
 
 --=====================================================================================
 -- Options Initialization
 --=====================================================================================
-function BLU:InitializeOptions()
+function BLU_Classic:InitializeOptions()
     local version = self:GetGameVersion()
 
     if not self.options or not self.options.args then
         if self.debugMode then
-            print("|cffff0000BLU Debug:|r Options table not initialized yet")
+            print("|cffff0000BLU_Classic Debug:|r Options table not initialized yet")
         end
         return
     end
@@ -175,18 +170,18 @@ function BLU:InitializeOptions()
     self:AssignGroupColors()
 
     if not self.optionsRegistered then
-        AC:RegisterOptionsTable("BLU_Options", self.options)
-        self.optionsFrame = ACD:AddToBlizOptions("BLU_Options", BLU_L["OPTIONS_LIST_MENU_TITLE"] or "BLU") 
+        AC:RegisterOptionsTable("BLU_Classic_Options", self.options)
+        self.optionsFrame = ACD:AddToBlizOptions("BLU_Classic_Options", BLU_L["OPTIONS_LIST_MENU_TITLE"] or "BLU_Classic") 
 
         local profiles = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db)
-        AC:RegisterOptionsTable("BLU_Profiles", profiles)
-        ACD:AddToBlizOptions("BLU_Profiles", BLU_L["PROFILES_TITLE"] or "Profiles", BLU_L["OPTIONS_LIST_MENU_TITLE"] or "BLU")
+        AC:RegisterOptionsTable("BLU_Classic_Profiles", profiles)
+        ACD:AddToBlizOptions("BLU_Classic_Profiles", BLU_L["PROFILES_TITLE"] or "Profiles", BLU_L["OPTIONS_LIST_MENU_TITLE"] or "BLU_Classic")
 
         self.optionsRegistered = true
     end
 end
 
-function BLU:IsGroupCompatibleWithVersion(group, version)
+function BLU_Classic:IsGroupCompatibleWithVersion(group, version)
     -- Retail gets everything
     if version == "retail" then
         return true
@@ -257,7 +252,7 @@ function BLU:IsGroupCompatibleWithVersion(group, version)
     return true
 end
 
-function BLU:RemoveOptionsForVersion(version)
+function BLU_Classic:RemoveOptionsForVersion(version)
     local args = self.options.args
 
     if version == "vanilla" then
@@ -298,7 +293,7 @@ end
 --=====================================================================================
 -- Assign Group Colors
 --=====================================================================================
-function BLU:AssignGroupColors()
+function BLU_Classic:AssignGroupColors()
     local colors = { 
         BLU_L.optionColor1 or "|cffffffff", 
         BLU_L.optionColor2 or "|cffcccccc" 

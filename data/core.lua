@@ -3,9 +3,9 @@
 -- Consolidated addon core with version-aware functionality
 --=====================================================================================
 
--- Safely create or get the BLU addon (prevents "already exists" error)
-local addonName = "BLU"
-BLU = LibStub("AceAddon-3.0"):GetAddon(addonName, true) or LibStub("AceAddon-3.0"):NewAddon(addonName, "AceEvent-3.0", "AceConsole-3.0", "AceTimer-3.0")
+-- Safely create or get the BLU_Classic addon (prevents "already exists" error)
+local addonName = "BLU_Classic"
+BLU_Classic = LibStub("AceAddon-3.0"):GetAddon(addonName, true) or LibStub("AceAddon-3.0"):NewAddon(addonName, "AceEvent-3.0", "AceConsole-3.0", "AceTimer-3.0")
 BLU_L = BLU_L or {}
 
 --=====================================================================================
@@ -13,14 +13,14 @@ BLU_L = BLU_L or {}
 --=====================================================================================
 local cachedGameVersion = nil
 
-function BLU:GetGameVersion()
+function BLU_Classic:GetGameVersion()
     if cachedGameVersion then return cachedGameVersion end
     
     local _, _, _, interfaceVersion = GetBuildInfo()
     
     if interfaceVersion >= 110000 then
         cachedGameVersion = "retail"
-    elseif interfaceVersion >= 100000 then
+    elseif interfaceVersion >= 100000 then -- this covers between 100000 and 110000
         cachedGameVersion = "retail"
     elseif interfaceVersion >= 50000 and interfaceVersion < 60000 then
         cachedGameVersion = "mists"
@@ -34,6 +34,7 @@ function BLU:GetGameVersion()
         cachedGameVersion = "vanilla"
     else
         cachedGameVersion = "unknown"
+        self:PrintDebugMessage("ERROR_UNKNOWN_GAME_VERSION: " .. tostring(interfaceVersion)) -- Add debug message
     end
     
     return cachedGameVersion
@@ -55,7 +56,7 @@ local FEATURE_AVAILABILITY = {
     Reputation = { retail = true, mists = true, cata = true, wrath = true, tbc = true, vanilla = true },
 }
 
-function BLU:IsFeatureAvailable(feature)
+function BLU_Classic:IsFeatureAvailable(feature)
     local version = self:GetGameVersion()
     return FEATURE_AVAILABILITY[feature] and FEATURE_AVAILABILITY[feature][version] or false
 end
@@ -63,120 +64,161 @@ end
 --=====================================================================================
 -- Event Registration
 --=====================================================================================
-function BLU:RegisterSharedEvents()
+function BLU_Classic:RegisterSharedEvents()
     local version = self:GetGameVersion()
-    
-    -- Base events for all versions
-    self:RegisterEvent("PLAYER_ENTERING_WORLD", "HandlePlayerEnteringWorld")
-    self:RegisterEvent("PLAYER_LEVEL_UP", "HandlePlayerLevelUp")
-    self:RegisterEvent("QUEST_ACCEPTED", "HandleQuestAccepted")
-    self:RegisterEvent("QUEST_TURNED_IN", "HandleQuestTurnedInAndScanReputation")
-    self:RegisterEvent("UPDATE_FACTION", "ScheduleReputationScan")
-    
-    -- Version-specific events
+
+    local events = {
+        PLAYER_ENTERING_WORLD = "HandlePlayerEnteringWorld",
+        PLAYER_LEVEL_UP = "HandlePlayerLevelUp",
+        QUEST_ACCEPTED = "HandleQuestAccepted",
+        QUEST_TURNED_IN = "HandleQuestTurnedInAndScanReputation",
+        UPDATE_FACTION = "ScheduleReputationScan",
+    }
+
     if self:IsFeatureAvailable("Achievement") then
-        self:RegisterEvent("ACHIEVEMENT_EARNED", "HandleAchievementEarned")
+        events.ACHIEVEMENT_EARNED = "HandleAchievementEarned"
     end
-    
+
     if version == "retail" then
-        self:RegisterEvent("HONOR_LEVEL_UPDATE", "HandleHonorLevelUpdate")
-        self:RegisterEvent("MAJOR_FACTION_RENOWN_LEVEL_CHANGED", "HandleRenownLevelChanged")
-        self:RegisterEvent("PERKS_ACTIVITY_COMPLETED", "HandlePerksActivityCompleted")
-        -- Note: Battle pet events handled by separate battlepets.lua for retail
+        events.HONOR_LEVEL_UPDATE = "HandleHonorLevelUpdate"
+        events.MAJOR_FACTION_RENOWN_LEVEL_CHANGED = "HandleRenownLevelChanged"
+        events.PERKS_ACTIVITY_COMPLETED = "HandlePerksActivityCompleted"
+        if self:IsFeatureAvailable("BattlePet") then -- Use IsFeatureAvailable for BattlePet
+            events.PET_BATTLE_LEVEL_CHANGED = "HandleBattlePetLevelUp"
+            events.PET_JOURNAL_LIST_UPDATE = "HandleBattlePetLevelUp"
+        end
+    elseif version == "mists" then
+        if self:IsFeatureAvailable("BattlePet") then -- Use IsFeatureAvailable for BattlePet
+            events.PET_BATTLE_LEVEL_CHANGED = "HandleBattlePetLevelUp"
+            events.PET_JOURNAL_LIST_UPDATE = "HandleBattlePetLevelUp"
+        end
+    end
+    -- "cata" or "wrath" already covered by IsFeatureAvailable("Achievement")
+
+    for event, handler in pairs(events) do
+        if type(self[handler]) == "function" then
+            self:RegisterEvent(event, handler)
+        end
     end
 end
 
 --=====================================================================================
 -- Event Handlers
 --=====================================================================================
-function BLU:HandleQuestTurnedInAndScanReputation()
+function BLU_Classic:HandleQuestTurnedInAndScanReputation()
     self:HandleQuestTurnedIn()
     self:ScheduleReputationScan()
 end
 
-function BLU:HandlePlayerLevelUp()
+function BLU_Classic:HandlePlayerLevelUp()
     self:HandleEvent("PLAYER_LEVEL_UP", "LevelSoundSelect", "LevelVolume", defaultSounds and defaultSounds[4], "PLAYER_LEVEL_UP_TRIGGERED")
 end
 
-function BLU:HandleQuestAccepted()
+function BLU_Classic:HandleQuestAccepted()
     self:HandleEvent("QUEST_ACCEPTED", "QuestAcceptSoundSelect", "QuestAcceptVolume", defaultSounds and defaultSounds[7], "QUEST_ACCEPTED_TRIGGERED")
 end
 
-function BLU:HandleQuestTurnedIn()
+function BLU_Classic:HandleQuestTurnedIn()
     self:HandleEvent("QUEST_TURNED_IN", "QuestSoundSelect", "QuestVolume", defaultSounds and defaultSounds[8], "QUEST_TURNED_IN_TRIGGERED")
 end
 
-function BLU:HandleAchievementEarned()
+function BLU_Classic:HandleAchievementEarned()
     if not self:IsFeatureAvailable("Achievement") then return end
     self:HandleEvent("ACHIEVEMENT_EARNED", "AchievementSoundSelect", "AchievementVolume", defaultSounds and defaultSounds[1], "ACHIEVEMENT_EARNED_TRIGGERED")
 end
 
-function BLU:HandleHonorLevelUpdate()
+function BLU_Classic:HandleHonorLevelUpdate()
     if not self:IsFeatureAvailable("Honor") then return end
     self:HandleEvent("HONOR_LEVEL_UPDATE", "HonorSoundSelect", "HonorVolume", defaultSounds and defaultSounds[5], "HONOR_LEVEL_UPDATE_TRIGGERED")
 end
 
-function BLU:HandleBattlePetLevelUp()
+function BLU_Classic:HandleBattlePetLevelUp()
     if not self:IsFeatureAvailable("BattlePet") then return end
     self:HandleEvent("PET_BATTLE_LEVEL_CHANGED", "BattlePetLevelSoundSelect", "BattlePetLevelVolume", defaultSounds and defaultSounds[2], "BATTLE_PET_LEVEL_UP_TRIGGERED")
 end
 
-function BLU:HandleRenownLevelChanged()
+function BLU_Classic:HandleRenownLevelChanged()
     if not self:IsFeatureAvailable("Renown") then return end
     self:HandleEvent("MAJOR_FACTION_RENOWN_LEVEL_CHANGED", "RenownSoundSelect", "RenownVolume", defaultSounds and defaultSounds[6], "MAJOR_FACTION_RENOWN_LEVEL_CHANGED_TRIGGERED")
 end
 
-function BLU:HandlePerksActivityCompleted()
+function BLU_Classic:HandlePerksActivityCompleted()
     if not self:IsFeatureAvailable("Post") then return end
     self:HandleEvent("PERKS_ACTIVITY_COMPLETED", "PostSoundSelect", "PostVolume", defaultSounds and defaultSounds[9], "PERKS_ACTIVITY_COMPLETED_TRIGGERED")
+end
+
+-- Delve Companion Level Up functions (from be75efd, adapted)
+function BLU_Classic:OnDelveCompanionLevelUp(event, ...)
+    if self:GetGameVersion() == "retail" then return end -- Assuming this should only trigger on non-retail
+    self:PrintDebugMessage(event .. " event fired, awaiting CHAT_MSG_SYSTEM for confirmation.")
+
+    if event == "CHAT_MSG_SYSTEM" then
+        local msg = ...
+        self:PrintDebugMessage("INCOMING_CHAT_MESSAGE: " .. msg)
+
+        local levelUpMatch = string.match(msg, "Brann Bronzebeard has reached Level (%d+)")
+        if levelUpMatch then
+            local level = tonumber(levelUpMatch)
+            self:PrintDebugMessage("|cff00ff00Brann Level-Up detected: Level " .. level .. "|r")
+            self:TriggerDelveLevelUpSound(level)
+        else
+            self:PrintDebugMessage("NO_LEVEL_FOUND")
+        end
+    end
+end
+
+function BLU_Classic:TriggerDelveLevelUpSound(level)
+    self:HandleEvent("DELVE_LEVEL_UP", "DelveLevelUpSoundSelect", "DelveLevelUpVolume", defaultSounds and defaultSounds[3], "DELVE_LEVEL_UP_TRIGGERED")
 end
 
 --=====================================================================================
 -- Test Sound Functions
 --=====================================================================================
-function BLU:TestAchievementSound()
+function BLU_Classic:TestAchievementSound()
     if not self:IsFeatureAvailable("Achievement") then return end
     self:TestSound("AchievementSoundSelect", "AchievementVolume", defaultSounds and defaultSounds[1], "TEST_ACHIEVEMENT_SOUND")
 end
 
-function BLU:TestBattlePetLevelSound()
+function BLU_Classic:TestBattlePetLevelSound()
     if not self:IsFeatureAvailable("BattlePet") then return end
     self:TestSound("BattlePetLevelSoundSelect", "BattlePetLevelVolume", defaultSounds and defaultSounds[2], "TEST_BATTLE_PET_LEVEL_SOUND")
 end
 
-function BLU:TestDelveLevelUpSound()
+function BLU_Classic:TestDelveLevelUpSound()
     if not self:IsFeatureAvailable("Delve") then return end
     self:TestSound("DelveLevelUpSoundSelect", "DelveLevelUpVolume", defaultSounds and defaultSounds[3], "TEST_DELVE_LEVEL_UP_SOUND")
 end
 
-function BLU:TestHonorSound()
+function BLU_Classic:TestHonorSound()
     if not self:IsFeatureAvailable("Honor") then return end
     self:TestSound("HonorSoundSelect", "HonorVolume", defaultSounds and defaultSounds[5], "TEST_HONOR_SOUND")
 end
 
-function BLU:TestLevelSound()
+function BLU_Classic:TestLevelSound()
     self:TestSound("LevelSoundSelect", "LevelVolume", defaultSounds and defaultSounds[4], "TEST_LEVEL_SOUND")
 end
 
-function BLU:TestPostSound()
+function BLU_Classic:TestPostSound()
     if not self:IsFeatureAvailable("Post") then return end
     self:TestSound("PostSoundSelect", "PostVolume", defaultSounds and defaultSounds[9], "TEST_POST_SOUND")
 end
 
-function BLU:TestQuestAcceptSound()
+function BLU_Classic:TestQuestAcceptSound()
     self:TestSound("QuestAcceptSoundSelect", "QuestAcceptVolume", defaultSounds and defaultSounds[7], "TEST_QUEST_ACCEPT_SOUND")
 end
 
-function BLU:TestQuestSound()
+function BLU_Classic:TestQuestSound()
     self:TestSound("QuestSoundSelect", "QuestVolume", defaultSounds and defaultSounds[8], "TEST_QUEST_SOUND")
 end
 
-function BLU:TestRenownSound()
+function BLU_Classic:TestRenownSound()
     if not self:IsFeatureAvailable("Renown") then return end
     self:TestSound("RenownSoundSelect", "RenownVolume", defaultSounds and defaultSounds[6], "TEST_RENOWN_SOUND")
 end
 
-function BLU:TestRepSound()
+function BLU_Classic:TestRepSound()
+    -- This function was present in both, with the same body, but using defaultSounds[6] twice.
+    -- Assuming defaultSounds[6] is correct for Rep.
     self:TestSound("RepSoundSelect", "RepVolume", defaultSounds and defaultSounds[6], "TEST_REP_SOUND")
 end
 
@@ -199,7 +241,7 @@ local function GetReputationFunctions()
     return GetNumFactions, GetFactionInfo
 end
 
-function BLU:InitializeReputationCache()
+function BLU_Classic:InitializeReputationCache()
     local GetNumFactions, GetFactionInfo = GetReputationFunctions()
     if not GetNumFactions then return end
 
@@ -215,7 +257,7 @@ function BLU:InitializeReputationCache()
     end
 end
 
-function BLU:ScanForReputationChanges()
+function BLU_Classic:ScanForReputationChanges()
     local GetNumFactions, GetFactionInfo = GetReputationFunctions()
     if not GetNumFactions then return end
 
@@ -242,7 +284,7 @@ function BLU:ScanForReputationChanges()
     end
 end
 
-function BLU:ScheduleReputationScan()
+function BLU_Classic:ScheduleReputationScan()
     if self.reputationScanTimer then
         self:CancelTimer(self.reputationScanTimer)
     end
@@ -252,7 +294,7 @@ end
 --=====================================================================================
 -- Options System
 --=====================================================================================
--- Map option groups to features for filtering
+-- Map option groups to features for filtering (from HEAD, adapted)
 local OPTION_GROUP_FEATURES = {
     group2 = "Achievement",
     group3 = "BattlePet",
@@ -266,7 +308,7 @@ local OPTION_GROUP_FEATURES = {
     group11 = "Post",
 }
 
-function BLU:FilterOptionsForVersion()
+function BLU_Classic:FilterOptionsForVersion()
     if not self.options or not self.options.args then return end
     
     for groupKey, feature in pairs(OPTION_GROUP_FEATURES) do
@@ -276,7 +318,49 @@ function BLU:FilterOptionsForVersion()
     end
 end
 
-function BLU:InitializeOptions()
+-- Saved Variables Cleanup for Version Compatibility (from be75efd, adapted)
+function BLU_Classic:CleanupIncompatibleSavedVariables(version)
+    if version ~= "retail" then
+        self.db.profile.HonorSoundSelect = nil
+        self.db.profile.HonorVolume = nil
+        self.db.profile.DelveLevelUpSoundSelect = nil
+        self.db.profile.DelveLevelUpVolume = nil
+        self.db.profile.RenownSoundSelect = nil
+        self.db.profile.RenownVolume = nil
+        self.db.profile.PostSoundSelect = nil
+        self.db.profile.PostVolume = nil
+        
+        if version ~= "mists" then
+            self.db.profile.BattlePetLevelSoundSelect = nil
+            self.db.profile.BattlePetLevelVolume = nil
+        end
+    end
+    
+    -- Additional cleanup for non-retail from be75efd version
+    local groupsToRemove = {
+        vanilla = {"group2", "group3", "group4", "group5", "group9", "group11"},
+        tbc = {"group2", "group3", "group4", "group5", "group9", "group11"},
+        wrath = {"group3", "group4", "group5", "group9", "group11"},
+        cata = {"group3", "group4", "group5", "group9", "group11"},
+        mists = {"group4", "group5", "group9", "group11"},
+        retail = {"group4", "group10"}, -- Removing delve and reputation for retail as per be75efd
+    }
+    
+    local toRemove = groupsToRemove[version] or {}
+    for _, groupName in ipairs(toRemove) do
+        self.options.args[groupName] = nil
+    end
+
+    if version == "vanilla" or version == "tbc" then
+        self.db.profile.AchievementSoundSelect = nil
+    end
+end
+
+
+--=====================================================================================
+-- Options Initialization
+--=====================================================================================
+function BLU_Classic:InitializeOptions()
     local AC = LibStub("AceConfig-3.0")
     local ACD = LibStub("AceConfigDialog-3.0")
 
@@ -304,20 +388,22 @@ function BLU:InitializeOptions()
         local optionsTitle = BLU_L["OPTIONS_PANEL_TITLE"] or "BLU | Better Level-Up!"
         local profilesTitle = BLU_L["PROFILES_TITLE"] or "Profiles"
         
-        AC:RegisterOptionsTable("BLU_Options", self.options)
-        self.optionsFrame = ACD:AddToBlizOptions("BLU_Options", optionsTitle)
+        AC:RegisterOptionsTable("BLU_Classic_Options", self.options)
+        self.optionsFrame = ACD:AddToBlizOptions("BLU_Classic_Options", optionsTitle)
 
         local profiles = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db)
-        AC:RegisterOptionsTable("BLU_Profiles", profiles)
-        ACD:AddToBlizOptions("BLU_Profiles", profilesTitle, optionsTitle)
+        AC:RegisterOptionsTable("BLU_Classic_Profiles", profiles)
+        ACD:AddToBlizOptions("BLU_Classic_Profiles", profilesTitle, optionsTitle)
 
         self.optionsRegistered = true
+    else
+        self:PrintDebugMessage("OPTIONS_ALREADY_REGISTERED") -- This line was only in be75efd
     end
 end
 
-function BLU:AssignGroupColors()
+function BLU_Classic:AssignGroupColors()
     local colors = { 
-        BLU_L.optionColor1 or "|cffffffff", 
+        BLU_L.optionColor1 or "|cffffffff", -- Using HEAD's robust color definitions
         BLU_L.optionColor2 or "|cffcccccc" 
     }
     local patternIndex = 1
@@ -349,9 +435,9 @@ end
 --=====================================================================================
 -- Sound Muting System
 --=====================================================================================
-function BLU:MuteSounds()
+function BLU_Classic:MuteSounds()
     local version = self:GetGameVersion()
-    local soundIDs = muteSoundIDs and muteSoundIDs[version]
+    local soundIDs = muteSoundIDs and muteSoundIDs[version] -- Keep robust check
     if soundIDs then
         for _, soundID in ipairs(soundIDs) do
             MuteSoundFile(soundID)
@@ -359,9 +445,9 @@ function BLU:MuteSounds()
     end
 end
 
-function BLU:UnmuteSounds()
+function BLU_Classic:UnmuteSounds()
     local version = self:GetGameVersion()
-    local soundIDs = muteSoundIDs and muteSoundIDs[version]
+    local soundIDs = muteSoundIDs and muteSoundIDs[version] -- Keep robust check
     if soundIDs then
         for _, soundID in ipairs(soundIDs) do
             UnmuteSoundFile(soundID)
@@ -372,23 +458,21 @@ end
 --=====================================================================================
 -- Addon Lifecycle
 --=====================================================================================
-function BLU:OnInitialize()
-    -- Initialize database
-    self.db = LibStub("AceDB-3.0"):New("BLUDB", self.defaults, true)
+function BLU_Classic:OnInitialize()
+    self.db = LibStub("AceDB-3.0"):New("BLUClassicDB", self.defaults, true)
 
     -- Get version number (API differs between versions)
     if C_AddOns and C_AddOns.GetAddOnMetadata then
-        self.VersionNumber = C_AddOns.GetAddOnMetadata("BLU", "Version")
-    elseif GetAddOnMetadata then
-        self.VersionNumber = GetAddOnMetadata("BLU", "Version")
+        self.VersionNumber = C_AddOns.GetAddOnMetadata("BLU_Classic", "Version")
     else
-        self.VersionNumber = "Unknown"
+        self.VersionNumber = GetAddOnMetadata("BLU_Classic", "Version")
     end
     
-    -- Initialize character-specific data
+    local version = self:GetGameVersion()
+    self:CleanupIncompatibleSavedVariables(version) -- Call cleanup here
+
     self.db.char.reputationCache = self.db.char.reputationCache or {}
     
-    -- Load settings
     self.debugMode = self.db.profile.debugMode or false
     self.showWelcomeMessage = self.db.profile.showWelcomeMessage
     if self.showWelcomeMessage == nil then
@@ -396,31 +480,27 @@ function BLU:OnInitialize()
         self.db.profile.showWelcomeMessage = true
     end
 
-    -- Initialize state
     self.functionsHalted = false
     self.sortedOptions = {}
     self.optionsRegistered = false
     
-    -- Register slash commands
-    self:RegisterChatCommand("blu", "HandleSlashCommands")
-    
-    -- Initialize options panel
+    self:RegisterChatCommand("bluc", "HandleSlashCommands")
     self:InitializeOptions()
 end
 
-function BLU:OnEnable()
+function BLU_Classic:OnEnable()
     self:RegisterSharedEvents()
     self:InitializeReputationCache()
     self:MuteSounds()
     
     if self.showWelcomeMessage then
-        local welcomeMsg = BLU_L["WELCOME_MESSAGE"] or "Loaded successfully!"
-        local versionText = BLU_L["VERSION"] or "Version:"
+        local welcomeMsg = BLU_L["WELCOME_MESSAGE"] or "Loaded successfully!" -- From HEAD
+        local versionText = BLU_L["VERSION"] or "Version:" -- From HEAD
         print(BLU_PREFIX .. welcomeMsg)
-        print(BLU_PREFIX .. versionText .. " |cff8080ff" .. (self.VersionNumber or "Unknown") .. "|r")
+        print(BLU_PREFIX .. versionText .. " |cff8080ff" .. (self.VersionNumber or "Unknown") .. "|r") -- From HEAD
     end
 end
 
-function BLU:OnDisable()
+function BLU_Classic:OnDisable()
     self:UnmuteSounds()
 end

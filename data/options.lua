@@ -1,8 +1,7 @@
-
 --=====================================================================================
 -- Default Profile Settings
 --=====================================================================================
-BLU.defaults = {
+BLU_Classic.defaults = {
     profile = {
         debugMode = false,
         showWelcomeMessage = true,
@@ -32,10 +31,10 @@ local BLU_L = BLU_L or {}
 --=====================================================================================
 -- Options Definition
 --=====================================================================================
-BLU.options = {
+BLU_Classic.options = {
     type = "group",
     name = "",
-    handler = BLU,
+    handler = BLU_Classic,
     args = {
         group1 = {
             type = "header",
@@ -60,12 +59,12 @@ BLU.options = {
                 TestAchievementSound = {
                     type = "execute",
                     order = 2,
-                    image = "Interface\\Addons\\BLU\\images\\play.blp",
+                    image = "Interface\\Addons\\BLU_Classic\\images\\play.blp",
                     imageWidth = 20,
                     imageHeight = 20,
                     name = "",
                     desc = "",
-                    func = function() BLU:TestAchievementSound() end,
+                    func = function() BLU_Classic:TestAchievementSound() end,
                 },
                 AchievementVolume = {
                     type = "range",
@@ -96,12 +95,12 @@ BLU.options = {
                 TestBattlePetLevelSound = {
                     type = "execute",
                     order = 2,
-                    image = "Interface\\Addons\\BLU\\images\\play.blp",
+                    image = "Interface\\Addons\\BLU_Classic\\images\\play.blp",
                     imageWidth = 20,
                     imageHeight = 20,
                     name = "",
                     desc = "",
-                    func = function() BLU:TestBattlePetLevelSound() end,
+                    func = function() BLU_Classic:TestBattlePetLevelSound() end,
                 },
                 BattlePetLevelVolume = {
                     type = "range",
@@ -132,12 +131,12 @@ BLU.options = {
                 TestDelveLevelUpSound = {
                     type = "execute",
                     order = 2,
-                    image = "Interface\\Addons\\BLU\\images\\play.blp",
+                    image = "Interface\\Addons\\BLU_Classic\\images\\play.blp",
                     imageWidth = 20,
                     imageHeight = 20,
                     name = "",
                     desc = "",
-                    func = function() BLU:TestDelveLevelUpSound() end,
+                    func = function() BLU_Classic:TestDelveLevelUpSound() end,
                 },
                 DelveLevelUpVolume = {
                     type = "range",
@@ -168,12 +167,12 @@ BLU.options = {
                 TestHonorSound = {
                     type = "execute",
                     order = 2,
-                    image = "Interface\\Addons\\BLU\\images\\play.blp",
+                    image = "Interface\\Addons\\BLU_Classic\\images\\play.blp",
                     imageWidth = 20,
                     imageHeight = 20,
                     name = "",
                     desc = "",
-                    func = function() BLU:TestHonorSound() end,
+                    func = function() BLU_Classic:TestHonorSound() end,
                 },
                 HonorVolume = {
                     type = "range",
@@ -204,12 +203,12 @@ BLU.options = {
                 TestLevelSound = {
                     type = "execute",
                     order = 2,
-                    image = "Interface\\Addons\\BLU\\images\\play.blp",
+                    image = "Interface\\Addons\\BLU_Classic\\images\\play.blp",
                     imageWidth = 20,
                     imageHeight = 20,
                     name = "",
                     desc = "",
-                    func = function() BLU:TestLevelSound() end,
+                    func = function() BLU_Classic:TestLevelSound() end,
                 },
                 LevelVolume = {
                     type = "range",
@@ -240,12 +239,12 @@ BLU.options = {
                 TestQuestAcceptSound = {
                     type = "execute",
                     order = 2,
-                    image = "Interface\\Addons\\BLU\\images\\play.blp",
+                    image = "Interface\\Addons\\BLU_Classic\\images\\play.blp",
                     imageWidth = 20,
                     imageHeight = 20,
                     name = "",
                     desc = "",
-                    func = function() BLU:TestQuestAcceptSound() end,
+                    func = function() BLU_Classic:TestQuestAcceptSound() end,
                 },
                 QuestAcceptVolume = {
                     type = "range",
@@ -276,12 +275,12 @@ BLU.options = {
                 TestQuestSound = {
                     type = "execute",
                     order = 2,
-                    image = "Interface\\Addons\\BLU\\images\\play.blp",
+                    image = "Interface\\Addons\\BLU_Classic\\images\\play.blp",
                     imageWidth = 20,
                     imageHeight = 20,
                     name = "",
                     desc = "",
-                    func = function() BLU:TestQuestSound() end,
+                    func = function() BLU_Classic:TestQuestSound() end,
                 },
                 QuestVolume = {
                     type = "range",
@@ -312,12 +311,12 @@ BLU.options = {
                 TestRenownSound = {
                     type = "execute",
                     order = 2,
-                    image = "Interface\\Addons\\BLU\\images\\play.blp",
+                    image = "Interface\\Addons\\BLU_Classic\\images\\play.blp",
                     imageWidth = 20,
                     imageHeight = 20,
                     name = "",
                     desc = "",
-                    func = function() BLU:TestRenownSound() end,
+                    func = function() BLU_Classic:TestRenownSound() end,
                 },
                 RenownVolume = {
                     type = "range",
@@ -348,12 +347,12 @@ BLU.options = {
                 TestRepSound = {
                     type = "execute",
                     order = 2,
-                    image = "Interface\\Addons\\BLU\\images\\play.blp",
+                    image = "Interface\\Addons\\BLU_Classic\\images\\play.blp",
                     imageWidth = 20,
                     imageHeight = 20,
                     name = "",
                     desc = "",
-                    func = function() BLU:TestRepSound() end,
+                    func = function() BLU_Classic:TestRepSound() end,
                 },
                 RepVolume = {
                     type = "range",
@@ -384,12 +383,12 @@ BLU.options = {
                 TestPostSound = {
                     type = "execute",
                     order = 2,
-                    image = "Interface\\Addons\\BLU\\images\\play.blp",
+                    image = "Interface\\Addons\\BLU_Classic\\images\\play.blp",
                     imageWidth = 20,
                     imageHeight = 20,
                     name = "",
                     desc = "",
-                    func = function() BLU:TestPostSound() end,
+                    func = function() BLU_Classic:TestPostSound() end,
                 },
                 PostVolume = {
                     type = "range",
@@ -405,7 +404,7 @@ BLU.options = {
         versionHeader = {
             type = "header",
             order = 12,
-            name = "|cff8080ff" .. (BLU.VersionNumber or "v1.2.2") .. "|r",
+            name = "|cff8080ff" .. (BLU_Classic.VersionNumber or "v1.2.2") .. "|r",
         },
     },
 }

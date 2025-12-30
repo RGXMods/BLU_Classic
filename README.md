@@ -8,7 +8,7 @@
 [![BLU Classic Icon](https://img.shields.io/badge/BLU%20Classic-Better%20Level%20Up!%20Classic-05dffa?style=for-the-badge&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==&logoColor=white)](https://github.com/donniedice/BLU_Classic)
 
 ### 🌟 **Join the <span style="color:#ff6b6b">R</span>ealmGX Community - <span style="color:#4ecdc4">G</span>amers e<span style="color:#4ecdc4">X</span>treme!** 🌟
-[![Discord](https://img.shields.io/badge/Discord-Join%20Our%20Server-7289da?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/N7kdKAHVVF)
+[![Discord](https://img.shields.io/badge/Discord-Join%20Our%20Server-7289da?style=for-the-badge&logo=discord&logoColor=white&labelColor=5865F2)](https://discord.gg/N7kdKAHVVF)
 
 ### 🎵 *Experience level-up sounds from your favorite games in WoW - ALL VERSIONS!* 🎵
 
@@ -49,7 +49,7 @@
 
 ### 💬 **RealmGX Discord - Your Gaming Home!**
 
-[![Join Discord](https://img.shields.io/badge/Join%20Our%20Discord-RealmGX%20Community-7289da?style=for-the-badge&logo=discord&logoColor=white&labelColor=5865F2)](https://discord.gg/N7kdKAHVVF)
+[![Join Discord](https://img.shields.io/badge/Discord-Join%20Our%20Server-7289da?style=for-the-badge&logo=discord&logoColor=white&labelColor=5865F2)](https://discord.gg/N7kdKAHVVF)
 
 **🎮 <span style="color:#ff6b6b">R</span>ealm <span style="color:#4ecdc4">G</span>amers e<span style="color:#4ecdc4">X</span>treme - Where WoW Enthusiasts Unite!**
 
@@ -248,6 +248,7 @@ Each sound type has three volume levels:
 
 - Double quest accept sound in Classic is a Blizzard bug, not BLU-related
 - Some sounds may have slight delays on first play (cached after)
+- **Note**: Ensure proper unmute of sounds when the addon unloads to prevent audio issues.
 
 ## 🤝 Contributing
 

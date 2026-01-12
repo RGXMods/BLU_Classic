@@ -1,3 +1,5 @@
+## v1.2.4
+
 ## v1.2.3
 - Resolved merge conflicts in data/core.lua and docs/CHANGES.md.
 - Reviewed and confirmed "unmute on unload" functionality.

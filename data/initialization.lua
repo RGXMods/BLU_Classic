@@ -124,10 +124,16 @@ function BLU_Classic:OnInitialize()
     self.showWelcomeMessage = self.db.profile.showWelcomeMessage
 
     -- Register slash commands and events
-    self:RegisterChatCommand("bluc", "HandleSlashCommands")
-    self:RegisterSharedEvents()
+    self:RegisterChatCommand("blu", "HandleSlashCommands")
 
-    -- Initialize options
+    function BLU_Classic:HandleSlashCommands(input)
+        if not input or input:trim() == "" then
+            LibStub("AceConfigDialog-3.0"):Open("BLU_Classic_Options")
+        else
+            LibStub("AceConfigCmd-3.0"):HandleCommand("BLU_Classic_Options", "blu", input)
+        end
+    end
+
     self:InitializeOptions()
     
     -- Muting sounds is handled in core.lua BLU_Classic:OnEnable(), not here

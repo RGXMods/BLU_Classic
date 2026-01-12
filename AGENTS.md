@@ -1,6 +1,6 @@
 # 🤖 AI Agent: Goose for BLU_Classic
 
-## 🚀 Project: BLU_Classic | Better Level-Up! Classic (v1.2.2) 
+## 🚀 Project: BLU_Classic | Better Level-Up! Classic (v1.2.4) 
 
 This document is my internal configuration and knowledge base for the "BLU_Classic | Better Level-Up! Classic" project. It outlines my purpose, capabilities, and a verified map of the repository.
 

@@ -1,4 +1,12 @@
 ## v1.2.4
+- Updated ## Interface: versions for various World of Warcraft clients:
+  - BLU_Classic_Vanilla.toc: Updated to 11508
+  - BLU_Classic_BCC.toc: Updated to 20505
+  - BLU_Classic_Wrath.toc: Updated to 30405
+  - BLU_Classic_Cata.toc: Already at 40402 (no change)
+  - BLU_Classic_Mists.toc: Already at 50503 (no change)
+  - BLU_Classic.toc: Updated to 110207
+
 
 ## v1.2.3
 - Resolved merge conflicts in data/core.lua and docs/CHANGES.md.

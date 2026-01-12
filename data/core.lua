@@ -366,7 +366,7 @@ function BLU_Classic:InitializeOptions()
 
     if not self.options or not self.options.args then
         if self.debugMode then
-            print(BLU_PREFIX .. "|cffff0000Options table not loaded|r")
+            print(BLU_Classic_PREFIX .. "|cffff0000Options table not loaded|r")
         end
         return
     end
@@ -461,6 +461,9 @@ end
 function BLU_Classic:OnInitialize()
     self.db = LibStub("AceDB-3.0"):New("BLUClassicDB", self.defaults, true)
 
+    -- Explicitly embed AceTimer-3.0 to ensure ScheduleTimer is available
+    LibStub("AceTimer-3.0"):Embed(self)
+
     -- Get version number (API differs between versions)
     if C_AddOns and C_AddOns.GetAddOnMetadata then
         self.VersionNumber = C_AddOns.GetAddOnMetadata("BLU_Classic", "Version")
@@ -496,8 +499,8 @@ function BLU_Classic:OnEnable()
     if self.showWelcomeMessage then
         local welcomeMsg = BLU_L["WELCOME_MESSAGE"] or "Loaded successfully!" -- From HEAD
         local versionText = BLU_L["VERSION"] or "Version:" -- From HEAD
-        print(BLU_PREFIX .. welcomeMsg)
-        print(BLU_PREFIX .. versionText .. " |cff8080ff" .. (self.VersionNumber or "Unknown") .. "|r") -- From HEAD
+        print(BLU_Classic_PREFIX .. welcomeMsg)
+        print(BLU_Classic_PREFIX .. versionText .. " |cff8080ff" .. (self.VersionNumber or "Unknown") .. "|r") -- From HEAD
     end
 end
 

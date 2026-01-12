@@ -4,7 +4,6 @@ on:
   push:
     tags:
       - 'v*'
-      - '*' # Triggers on any tag
     branches:
       - alpha
       - main

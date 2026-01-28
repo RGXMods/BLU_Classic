@@ -7,4 +7,5 @@
 - Update: Main TOC interface version updated to 120000 (Midnight pre-patch)
 
 ## v1.2.5
-- Fix: Resolved issue causing duplicate Discord release notifications by updating the GitHub Actions workflow trigger.
+- Fix: Registered /blu slash command to open options panel
+- Chore: Updated TOC interface versions for all Classic clients

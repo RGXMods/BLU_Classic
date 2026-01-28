@@ -216,7 +216,7 @@ end
 -- Check if item ID is a pet battle item
 local function IsPetBattleItem(itemID)
     return PET_BATTLE_ITEMS[itemID] or false
-}
+end
 
 -- Check if spell ID is a pet battle spell
 local function IsPetBattleSpell(spellID)

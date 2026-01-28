@@ -404,7 +404,7 @@ BLU_Classic.options = {
         versionHeader = {
             type = "header",
             order = 12,
-            name = "|cff8080ff" .. (BLU_Classic.VersionNumber or "v1.2.2") .. "|r",
+            name = "|cff8080ff" .. (BLU_Classic.VersionNumber or "Unknown") .. "|r",
         },
     },
 }

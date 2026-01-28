@@ -4,10 +4,6 @@ on:
   push:
     tags:
       - 'v*'
-    branches:
-      - alpha
-      - main
-      - master # Triggers on pushes to these branches
 
 env:
   CF_API_KEY: ${{ secrets.CF_API_KEY }}

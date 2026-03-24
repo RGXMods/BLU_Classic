@@ -8,6 +8,16 @@ local addonName = "BLU_Classic"
 BLU_Classic = LibStub("AceAddon-3.0"):GetAddon(addonName, true) or LibStub("AceAddon-3.0"):NewAddon(addonName, "AceEvent-3.0", "AceConsole-3.0", "AceTimer-3.0")
 BLU_L = BLU_L or {}
 
+-- Register PLAYER_LOGOUT at file-load time so unmute fires even if init/enable failed.
+-- Must not be guarded by profile.enabled or any DB check.
+do
+    local logoutFrame = CreateFrame("Frame")
+    logoutFrame:RegisterEvent("PLAYER_LOGOUT")
+    logoutFrame:SetScript("OnEvent", function()
+        BLU_Classic:UnmuteSounds()
+    end)
+end
+
 --=====================================================================================
 -- Game Version Detection (cached for performance)
 --=====================================================================================

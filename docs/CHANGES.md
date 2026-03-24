@@ -1,3 +1,7 @@
+## v1.2.7
+- Fix: Unmute default sounds on addon disable and logout to prevent sounds remaining permanently muted when the addon is disabled or unloaded
+- Fix: Register PLAYER_LOGOUT handler at file-load time so unmute fires even if addon initialization failed
+
 ## v1.2.6
 - Fix: Resolved SavedVariables conflict between BLU and BLU_Classic addons (BCC, Wrath, Cata TOCs were using `BLUDB` instead of `BLUClassicDB`)
 - Fix: Corrected Lua syntax error in battlepets.lua (`}` instead of `end`) causing errors on MoP Classic

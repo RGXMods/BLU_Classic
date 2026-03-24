@@ -1,23 +1,26 @@
-# 🎮 BLU Classic | Better Level-Up! Classic
-## 🎮 **RGX Mods** - *RealmGX Community Project*
+# <img src="https://raw.githubusercontent.com/donniedice/BLU_Classic/main/images/BLU_Logo.png" width="25" height="25"> <span style="color:#05dffa">B</span><span style="color:#05dffa">L</span><span style="color:#05dffa">U</span> <span style="color:#FFD700">Classic</span> <span style="color:#3598db">|</span> <span style="color:#05dffa">B</span><span style="color:#fff">etter </span><span style="color:#05dffa">L</span><span style="color:#fff">evel-</span><span style="color:#05dffa">U</span><span style="color:#fff">p!</span> <span style="color:#FFD700">Classic</span>
+## <img src="https://raw.githubusercontent.com/donniedice/SimpleQuestPlates/main/images/kiwi.gif" height="20"> <span style="color:#8B1538">R</span><span style="color:#8B1538">G</span><span style="color:#8B1538">X</span> <span style="color:#4ecdc4">Mods</span> <span style="color:#3598db">-</span> [<span style="color:#8B1538">R</span><span style="color:#7598b6">ealm</span><span style="color:#8B1538">G</span><span style="color:#8B1538">X</span>](https://realmgx.com) <span style="color:#FFD700">Community Project</span>
 
 <div align="center">
 
 <img src="https://raw.githubusercontent.com/donniedice/BLU_Classic/main/images/BLU_Logo.png" alt="BLU Classic Logo" width="256">
 
-[![BLU Classic Icon](https://img.shields.io/badge/BLU%20Classic-Better%20Level%20Up!%20Classic-05dffa?style=for-the-badge&logo=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==&logoColor=white)](https://github.com/donniedice/BLU_Classic)
+[![BLU Classic](https://img.shields.io/badge/BLU%20Classic-Better%20Level%20Up!%20Classic-05dffa?style=for-the-badge&logo=github&logoColor=white)](https://github.com/donniedice/BLU_Classic)
+[![RGX Mods](https://img.shields.io/badge/RGX-Mods%20Collection-8B1538?style=for-the-badge&logo=github&logoColor=white)](https://discord.gg/N7kdKAHVVF)
 
-### 🌟 **Join the <span style="color:#ff6b6b">R</span>ealmGX Community - <span style="color:#4ecdc4">G</span>amers e<span style="color:#4ecdc4">X</span>treme!** 🌟
+### <span style="color:#FFD700">🌟 Join the </span> <span style="color:#8B1538">R</span><span style="color:#7598b6">ealm</span><span style="color:#8B1538">G</span><span style="color:#8B1538">X</span> <span style="color:#4ecdc4">Community</span> <span style="color:#3598db">-</span> <span style="color:#8B1538">G</span><span style="color:#7598b6">amers e</span><span style="color:#8B1538">X</span><span style="color:#7598b6">treme!</span> <span style="color:#FFD700">🌟</span>
 [![Discord](https://img.shields.io/badge/Discord-Join%20Our%20Server-7289da?style=for-the-badge&logo=discord&logoColor=white&labelColor=5865F2)](https://discord.gg/N7kdKAHVVF)
 
-### 🎵 *Experience level-up sounds from your favorite games in WoW - ALL VERSIONS!* 🎵
+### <span style="color:#FFD700">🎵 </span> <span style="color:#e67e23">*Experience level-up sounds from your favorite games in WoW — ALL VERSIONS!*</span> <span style="color:#FFD700">🎵</span>
 
-**Professional World of Warcraft addon that replaces default sounds with iconic audio from 50+ games, with extensive customization options.**
+**<span style="color:#05dffa">B</span><span style="color:#05dffa">L</span><span style="color:#05dffa">U</span> <span style="color:#FFD700">Classic</span> <span style="color:#e67e23">is a professional</span> <span style="color:#06c">World of Warcraft</span> <span style="color:#e67e23">addon that replaces default sounds with iconic audio from 50+ games, with extensive customization options — across ALL WoW versions.</span>**
 
-**🎯 Connect with fellow gamers, get support, and be part of the RGX Mods family!**
+**<span style="color:#FFD700">🎯 </span> <span style="color:#e67e23">Connect with fellow gamers, get support, and be part of the</span> <span style="color:#8B1538">R</span><span style="color:#8B1538">G</span><span style="color:#8B1538">X</span> <span style="color:#4ecdc4">Mods</span> <span style="color:#e67e23">family!</span>**
+
+---
 
 <!-- GitHub Stats & Badges -->
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/donniedice/BLU_Classic?style=for-the-badge&logo=github&color=success)](https://github.com/donniedice/BLU_Classic/releases)
+[![GitHub release](https://img.shields.io/github/v/release/donniedice/BLU_Classic?style=for-the-badge&logo=github&color=success)](https://github.com/donniedice/BLU_Classic/releases)
 [![GitHub stars](https://img.shields.io/github/stars/donniedice/BLU_Classic?style=for-the-badge&logo=github&color=yellow)](https://github.com/donniedice/BLU_Classic/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/donniedice/BLU_Classic?style=for-the-badge&logo=github&color=blue)](https://github.com/donniedice/BLU_Classic/network/members)
 [![GitHub issues](https://img.shields.io/github/issues/donniedice/BLU_Classic?style=for-the-badge&logo=github&color=red)](https://github.com/donniedice/BLU_Classic/issues)
@@ -26,12 +29,11 @@
 [![GitHub last commit](https://img.shields.io/github/last-commit/donniedice/BLU_Classic?style=flat-square&logo=github)](https://github.com/donniedice/BLU_Classic/commits/main)
 [![GitHub commit activity](https://img.shields.io/github/commit-activity/m/donniedice/BLU_Classic?style=flat-square&logo=github)](https://github.com/donniedice/BLU_Classic/graphs/contributors)
 [![GitHub repo size](https://img.shields.io/github/repo-size/donniedice/BLU_Classic?style=flat-square&logo=github)](https://github.com/donniedice/BLU_Classic)
-[![GitHub code size](https://img.shields.io/github/languages/code-size/donniedice/BLU_Classic?style=flat-square&logo=github)](https://github.com/donniedice/BLU_Classic)
 
 <!-- Platform Badges -->
-[![CurseForge Downloads](https://img.shields.io/badge/CurseForge-Downloads-orange?style=flat-square&logo=curseforge)](https://www.curseforge.com/wow/addons/blu-classic)
-[![Wago Downloads](https://img.shields.io/badge/Wago.io-Downloads-purple?style=flat-square&logo=wago)](https://addons.wago.io/addons/blu-classic)
-[![WoWInterface Downloads](https://img.shields.io/badge/WoWInterface-Downloads-blue?style=flat-square&logo=worldofwarcraft)](https://www.wowinterface.com/downloads/info26465-BLU-Classic.html)
+[![CurseForge](https://img.shields.io/badge/CurseForge-Downloads-orange?style=flat-square&logo=curseforge)](https://www.curseforge.com/wow/addons/blu-classic)
+[![Wago](https://img.shields.io/badge/Wago.io-Downloads-purple?style=flat-square&logo=wago)](https://addons.wago.io/addons/blu-classic)
+[![WoWInterface](https://img.shields.io/badge/WoWInterface-Downloads-blue?style=flat-square&logo=worldofwarcraft)](https://www.wowinterface.com/downloads/info26465-BLU-Classic.html)
 
 <!-- WoW Compatibility -->
 [![WoW Retail](https://img.shields.io/badge/WoW-The%20War%20Within-green?style=flat-square&logo=worldofwarcraft)](https://worldofwarcraft.com)
@@ -41,50 +43,73 @@
 [![WoW TBC](https://img.shields.io/badge/WoW-TBC%20Classic-green?style=flat-square&logo=worldofwarcraft)](https://worldofwarcraft.com)
 [![WoW Classic](https://img.shields.io/badge/WoW-Classic%20Era-green?style=flat-square&logo=worldofwarcraft)](https://worldofwarcraft.com)
 
+[Features](#features) • [Quick Start](#quick-start) • [Commands](#command-reference) • [Compatibility](#compatibility) • [Installation](#installation) • [Support](#support)
+
 </div>
 
-## 🌟 Join the RGX Mods Community!
+---
+
+## <span style="color:#FFD700">🌟 Join the </span> <span style="color:#8B1538">R</span><span style="color:#8B1538">G</span><span style="color:#8B1538">X</span> <span style="color:#4ecdc4">Mods Community!</span>
 
 <div align="center">
 
-### 💬 **RealmGX Discord - Your Gaming Home!**
+### <span style="color:#b96ad9">💬 </span> <span style="color:#8B1538">R</span><span style="color:#7598b6">ealm</span><span style="color:#8B1538">G</span><span style="color:#8B1538">X</span> <span style="color:#FFD700">Discord</span> <span style="color:#3598db">-</span> <span style="color:#2dc26b">Your Gaming Home!</span>
 
-[![Join Discord](https://img.shields.io/badge/Discord-Join%20Our%20Server-7289da?style=for-the-badge&logo=discord&logoColor=white&labelColor=5865F2)](https://discord.gg/N7kdKAHVVF)
+[![Join Discord](https://img.shields.io/badge/Join%20Our%20Discord-RealmGX%20Community-7289da?style=for-the-badge&logo=discord&logoColor=white&labelColor=5865F2)](https://discord.gg/N7kdKAHVVF)
 
-**🎮 <span style="color:#ff6b6b">R</span>ealm <span style="color:#4ecdc4">G</span>amers e<span style="color:#4ecdc4">X</span>treme - Where WoW Enthusiasts Unite!**
+**<span style="color:#FFD700">🎮 </span> [<span style="color:#8B1538">R</span><span style="color:#7598b6">ealm </span> <span style="color:#8B1538">G</span><span style="color:#7598b6">amers e</span><span style="color:#8B1538">X</span><span style="color:#7598b6">treme</span>](https://realmgx.com) <span style="color:#3598db">-</span> <span style="color:#4ecdc4">Where WoW Enthusiasts Unite!</span>**
 
-✨ **What awaits you in our Discord:**
-- 🛠️  **Instant addon support** from the RGX Mods team
-- 🎯 **Feature requests** and direct dev communication
-- 🚀 **Beta testing** opportunities for new releases
-- 🤝 **Community of WoW players** sharing tips and experiences
-- 📢 **First to know** about new RGX Mods releases
-- 🎉 **Events, giveaways**, and community activities
+**<span style="color:#e67e23">✨ What awaits you in our Discord:</span>**
+- <span style="color:#2dc26b">🛠️ **Instant addon support**</span> <span style="color:#e67e23">from the</span> <span style="color:#8B1538">R</span><span style="color:#8B1538">G</span><span style="color:#8B1538">X</span> <span style="color:#4ecdc4">Mods</span> <span style="color:#e67e23">team</span>
+- <span style="color:#ff6b6b">🎯 **Feature requests**</span> <span style="color:#e67e23">and direct dev communication</span>
+- <span style="color:#b96ad9">🚀 **Beta testing**</span> <span style="color:#e67e23">opportunities for new releases</span>
+- <span style="color:#4ecdc4">🤝 **Community of WoW players**</span> <span style="color:#e67e23">sharing tips and experiences</span>
+- <span style="color:#FFD700">📢 **First to know**</span> <span style="color:#e67e23">about new</span> <span style="color:#8B1538">R</span><span style="color:#8B1538">G</span><span style="color:#8B1538">X</span> <span style="color:#4ecdc4">Mods</span> <span style="color:#e67e23">releases</span>
+- <span style="color:#e67e23">🎉 **Events, giveaways**, and community activities</span>
+
+<img src="https://raw.githubusercontent.com/donniedice/SimpleQuestPlates/main/images/kiwi.gif" alt="RealmGX Kiwi" width="100">
+
+**<span style="color:#ff6b6b">⚠️ WARNING:</span>** <span style="color:#e67e23">Works on ALL versions — because nostalgia knows no bounds.</span>
+
+**<span style="color:#2dc26b">The Kiwi Says:</span>** <span style="color:#b96ad9">"Bwwiiiee."</span>
 
 </div>
 
-## 💖 Support RGX Mods
+---
+
+## <span style="color:#FFD700">💖 Support </span> <span style="color:#8B1538">R</span><span style="color:#8B1538">G</span><span style="color:#8B1538">X</span> <span style="color:#4ecdc4">Mods</span>
 
 <div align="center">
 
-**Your support helps keep RGX Mods alive and constantly improving!**
+**<span style="color:#e67e23">Your support helps keep</span> <span style="color:#8B1538">R</span><span style="color:#8B1538">G</span><span style="color:#8B1538">X</span> <span style="color:#4ecdc4">Mods</span> <span style="color:#e67e23">alive and constantly improving!</span>**
 
-<a href="https://www.buymeacoffee.com/donniedice" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+| | |
+|---|---|
+| [![Donate](https://img.shields.io/badge/Donate-CashApp-00C853?style=for-the-badge&logo=cash-app&logoColor=white)](https://bit.ly/3fyxxSU) | [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-Support-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/donniedice) |
+| [![GitHub Sponsor](https://img.shields.io/badge/Sponsor-GitHub-ff69b4?style=for-the-badge&logo=github-sponsors&logoColor=white)](https://github.com/sponsors/donniedice) | [![Star](https://img.shields.io/badge/⭐-Star%20this%20repository-yellow?style=for-the-badge&logo=github)](https://github.com/donniedice/BLU_Classic) |
 
-[![Donate](https://img.shields.io/badge/Donate-CashApp-00C853?style=for-the-badge&logo=cash-app&logoColor=white)](https://bit.ly/3fyxxSU)
-[![GitHub Sponsor](https://img.shields.io/badge/Sponsor-GitHub-ff69b4?style=for-the-badge&logo=github-sponsors&logoColor=white)](https://github.com/sponsors/donniedice)
-
-[![Star this repository](https://img.shields.io/badge/⭐-Star%20this%20repository-yellow?style=for-the-badge&logo=github)](https://github.com/donniedice/BLU_Classic)
-
-*Every coffee helps fund new features and sound additions!*
+_<span style="color:#e67e23">Every coffee helps fund new features and sound additions!</span>_
 
 </div>
 
-## 🎯 What is BLU Classic?
+---
 
-**BLU Classic | Better Level-Up! Classic** is the universal version of the popular BLU addon that supports ALL World of Warcraft versions - from Classic Era to Retail. It brings customizable sounds from over 50 games to enhance your WoW experience across every version, replacing repetitive default sounds with memorable audio from your favorite games.
+## <span style="color:#FFD700">🎯 What is BLU Classic?</span>
 
-## ✨ Features
+**<span style="color:#05dffa">B</span><span style="color:#05dffa">L</span><span style="color:#05dffa">U</span> <span style="color:#FFD700">Classic</span> <span style="color:#3598db">|</span> <span style="color:#05dffa">B</span><span style="color:#fff">etter </span><span style="color:#05dffa">L</span><span style="color:#fff">evel-</span><span style="color:#05dffa">U</span><span style="color:#fff">p!</span> <span style="color:#FFD700">Classic</span>** <span style="color:#e67e23">is the universal version of the popular BLU addon that supports ALL</span> <span style="color:#06c">World of Warcraft</span> <span style="color:#e67e23">versions — from Classic Era to Retail. It brings customizable sounds from over 50 games to enhance your WoW experience across every version, replacing repetitive default sounds with memorable audio from your favorite games.</span>
+
+### <span style="color:#FFD700">🔥 Why Choose BLU Classic?</span>
+- **<span style="color:#2dc26b">🎮 Universal Coverage:</span>** <span style="color:#e67e23">One addon for every WoW version — Retail, Classic Era, Cata, Wrath, TBC, and Mists</span>
+- **<span style="color:#FFD700">🌟 50+ Games:</span>** <span style="color:#e67e23">Iconic sounds from Final Fantasy, Zelda, Mario, Skyrim, and many more</span>
+- **<span style="color:#b96ad9">🛠️ Smart Management:</span>** <span style="color:#e67e23">Automatically mutes default WoW sounds when replacing them</span>
+- **<span style="color:#4ecdc4">🎯 Persistent Settings:</span>** <span style="color:#e67e23">Your preferences are saved between sessions</span>
+- **<span style="color:#ff6b6b">💬 Active Support:</span>** <span style="color:#e67e23">Join our Discord for instant help!</span>
+
+**<span style="color:#e67e23">Note</span><span style="color:#3598db">:</span>** <span style="color:#e67e23">For Retail-only users who want the latest sound pack features, use</span> [<span style="color:#05dffa">BLU</span>](https://github.com/donniedice/BLU)<span style="color:#e67e23">.</span>
+
+---
+
+## <span style="color:#FFD700">✨ Features</span>
 
 <div align="center">
 
@@ -104,37 +129,17 @@
 | ⚙️ **Smart Management** | Automatically mutes default WoW sounds when replacing | All Versions |
 | 💾 **Persistent Settings** | Your preferences are saved between sessions | All Versions |
 | 🎨 **Professional UI** | Clean options panel with intuitive controls | All Versions |
-| 🛡️ **Error-Free** | Comprehensive error handling and validation | All Versions |
 | 🔧 **Debug Mode** | Built-in debugging for troubleshooting | All Versions |
 
 </div>
 
-## 🚀 Quick Start
+---
 
-1. **Install** BLU Classic from your preferred platform
-2. **Launch** World of Warcraft (any version!)
-3. **Type** `/bluc` to open the options panel
-4. **Choose** your favorite sounds for each event
-5. **Enjoy** your personalized WoW experience!
-
-## 📋 Command Reference
+## <span style="color:#FFD700">🎵 Available Game Sounds</span>
 
 <div align="center">
 
-| Command | Description |
-|---------|-------------|
-| `/bluc` | Open the options panel |
-| `/bluc help` | Display help information |
-| `/bluc debug` | Toggle debug mode on/off |
-| `/bluc welcome` | Toggle welcome message on/off |
-
-</div>
-
-## 🎵 Available Game Sounds
-
-<div align="center">
-
-### 🎮 **50+ Games Available!**
+### <span style="color:#FFD700">🎮 50+ Games Available!</span>
 
 | | | |
 |---|---|---|
@@ -152,9 +157,9 @@
 | Fire Emblem | Morrowind | Warcraft 3 |
 | Fire Emblem Awakening | | The Witcher 3 |
 
-*`Note`: Each game includes Low, Medium, and High volume variants for all sound types.*
+_`Note`: Each game includes Low, Medium, and High volume variants for all sound types._
 
-### 🎯 **Special Sound Collections**
+### <span style="color:#FFD700">🎯 Special Sound Collections</span>
 - **Elden Ring**: 6 unique variations
 - **Shining Force 3**: 11 different battle themes
 - **Warcraft 3**: Multiple unit acknowledgment sounds
@@ -162,178 +167,201 @@
 
 </div>
 
-## 🎮 Sound Events
+---
 
-### Supported Events:
-- **Level-Up**: Play custom sounds when you gain a level
-- **Achievements**: Celebrate achievements with unique sounds
-- **Quest Accept**: Custom sound when accepting quests
-- **Quest Complete**: Rewarding sounds for quest turn-ins
-- **Reputation Gains**: Audio feedback for reputation increases
-- **Battle Pet Level-Up**: Special sounds for pet leveling (Retail & Mists only)
-- **Trading Post**: Completion sounds for activities (Retail only)
-- **Honor Ranks**: Recognition for PvP progression (Retail only)
-- **Renown**: Sounds for renown reputation gains (Retail only)
-- **Delve Companion**: Level-up sounds for your companion (Retail only)
+## <span style="color:#FFD700">🎮 Sound Events</span>
 
-### Volume Options:
-Each sound type has three volume levels:
-- **High**: Full volume for maximum impact
-- **Medium**: Balanced volume (default)
-- **Low**: Subtle volume for background play
+### <span style="color:#4ecdc4">Supported Events:</span>
+- **<span style="color:#2dc26b">Level-Up</span><span style="color:#3598db">:</span>** <span style="color:#e67e23">Play custom sounds when you gain a level</span>
+- **<span style="color:#FFD700">Achievements</span><span style="color:#3598db">:</span>** <span style="color:#e67e23">Celebrate achievements with unique sounds</span>
+- **<span style="color:#b96ad9">Quest Accept</span><span style="color:#3598db">:</span>** <span style="color:#e67e23">Custom sound when accepting quests</span>
+- **<span style="color:#ff6b6b">Quest Complete</span><span style="color:#3598db">:</span>** <span style="color:#e67e23">Rewarding sounds for quest turn-ins</span>
+- **<span style="color:#4ecdc4">Reputation Gains</span><span style="color:#3598db">:</span>** <span style="color:#e67e23">Audio feedback for reputation increases</span>
+- **<span style="color:#2dc26b">Battle Pet Level-Up</span><span style="color:#3598db">:</span>** <span style="color:#e67e23">Special sounds for pet leveling (Retail & Mists only)</span>
+- **<span style="color:#FFD700">Trading Post</span><span style="color:#3598db">:</span>** <span style="color:#e67e23">Completion sounds for activities (Retail only)</span>
+- **<span style="color:#b96ad9">Honor Ranks</span><span style="color:#3598db">:</span>** <span style="color:#e67e23">Recognition for PvP progression (Retail only)</span>
+- **<span style="color:#ff6b6b">Renown</span><span style="color:#3598db">:</span>** <span style="color:#e67e23">Sounds for renown reputation gains (Retail only)</span>
+- **<span style="color:#4ecdc4">Delve Companion</span><span style="color:#3598db">:</span>** <span style="color:#e67e23">Level-up sounds for your companion (Retail only)</span>
 
-## 🎮 Compatibility
+### <span style="color:#4ecdc4">Volume Options:</span>
+<span style="color:#e67e23">Each sound type has three volume levels</span><span style="color:#3598db">:</span>
+- **<span style="color:#ff6b6b">High</span><span style="color:#3598db">:</span>** <span style="color:#e67e23">Full volume for maximum impact</span>
+- **<span style="color:#FFD700">Medium</span><span style="color:#3598db">:</span>** <span style="color:#e67e23">Balanced volume (default)</span>
+- **<span style="color:#2dc26b">Low</span><span style="color:#3598db">:</span>** <span style="color:#e67e23">Subtle volume for background play</span>
+
+---
+
+## <span style="color:#FFD700">🚀 Quick Start</span>
+
+1. **<span style="color:#2dc26b">Install</span>** <span style="color:#05dffa">B</span><span style="color:#05dffa">L</span><span style="color:#05dffa">U</span> <span style="color:#FFD700">Classic</span> <span style="color:#e67e23">from your preferred platform</span>
+2. **<span style="color:#4ecdc4">Launch</span>** <span style="color:#06c">World of Warcraft</span> <span style="color:#e67e23">(any version!)</span>
+3. **<span style="color:#b96ad9">Type</span>** `/bluc` <span style="color:#e67e23">to open the options panel</span>
+4. **<span style="color:#ff6b6b">Choose</span>** <span style="color:#e67e23">your favorite sounds for each event</span>
+5. **<span style="color:#FFD700">Enjoy</span>** <span style="color:#e67e23">your personalized WoW experience!</span>
+
+---
+
+## <span style="color:#FFD700">📋 Command Reference</span>
+
+<span style="color:#e67e23">Use</span> <span style="color:#2dc26b">`/bluc`</span> <span style="color:#e67e23">followed by</span><span style="color:#3598db">:</span>
 
 <div align="center">
 
-### 🌍 **Universal Support - ALL WoW Versions!**
+| Command | Description |
+|---------|-------------|
+| `/bluc` | Open the options panel |
+| `/bluc help` | Display help information |
+| `/bluc debug` | Toggle debug mode on/off |
+| `/bluc welcome` | Toggle welcome message on/off |
+
+</div>
+
+---
+
+## <span style="color:#FFD700">📋 Compatibility</span>
+
+<div align="center">
+
+### <span style="color:#FFD700">🌍 Universal Support — ALL WoW Versions!</span>
 
 | WoW Version | Interface | Status | TOC File |
 |-------------|-----------|--------|----------|
-| The War Within (Retail) | 110105 | ✅ Fully Supported | `BLU_Classic.toc` |
-| Mists of Pandaria Classic | 50500 | ✅ Fully Supported | `BLU_Classic_Mists.toc` |
-| Cataclysm Classic | 40402 | ✅ Fully Supported | `BLU_Classic_Cata.toc` |
-| Wrath of the Lich King Classic | 30403 | ✅ Fully Supported | `BLU_Classic_Wrath.toc` |
-| Burning Crusade Classic | 20504 | ✅ Fully Supported | `BLU_Classic_BCC.toc` |
-| Classic Era / Hardcore / SoD | 11507 | ✅ Fully Supported | `BLU_Classic_Vanilla.toc` |
+| **The War Within (Retail)** | `110105` | ✅ Fully Supported | `BLU_Classic.toc` |
+| **Mists of Pandaria Classic** | `50500` | ✅ Fully Supported | `BLU_Classic_Mists.toc` |
+| **Cataclysm Classic** | `40402` | ✅ Fully Supported | `BLU_Classic_Cata.toc` |
+| **Wrath of the Lich King Classic** | `30403` | ✅ Fully Supported | `BLU_Classic_Wrath.toc` |
+| **Burning Crusade Classic** | `20504` | ✅ Fully Supported | `BLU_Classic_BCC.toc` |
+| **Classic Era / Hardcore / SoD** | `11507` | ✅ Fully Supported | `BLU_Classic_Vanilla.toc` |
 
-**Note**: Classic Era, Hardcore, and Season of Discovery all use the same interface version.
-**Note**: Some features are Retail-only due to game limitations.
+**<span style="color:#e67e23">Note</span><span style="color:#3598db">:</span>** <span style="color:#e67e23">Classic Era, Hardcore, and Season of Discovery all use the same interface version.</span>
+**<span style="color:#e67e23">Note</span><span style="color:#3598db">:</span>** <span style="color:#e67e23">Some features are Retail-only due to game limitations.</span>
 
 </div>
 
-## 📥 Installation
+---
 
-1. **Download** from your preferred platform:
-   - [CurseForge](https://www.curseforge.com/wow/addons/blu-classic)
-   - [Wago.io](https://addons.wago.io/addons/blu-classic)
-   - [WoWInterface](https://www.wowinterface.com/downloads/info26465-BLU-Classic.html)
-   - [GitHub](https://github.com/donniedice/BLU_Classic)
+## <span style="color:#FFD700">📥 Installation</span>
 
-2. **Extract** to your WoW AddOns directory:
-   - **Retail**: `World of Warcraft/_retail_/Interface/AddOns`
-   - **Classic**: `World of Warcraft/_classic_/Interface/AddOns`
-   - **Classic Era**: `World of Warcraft/_classic_era_/Interface/AddOns`
+1. **<span style="color:#2dc26b">Download</span>** <span style="color:#e67e23">from your preferred platform</span><span style="color:#3598db">:</span>
+   - [<span style="color:#ff6b6b">CurseForge</span>](https://www.curseforge.com/wow/addons/blu-classic)
+   - [<span style="color:#b96ad9">Wago.io</span>](https://addons.wago.io/addons/blu-classic)
+   - [<span style="color:#4ecdc4">WoWInterface</span>](https://www.wowinterface.com/downloads/info26465-BLU-Classic.html)
+   - [<span style="color:#24292e">GitHub</span>](https://github.com/donniedice/BLU_Classic/releases)
 
-3. **Restart** WoW and enable in AddOns menu
+2. **<span style="color:#4ecdc4">Extract</span>** <span style="color:#e67e23">to your</span> <span style="color:#06c">WoW</span> <span style="color:#e67e23">AddOns directory</span><span style="color:#3598db">:</span>
+   - <span style="color:#e67e23">**Retail**: `World of Warcraft/_retail_/Interface/AddOns`</span>
+   - <span style="color:#e67e23">**Classic**: `World of Warcraft/_classic_/Interface/AddOns`</span>
+   - <span style="color:#e67e23">**Classic Era**: `World of Warcraft/_classic_era_/Interface/AddOns`</span>
 
-## 🆕 What's New
+3. **<span style="color:#b96ad9">Restart</span>** <span style="color:#06c">WoW</span> <span style="color:#e67e23">and enable in AddOns menu</span>
+
+---
+
+## <span style="color:#FFD700">🆕 What's New</span>
 
 <details>
-<summary><strong>v1.0.0 - Initial Classic Release</strong></summary>
+<summary><strong><span style="color:#FFD700">🎉 Click to see the latest updates!</span></strong></summary>
 
-### v1.0.0 - Initial Classic Release
-- **Created**: Universal version supporting ALL WoW versions
-- **Added**: TOC files for every WoW version (Retail, Mists, Cata, Wrath, TBC, Classic)
-- **Optimized**: Code for cross-version compatibility
-- **Enhanced**: RGX Mods branding and community integration
-- **Updated**: All sounds and functionality for universal support
+### <span style="color:#4ecdc4">v1.0.0 — Initial Classic Release</span>
+- <span style="color:#2dc26b">✅ **Created**</span> <span style="color:#e67e23">universal version supporting ALL WoW versions</span>
+- <span style="color:#FFD700">✅ **Added**</span> <span style="color:#e67e23">TOC files for every WoW version (Retail, Mists, Cata, Wrath, TBC, Classic)</span>
+- <span style="color:#ff6b6b">✅ **Optimized**</span> <span style="color:#e67e23">code for cross-version compatibility</span>
+- <span style="color:#b96ad9">✅ **Enhanced**</span> <span style="color:#e67e23">RGX Mods branding and community integration</span>
+- <span style="color:#4ecdc4">✅ **Updated**</span> <span style="color:#e67e23">all sounds and functionality for universal support</span>
 
 </details>
 
-## 🛠️ Configuration Tips
+---
 
-### Recommended Settings:
-- **Level-Up**: Final Fantasy, Pokemon, or Zelda for nostalgic feels
-- **Achievements**: Elden Ring or Dark Souls for epic moments  
-- **Quests**: Skyrim or Witcher 3 for immersive RPG experience
-- **Reputation**: Warcraft 3 sounds to stay in the Warcraft universe
+## <span style="color:#FFD700">🛠️ Configuration Tips</span>
 
-### Performance:
-- Use "Low" volume variants if you experience any audio delays
-- Debug mode can help identify any issues with sound playback
-- All sounds are optimized .ogg files for minimal impact
+<table width="100%">
+<tr>
+<td width="50%" valign="top">
 
-## 🐛 Known Issues
+### <span style="color:#4ecdc4">Recommended Settings:</span>
+- **<span style="color:#2dc26b">Level-Up</span><span style="color:#3598db">:</span>** <span style="color:#e67e23">Final Fantasy, Pokemon, or Zelda for nostalgic feels</span>
+- **<span style="color:#FFD700">Achievements</span><span style="color:#3598db">:</span>** <span style="color:#e67e23">Elden Ring for epic moments</span>
+- **<span style="color:#b96ad9">Quests</span><span style="color:#3598db">:</span>** <span style="color:#e67e23">Skyrim or Witcher 3 for immersive RPG experience</span>
+- **<span style="color:#ff6b6b">Reputation</span><span style="color:#3598db">:</span>** <span style="color:#e67e23">Warcraft 3 sounds to stay in the Warcraft universe</span>
 
-- Double quest accept sound in Classic is a Blizzard bug, not BLU-related
-- Some sounds may have slight delays on first play (cached after)
-- **Note**: Ensure proper unmute of sounds when the addon unloads to prevent audio issues.
+</td>
+<td width="50%" valign="top">
 
-## 🤝 Contributing
+### <span style="color:#4ecdc4">Performance:</span>
+- <span style="color:#e67e23">Use "Low" volume variants if you experience any audio delays</span>
+- <span style="color:#e67e23">Debug mode can help identify issues with sound playback</span>
+- <span style="color:#e67e23">All sounds are optimized `.ogg` files for minimal impact</span>
+- <span style="color:#e67e23">Ensure proper unmute of sounds when the addon unloads to prevent audio issues</span>
 
-Contributions are welcome! Feel free to:
-- Report bugs via [GitHub Issues](https://github.com/donniedice/BLU_Classic/issues)
-- Submit pull requests with improvements
-- Suggest new game sounds to add
-- Help with translations
-
-## 📊 Repository Statistics
-
-<div align="center">
-
-<a href="https://github.com/donniedice/BLU_Classic">
-  <img align="center" src="https://github-readme-stats.vercel.app/api?username=donniedice&show_icons=true&include_all_commits=true&theme=radical&hide_border=true" alt="DonnieDice's GitHub Stats" />
-</a>
-
-<a href="https://github.com/donniedice/BLU_Classic">
-  <img align="center" src="https://github-readme-stats.vercel.app/api/top-langs/?username=donniedice&layout=compact&theme=radical&hide_border=true" alt="Top Languages" />
-</a>
-
-</div>
-
-<div align="center">
-
-[![GitHub Activity Graph](https://github-readme-activity-graph.vercel.app/graph?username=donniedice&theme=react-dark&hide_border=true)](https://github.com/donniedice/BLU_Classic)
-
-</div>
+</td>
+</tr>
+</table>
 
 ---
 
-## 📈 Project Metrics
+## <span style="color:#FFD700">🐛 Known Issues</span>
 
-<div align="center">
-
-| Metric | Value |
-|--------|-------|
-| **Total Lines of Code** | ![Lines of code](https://img.shields.io/tokei/lines/github/donniedice/BLU_Classic?style=flat-square) |
-| **Repository Size** | ![GitHub repo size](https://img.shields.io/github/repo-size/donniedice/BLU_Classic?style=flat-square) |
-| **Last Commit** | ![GitHub last commit](https://img.shields.io/github/last-commit/donniedice/BLU_Classic?style=flat-square) |
-| **Open Issues** | ![GitHub issues](https://img.shields.io/github/issues/donniedice/BLU_Classic?style=flat-square) |
-| **Pull Requests** | ![GitHub pull requests](https://img.shields.io/github/issues-pr/donniedice/BLU_Classic?style=flat-square) |
-| **Contributors** | ![GitHub contributors](https://img.shields.io/github/contributors/donniedice/BLU_Classic?style=flat-square) |
-| **Total Game Sounds** | 50+ unique games |
-| **Sound Files** | 198 audio files |
-| **Supported Events** | 10 event types |
-| **Languages** | ![GitHub top language](https://img.shields.io/github/languages/top/donniedice/BLU_Classic?style=flat-square) |
-| **Watchers** | ![GitHub watchers](https://img.shields.io/github/watchers/donniedice/BLU_Classic?style=flat-square) |
-
-</div>
+- <span style="color:#e67e23">Double quest accept sound in Classic is a Blizzard bug, not BLU-related</span>
+- <span style="color:#e67e23">Some sounds may have slight delays on first play (cached after first use)</span>
+- <span style="color:#e67e23">Ensure proper unmute of sounds when the addon unloads to prevent audio issues</span>
 
 ---
 
-## 🤝 Contributors
+## <span style="color:#FFD700">🔧 Troubleshooting</span>
 
-<div align="center">
+**<span style="color:#ff6b6b">No sound playing?</span>**
+- <span style="color:#e67e23">Open the options panel with</span> `/bluc` <span style="color:#e67e23">and verify the correct sound is selected</span>
+- <span style="color:#e67e23">Check that your in-game Master volume is not muted</span>
 
-Thanks to all the amazing people who have contributed to BLU Classic! 🎉
+**<span style="color:#ff6b6b">Wrong version TOC loaded?</span>**
+- <span style="color:#e67e23">Make sure you are installing to the correct AddOns folder for your WoW version</span>
+- <span style="color:#e67e23">Each WoW version uses a different subdirectory (`_retail_`, `_classic_`, `_classic_era_`)</span>
 
-<a href="https://github.com/donniedice/BLU_Classic/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=donniedice/BLU_Classic" alt="Contributors" />
-</a>
+**<span style="color:#ff6b6b">Still having trouble?</span>**
+- <span style="color:#e67e23">Join our</span> [<span style="color:#7289da">Discord</span>](https://discord.gg/N7kdKAHVVF) <span style="color:#e67e23">for instant support</span>
+- <span style="color:#e67e23">Open a</span> [<span style="color:#ff6b6b">GitHub Issue</span>](https://github.com/donniedice/BLU_Classic/issues)
 
-</div>
+---
+
+## <span style="color:#FFD700">🤝 Contributing</span>
+
+<span style="color:#e67e23">Contributions are welcome! Feel free to</span><span style="color:#3598db">:</span>
+- <span style="color:#2dc26b">🐛 **Report bugs**</span> <span style="color:#e67e23">via</span> [<span style="color:#b96ad9">GitHub Issues</span>](https://github.com/donniedice/BLU_Classic/issues)
+- <span style="color:#ff6b6b">💡 **Suggest features**</span> <span style="color:#e67e23">in our</span> [<span style="color:#7289da">Discord</span>](https://discord.gg/N7kdKAHVVF)
+- <span style="color:#4ecdc4">🌍 **Help with translations**</span> <span style="color:#e67e23">for global players</span>
+- <span style="color:#FFD700">🎵 **Suggest new game sounds**</span> <span style="color:#e67e23">to add to the library</span>
+- <span style="color:#2dc26b">⭐ **Star the repository**</span> <span style="color:#e67e23">to show your support</span>
+
+---
+
+## <span style="color:#FFD700">📄 License</span>
+
+<span style="color:#e67e23">This project is licensed under the</span> [<span style="color:#2dc26b">MIT License</span>](https://github.com/donniedice/BLU_Classic/blob/main/LICENSE)<span style="color:#e67e23">.</span>
 
 ---
 
 <div align="center">
 
-## 🌟 **Thank you for choosing RGX Mods!** 🌟
+### <span style="color:#4ecdc4">🌟 Thank you for choosing </span> <span style="color:#8B1538">R</span><span style="color:#8B1538">G</span><span style="color:#8B1538">X</span> <span style="color:#4ecdc4">Mods! 🌟</span>
 
-**Made with ❤️ by the RealmGX Community**
-**Lead Developer: [DonnieDice](https://github.com/donniedice)**
+**<span style="color:#e67e23">Made with ❤️ by the</span> [<span style="color:#8B1538">R</span><span style="color:#7598b6">ealm</span><span style="color:#8B1538">G</span><span style="color:#8B1538">X</span>](https://realmgx.com) <span style="color:#FFD700">Community</span>**
+**<span style="color:#2dc26b">Lead Developer</span><span style="color:#3598db">:</span>** [<span style="color:#b96ad9">DonnieDice</span>](https://github.com/donniedice)
 
-*"Make every level count with sounds that matter!"*
+_<span style="color:#e67e23">"Make every level count with sounds that matter!"</span>_
 
-<div align="center">
+**<span style="color:#FFD700">⚠️ WARNING:</span>** <span style="color:#e67e23">Works on ALL versions — because nostalgia knows no bounds.</span>
 
-[![Join Discord](https://img.shields.io/badge/🎮%20Join%20RealmGX%20Discord-Realm%20Gamers%20eXtreme-7289da?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/N7kdKAHVVF)
+<img src="https://raw.githubusercontent.com/donniedice/SimpleQuestPlates/main/images/kiwi.gif" alt="RealmGX Kiwi" width="80">
 
-[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-Support%20RGX%20Mods-yellow?style=for-the-badge)](https://www.buymeacoffee.com/donniedice)
-[![GitHub Stars](https://img.shields.io/github/stars/donniedice/BLU_Classic?style=for-the-badge&logo=github)](https://github.com/donniedice/BLU_Classic)
+**<span style="color:#2dc26b">The Kiwi Says:</span>** <span style="color:#b96ad9">"Bwwiiiee."</span>
 
-**🎮 RGX Mods - Powered by RealmGX Community**
+---
 
-</div>
+### <span style="color:#FFD700">Part of the RGX Mods Collection</span>
+
+[<span style="color:#05dffa">BLU</span>](https://github.com/donniedice/BLU) | [<span style="color:#9b59b6">CCU</span>](https://github.com/donniedice/CoordinationCloakUtility) | [<span style="color:#ffe568">FFLU</span>](https://github.com/donniedice/FFLU) | [<span style="color:#58be81">PetBuddy2</span>](https://github.com/donniedice/PetBuddy2) | [<span style="color:#e74c3c">RND</span>](https://github.com/donniedice/remove_nameplate_debuffs) | [<span style="color:#58be81">SQP</span>](https://github.com/donniedice/SimpleQuestPlates) | [<span style="color:#8B4513">SRLU</span>](https://github.com/donniedice/SRLU)
+
+**<span style="color:#8B1538">🎮</span> <span style="color:#8B1538">R</span><span style="color:#8B1538">G</span><span style="color:#8B1538">X</span> <span style="color:#4ecdc4">Mods</span> <span style="color:#3598db">-</span> <span style="color:#e67e23">Powered by</span> [<span style="color:#8B1538">R</span><span style="color:#7598b6">ealm</span><span style="color:#8B1538">G</span><span style="color:#8B1538">X</span>](https://realmgx.com) <span style="color:#e67e23">Community</span>**
 
 </div>

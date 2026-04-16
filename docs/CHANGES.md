@@ -1,15 +1,6 @@
-## v1.2.7
-- Fix: Unmute default sounds on addon disable and logout to prevent sounds remaining permanently muted when the addon is disabled or unloaded
-- Fix: Register PLAYER_LOGOUT handler at file-load time so unmute fires even if addon initialization failed
-
-## v1.2.6
-- Fix: Resolved SavedVariables conflict between BLU and BLU_Classic addons (BCC, Wrath, Cata TOCs were using `BLUDB` instead of `BLUClassicDB`)
-- Fix: Corrected Lua syntax error in battlepets.lua (`}` instead of `end`) causing errors on MoP Classic
-- Fix: Version string in options panel no longer shows stale hardcoded "v1.2.2" fallback
-- Fix: Removed hardcoded version suffix from TOC title strings (now displayed dynamically)
-- Fix: Removed branch triggers from CI/CD workflow to prevent duplicate Discord notifications
-- Update: Main TOC interface version updated to 120000 (Midnight pre-patch)
-
-## v1.2.5
-- Fix: Registered /blu slash command to open options panel
-- Chore: Updated TOC interface versions for all Classic clients
+# Version 1.3.0
+- Added nested dropdown sound selection menus organized by game franchise, with variant submenus for games that have multiple sound options.
+- Removed Retail WoW support entirely — BLU Classic is now Classic-only (Classic Era, BCC, Wrath, Cata, Mists). Use [BLU](https://github.com/donniedice/BLU) for Retail.
+- Removed Delve Companion, Honor Ranks, Renown, and Trading Post event types and their associated code, defaults, and option groups.
+- Deleted the Retail TOC file (`BLU_Classic.toc`) and removed Retail interface version detection from core.
+- Ensured default WoW sounds are always restored on logout, reload, or addon disable via a standalone `PLAYER_LOGOUT` handler registered at file-load time.

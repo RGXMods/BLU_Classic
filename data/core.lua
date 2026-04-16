@@ -28,11 +28,7 @@ function BLU_Classic:GetGameVersion()
     
     local _, _, _, interfaceVersion = GetBuildInfo()
     
-    if interfaceVersion >= 110000 then
-        cachedGameVersion = "retail"
-    elseif interfaceVersion >= 100000 then -- this covers between 100000 and 110000
-        cachedGameVersion = "retail"
-    elseif interfaceVersion >= 50000 and interfaceVersion < 60000 then
+    if interfaceVersion >= 50000 and interfaceVersion < 60000 then
         cachedGameVersion = "mists"
     elseif interfaceVersion >= 40000 and interfaceVersion < 50000 then
         cachedGameVersion = "cata"
@@ -54,16 +50,12 @@ end
 -- Feature Compatibility Tables (single source of truth)
 --=====================================================================================
 local FEATURE_AVAILABILITY = {
-    Achievement = { retail = true, mists = true, cata = true, wrath = true },
-    BattlePet = { retail = true, mists = true },
-    Honor = { retail = true },
-    Delve = { retail = true },
-    Renown = { retail = true },
-    Post = { retail = true },
-    Level = { retail = true, mists = true, cata = true, wrath = true, tbc = true, vanilla = true },
-    Quest = { retail = true, mists = true, cata = true, wrath = true, tbc = true, vanilla = true },
-    QuestAccept = { retail = true, mists = true, cata = true, wrath = true, tbc = true, vanilla = true },
-    Reputation = { retail = true, mists = true, cata = true, wrath = true, tbc = true, vanilla = true },
+    Achievement = { mists = true, cata = true, wrath = true },
+    BattlePet = { mists = true },
+    Level = { mists = true, cata = true, wrath = true, tbc = true, vanilla = true },
+    Quest = { mists = true, cata = true, wrath = true, tbc = true, vanilla = true },
+    QuestAccept = { mists = true, cata = true, wrath = true, tbc = true, vanilla = true },
+    Reputation = { mists = true, cata = true, wrath = true, tbc = true, vanilla = true },
 }
 
 function BLU_Classic:IsFeatureAvailable(feature)
@@ -89,21 +81,10 @@ function BLU_Classic:RegisterSharedEvents()
         events.ACHIEVEMENT_EARNED = "HandleAchievementEarned"
     end
 
-    if version == "retail" then
-        events.HONOR_LEVEL_UPDATE = "HandleHonorLevelUpdate"
-        events.MAJOR_FACTION_RENOWN_LEVEL_CHANGED = "HandleRenownLevelChanged"
-        events.PERKS_ACTIVITY_COMPLETED = "HandlePerksActivityCompleted"
-        if self:IsFeatureAvailable("BattlePet") then -- Use IsFeatureAvailable for BattlePet
-            events.PET_BATTLE_LEVEL_CHANGED = "HandleBattlePetLevelUp"
-            events.PET_JOURNAL_LIST_UPDATE = "HandleBattlePetLevelUp"
-        end
-    elseif version == "mists" then
-        if self:IsFeatureAvailable("BattlePet") then -- Use IsFeatureAvailable for BattlePet
-            events.PET_BATTLE_LEVEL_CHANGED = "HandleBattlePetLevelUp"
-            events.PET_JOURNAL_LIST_UPDATE = "HandleBattlePetLevelUp"
-        end
+    if self:IsFeatureAvailable("BattlePet") then
+        events.PET_BATTLE_LEVEL_CHANGED = "HandleBattlePetLevelUp"
+        events.PET_JOURNAL_LIST_UPDATE = "HandleBattlePetLevelUp"
     end
-    -- "cata" or "wrath" already covered by IsFeatureAvailable("Achievement")
 
     for event, handler in pairs(events) do
         if type(self[handler]) == "function" then
@@ -137,48 +118,9 @@ function BLU_Classic:HandleAchievementEarned()
     self:HandleEvent("ACHIEVEMENT_EARNED", "AchievementSoundSelect", "AchievementVolume", defaultSounds and defaultSounds[1], "ACHIEVEMENT_EARNED_TRIGGERED")
 end
 
-function BLU_Classic:HandleHonorLevelUpdate()
-    if not self:IsFeatureAvailable("Honor") then return end
-    self:HandleEvent("HONOR_LEVEL_UPDATE", "HonorSoundSelect", "HonorVolume", defaultSounds and defaultSounds[5], "HONOR_LEVEL_UPDATE_TRIGGERED")
-end
-
 function BLU_Classic:HandleBattlePetLevelUp()
     if not self:IsFeatureAvailable("BattlePet") then return end
     self:HandleEvent("PET_BATTLE_LEVEL_CHANGED", "BattlePetLevelSoundSelect", "BattlePetLevelVolume", defaultSounds and defaultSounds[2], "BATTLE_PET_LEVEL_UP_TRIGGERED")
-end
-
-function BLU_Classic:HandleRenownLevelChanged()
-    if not self:IsFeatureAvailable("Renown") then return end
-    self:HandleEvent("MAJOR_FACTION_RENOWN_LEVEL_CHANGED", "RenownSoundSelect", "RenownVolume", defaultSounds and defaultSounds[6], "MAJOR_FACTION_RENOWN_LEVEL_CHANGED_TRIGGERED")
-end
-
-function BLU_Classic:HandlePerksActivityCompleted()
-    if not self:IsFeatureAvailable("Post") then return end
-    self:HandleEvent("PERKS_ACTIVITY_COMPLETED", "PostSoundSelect", "PostVolume", defaultSounds and defaultSounds[9], "PERKS_ACTIVITY_COMPLETED_TRIGGERED")
-end
-
--- Delve Companion Level Up functions (from be75efd, adapted)
-function BLU_Classic:OnDelveCompanionLevelUp(event, ...)
-    if self:GetGameVersion() == "retail" then return end -- Assuming this should only trigger on non-retail
-    self:PrintDebugMessage(event .. " event fired, awaiting CHAT_MSG_SYSTEM for confirmation.")
-
-    if event == "CHAT_MSG_SYSTEM" then
-        local msg = ...
-        self:PrintDebugMessage("INCOMING_CHAT_MESSAGE: " .. msg)
-
-        local levelUpMatch = string.match(msg, "Brann Bronzebeard has reached Level (%d+)")
-        if levelUpMatch then
-            local level = tonumber(levelUpMatch)
-            self:PrintDebugMessage("|cff00ff00Brann Level-Up detected: Level " .. level .. "|r")
-            self:TriggerDelveLevelUpSound(level)
-        else
-            self:PrintDebugMessage("NO_LEVEL_FOUND")
-        end
-    end
-end
-
-function BLU_Classic:TriggerDelveLevelUpSound(level)
-    self:HandleEvent("DELVE_LEVEL_UP", "DelveLevelUpSoundSelect", "DelveLevelUpVolume", defaultSounds and defaultSounds[3], "DELVE_LEVEL_UP_TRIGGERED")
 end
 
 --=====================================================================================
@@ -194,23 +136,8 @@ function BLU_Classic:TestBattlePetLevelSound()
     self:TestSound("BattlePetLevelSoundSelect", "BattlePetLevelVolume", defaultSounds and defaultSounds[2], "TEST_BATTLE_PET_LEVEL_SOUND")
 end
 
-function BLU_Classic:TestDelveLevelUpSound()
-    if not self:IsFeatureAvailable("Delve") then return end
-    self:TestSound("DelveLevelUpSoundSelect", "DelveLevelUpVolume", defaultSounds and defaultSounds[3], "TEST_DELVE_LEVEL_UP_SOUND")
-end
-
-function BLU_Classic:TestHonorSound()
-    if not self:IsFeatureAvailable("Honor") then return end
-    self:TestSound("HonorSoundSelect", "HonorVolume", defaultSounds and defaultSounds[5], "TEST_HONOR_SOUND")
-end
-
 function BLU_Classic:TestLevelSound()
     self:TestSound("LevelSoundSelect", "LevelVolume", defaultSounds and defaultSounds[4], "TEST_LEVEL_SOUND")
-end
-
-function BLU_Classic:TestPostSound()
-    if not self:IsFeatureAvailable("Post") then return end
-    self:TestSound("PostSoundSelect", "PostVolume", defaultSounds and defaultSounds[9], "TEST_POST_SOUND")
 end
 
 function BLU_Classic:TestQuestAcceptSound()
@@ -219,11 +146,6 @@ end
 
 function BLU_Classic:TestQuestSound()
     self:TestSound("QuestSoundSelect", "QuestVolume", defaultSounds and defaultSounds[8], "TEST_QUEST_SOUND")
-end
-
-function BLU_Classic:TestRenownSound()
-    if not self:IsFeatureAvailable("Renown") then return end
-    self:TestSound("RenownSoundSelect", "RenownVolume", defaultSounds and defaultSounds[6], "TEST_RENOWN_SOUND")
 end
 
 function BLU_Classic:TestRepSound()
@@ -308,14 +230,10 @@ end
 local OPTION_GROUP_FEATURES = {
     group2 = "Achievement",
     group3 = "BattlePet",
-    group4 = "Delve",
-    group5 = "Honor",
-    group6 = "Level",
-    group7 = "QuestAccept",
-    group8 = "Quest",
-    group9 = "Renown",
-    group10 = "Reputation",
-    group11 = "Post",
+    group4 = "Level",
+    group5 = "QuestAccept",
+    group6 = "Quest",
+    group7 = "Reputation",
 }
 
 function BLU_Classic:FilterOptionsForVersion()
@@ -330,39 +248,24 @@ end
 
 -- Saved Variables Cleanup for Version Compatibility (from be75efd, adapted)
 function BLU_Classic:CleanupIncompatibleSavedVariables(version)
-    if version ~= "retail" then
-        self.db.profile.HonorSoundSelect = nil
-        self.db.profile.HonorVolume = nil
-        self.db.profile.DelveLevelUpSoundSelect = nil
-        self.db.profile.DelveLevelUpVolume = nil
-        self.db.profile.RenownSoundSelect = nil
-        self.db.profile.RenownVolume = nil
-        self.db.profile.PostSoundSelect = nil
-        self.db.profile.PostVolume = nil
-        
-        if version ~= "mists" then
-            self.db.profile.BattlePetLevelSoundSelect = nil
-            self.db.profile.BattlePetLevelVolume = nil
-        end
-    end
-    
-    -- Additional cleanup for non-retail from be75efd version
-    local groupsToRemove = {
-        vanilla = {"group2", "group3", "group4", "group5", "group9", "group11"},
-        tbc = {"group2", "group3", "group4", "group5", "group9", "group11"},
-        wrath = {"group3", "group4", "group5", "group9", "group11"},
-        cata = {"group3", "group4", "group5", "group9", "group11"},
-        mists = {"group4", "group5", "group9", "group11"},
-        retail = {"group4", "group10"}, -- Removing delve and reputation for retail as per be75efd
-    }
-    
-    local toRemove = groupsToRemove[version] or {}
-    for _, groupName in ipairs(toRemove) do
-        self.options.args[groupName] = nil
+    -- Clean up any leftover retail-only saved variables
+    self.db.profile.HonorSoundSelect = nil
+    self.db.profile.HonorVolume = nil
+    self.db.profile.DelveLevelUpSoundSelect = nil
+    self.db.profile.DelveLevelUpVolume = nil
+    self.db.profile.RenownSoundSelect = nil
+    self.db.profile.RenownVolume = nil
+    self.db.profile.PostSoundSelect = nil
+    self.db.profile.PostVolume = nil
+
+    if version ~= "mists" then
+        self.db.profile.BattlePetLevelSoundSelect = nil
+        self.db.profile.BattlePetLevelVolume = nil
     end
 
     if version == "vanilla" or version == "tbc" then
         self.db.profile.AchievementSoundSelect = nil
+        self.db.profile.AchievementVolume = nil
     end
 end
 

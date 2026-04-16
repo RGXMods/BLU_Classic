@@ -3,17 +3,6 @@
 --=====================================================================================
 
 muteSoundIDs = {
-    retail = {
-        569143,  -- Achievement
-        1489546, -- Honor
-        569593,  -- Level Up
-        642841,  -- Battle Pet Level
-        4745441, -- Renown
-        568016,  -- Reputation
-        567400,  -- Quest Accepted
-        567439,  -- Quest Turned In
-        2066672  -- Trade Post
-    },
     mists = {
         569143,  -- Achievement
         569593,  -- Level Up
@@ -130,20 +119,10 @@ defaultSounds = {
         [2] = "Interface\\Addons\\BLU_Classic\\sounds\\battle_pet_level_default_med.ogg",
         [3] = "Interface\\Addons\\BLU_Classic\\sounds\\battle_pet_level_default_high.ogg"
     },
-    [3] = { -- Honor
-        [1] = "Interface\\Addons\\BLU_Classic\\sounds\\honor_default_low.ogg",
-        [2] = "Interface\\Addons\\BLU_Classic\\sounds\\honor_default_med.ogg",
-        [3] = "Interface\\Addons\\BLU_Classic\\sounds\\honor_default_high.ogg"
-    },
     [4] = { -- Level Up
         [1] = "Interface\\Addons\\BLU_Classic\\sounds\\level_default_low.ogg",
         [2] = "Interface\\Addons\\BLU_Classic\\sounds\\level_default_med.ogg",
         [3] = "Interface\\Addons\\BLU_Classic\\sounds\\level_default_high.ogg"
-    },
-    [5] = { -- Renown
-        [1] = "Interface\\Addons\\BLU_Classic\\sounds\\renown_default_low.ogg",
-        [2] = "Interface\\Addons\\BLU_Classic\\sounds\\renown_default_med.ogg",
-        [3] = "Interface\\Addons\\BLU_Classic\\sounds\\renown_default_high.ogg"
     },
     [6] = { -- Rep
         [1] = "Interface\\Addons\\BLU_Classic\\sounds\\rep_default_low.ogg",
@@ -160,11 +139,6 @@ defaultSounds = {
         [2] = "Interface\\Addons\\BLU_Classic\\sounds\\quest_default_med.ogg",
         [3] = "Interface\\Addons\\BLU_Classic\\sounds\\quest_default_high.ogg"
     },
-    [9] = { -- Post
-        [1] = "Interface\\Addons\\BLU_Classic\\sounds\\post_default_low.ogg",
-        [2] = "Interface\\Addons\\BLU_Classic\\sounds\\post_default_med.ogg",
-        [3] = "Interface\\Addons\\BLU_Classic\\sounds\\post_default_high.ogg"
-    }
 }
 
 --=====================================================================================

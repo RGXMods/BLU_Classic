@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/donniedice/BLU_Classic/main/images/BLU_Logo.png" width="25" height="25"> <span style="color:#05dffa">B</span><span style="color:#05dffa">L</span><span style="color:#05dffa">U</span> <span style="color:#FFD700">Classic</span> <span style="color:#3598db">|</span> <span style="color:#05dffa">B</span><span style="color:#fff">etter </span><span style="color:#05dffa">L</span><span style="color:#fff">evel-</span><span style="color:#05dffa">U</span><span style="color:#fff">p!</span> <span style="color:#FFD700">Classic</span>
+# <span style="color:#05dffa">B</span><span style="color:#05dffa">L</span><span style="color:#05dffa">U</span> <span style="color:#FFD700">Classic</span> <span style="color:#3598db">|</span> <span style="color:#05dffa">B</span><span style="color:#fff">etter </span><span style="color:#05dffa">L</span><span style="color:#fff">evel-</span><span style="color:#05dffa">U</span><span style="color:#fff">p!</span> <span style="color:#FFD700">Classic</span>
 ## <img src="https://raw.githubusercontent.com/donniedice/SimpleQuestPlates/main/images/kiwi.gif" height="20"> <span style="color:#8B1538">R</span><span style="color:#8B1538">G</span><span style="color:#8B1538">X</span> <span style="color:#4ecdc4">Mods</span> <span style="color:#3598db">-</span> [<span style="color:#8B1538">R</span><span style="color:#7598b6">ealm</span><span style="color:#8B1538">G</span><span style="color:#8B1538">X</span>](https://realmgx.com) <span style="color:#FFD700">Community Project</span>
 
 <div align="center">
@@ -58,6 +58,8 @@
 
 **<span style="color:#FFD700">🎮 </span> [<span style="color:#8B1538">R</span><span style="color:#7598b6">ealm </span> <span style="color:#8B1538">G</span><span style="color:#7598b6">amers e</span><span style="color:#8B1538">X</span><span style="color:#7598b6">treme</span>](https://realmgx.com) <span style="color:#3598db">-</span> <span style="color:#4ecdc4">Where WoW Enthusiasts Unite!</span>**
 
+</div>
+
 **<span style="color:#e67e23">✨ What awaits you in our Discord:</span>**
 - <span style="color:#2dc26b">🛠️ **Instant addon support**</span> <span style="color:#e67e23">from the</span> <span style="color:#8B1538">R</span><span style="color:#8B1538">G</span><span style="color:#8B1538">X</span> <span style="color:#4ecdc4">Mods</span> <span style="color:#e67e23">team</span>
 - <span style="color:#ff6b6b">🎯 **Feature requests**</span> <span style="color:#e67e23">and direct dev communication</span>
@@ -65,6 +67,8 @@
 - <span style="color:#4ecdc4">🤝 **Community of WoW players**</span> <span style="color:#e67e23">sharing tips and experiences</span>
 - <span style="color:#FFD700">📢 **First to know**</span> <span style="color:#e67e23">about new</span> <span style="color:#8B1538">R</span><span style="color:#8B1538">G</span><span style="color:#8B1538">X</span> <span style="color:#4ecdc4">Mods</span> <span style="color:#e67e23">releases</span>
 - <span style="color:#e67e23">🎉 **Events, giveaways**, and community activities</span>
+
+<div align="center">
 
 <img src="https://raw.githubusercontent.com/donniedice/SimpleQuestPlates/main/images/kiwi.gif" alt="RealmGX Kiwi" width="100">
 
@@ -155,13 +159,13 @@ _<span style="color:#e67e23">Every coffee helps fund new features and sound addi
 
 _`Note`: Each game includes Low, Medium, and High volume variants for all sound types._
 
+</div>
+
 ### <span style="color:#FFD700">🎯 Special Sound Collections</span>
 - **Elden Ring**: 6 unique variations
 - **Shining Force 3**: 11 different battle themes
 - **Warcraft 3**: Multiple unit acknowledgment sounds
 - **The Witcher 3**: Quest completion variations
-
-</div>
 
 ---
 

@@ -459,5 +459,53 @@ sounds = {
 }
 
 --=====================================================================================
--- 
+-- Sound Grouping (for nested dropdown UI)
 --=====================================================================================
+BLU_Classic_SoundGroups = {
+    { name = "[Default]", indices = {1} },
+    { name = "[Random]", indices = {2} },
+    { name = "Altered Beast", indices = {3} },
+    { name = "Assassin's Creed", indices = {4} },
+    { name = "Castlevania", indices = {5} },
+    { name = "Diablo 2", indices = {6} },
+    { name = "DotA 2", indices = {8} },
+    { name = "Dragon Quest", indices = {7} },
+    { name = "Elden Ring", indices = {9,10,11,12,13,14}, labels = {"1","2","3","4","5","6"} },
+    { name = "EverQuest", indices = {15} },
+    { name = "Fallout", indices = {16,17}, labels = {"New Vegas","3"} },
+    { name = "Final Fantasy", indices = {18} },
+    { name = "Fire Emblem", indices = {19,20}, labels = {"Classic","Awakening"} },
+    { name = "Fly For Fun", indices = {21} },
+    { name = "Fortnite", indices = {22} },
+    { name = "GTA - San Andreas", indices = {23} },
+    { name = "Kingdom Hearts 3", indices = {24} },
+    { name = "Kirby", indices = {25,26}, labels = {"1","2"} },
+    { name = "League of Legends", indices = {27} },
+    { name = "Legend of Zelda", indices = {28} },
+    { name = "Maplestory", indices = {29} },
+    { name = "Metal Gear Solid", indices = {30} },
+    { name = "Minecraft", indices = {31} },
+    { name = "Modern Warfare 2", indices = {32} },
+    { name = "Morrowind", indices = {33} },
+    { name = "Old School Runescape", indices = {34} },
+    { name = "Palworld", indices = {35} },
+    { name = "Path of Exile", indices = {36} },
+    { name = "Pokemon", indices = {37} },
+    { name = "Ragnarok Online", indices = {38} },
+    { name = "Shining Force", indices = {39,40,41,42,43,44,45,46,47,48,49,50}, labels = {"II","III (1)","III (2)","III (3)","III (4)","III (5)","III (6)","III (7)","III (8)","III (9)","III (10)","III (11)"} },
+    { name = "Skyrim", indices = {51} },
+    { name = "Sonic The Hedgehog", indices = {52} },
+    { name = "Spyro The Dragon", indices = {53} },
+    { name = "Super Mario Bros 3", indices = {54} },
+    { name = "Warcraft 3", indices = {55,56,57}, labels = {"1","2","3"} },
+    { name = "Witcher 3", indices = {58,59}, labels = {"1","2"} },
+}
+
+BLU_Classic_IndexToGroup = {}
+BLU_Classic_IndexToVariant = {}
+for gi, group in ipairs(BLU_Classic_SoundGroups) do
+    for vi, idx in ipairs(group.indices) do
+        BLU_Classic_IndexToGroup[idx] = gi
+        BLU_Classic_IndexToVariant[idx] = vi
+    end
+end

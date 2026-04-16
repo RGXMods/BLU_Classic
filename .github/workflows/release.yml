@@ -74,7 +74,7 @@ jobs:
         uses: BigWigsMods/packager@master
         if: steps.set_release_type.outputs.release_type != 'none'
         with:
-          release-type: ${{ steps.set_release_type.outputs.release_type }}
+          'release-type': ${{ steps.set_release_type.outputs.release_type }}
 
       - name: Send Discord Release Notification
         if: success() && steps.set_release_type.outputs.release_type == 'release'

@@ -43,9 +43,10 @@ BLU_L = {
     optionColor2 = colors.white,
 
     -- Option Labels and Descriptions
-    OPTIONS_PANEL_TITLE = string.format("|Tinterface/addons/BLU_Classic/images/icon:16:16|t %sB|r%setter %sL|r%sevel-%sU|r%sp%s!|r Classic", colors.prefix, colors.white, colors.prefix, colors.white, colors.prefix, colors.white, colors.prefix),
-    OPTIONS_LIST_MENU_TITLE = string.format("|Tinterface/addons/BLU_Classic/images/icon:16:16|t %sB|r%setter %sL|r%sevel%sU|r%sp%s!|r Classic",
-        colors.prefix, colors.white, colors.prefix, colors.white, colors.prefix, colors.white, colors.prefix),
+    OPTIONS_PANEL_TITLE = string.format("|Tinterface/addons/BLU_Classic/images/icon:16:16:0:0:0:-1|t %sB|r%setter %sL|r%sevel-%sU|r%sp|r%s!|r Classic",
+        colors.prefix, colors.white, colors.prefix, colors.white, colors.prefix, colors.white, colors.prefix, colors.prefix),
+    OPTIONS_LIST_MENU_TITLE = string.format("|Tinterface/addons/BLU_Classic/images/icon:16:16:0:0:0:-1|t %sB|r%setter %sL|r%sevel-%sU|r%sp|r%s!|r Classic",
+        colors.prefix, colors.white, colors.prefix, colors.white, colors.prefix, colors.white, colors.prefix, colors.prefix),
     -- Profiles
     PROFILES_TITLE = "Profiles",
 
@@ -58,7 +59,7 @@ BLU_L = {
 
     -- BLU:OnInitialize()
     INITIALIZING_FOR_VERSION = string.format("Initializing BLU_Classic for game version: %s%%s|r.", colors.info),
-    WELCOME_MESSAGE = string.format("Welcome! Use %s/bluc|r to open the options panel or %s/bluc help|r for more commands.", colors.prefix, colors.prefix),
+    WELCOME_MESSAGE = string.format("Welcome! Use %s/blu|r or %s/bluc|r to open the options panel, or %s/blu help|r for more commands.", colors.prefix, colors.prefix, colors.prefix),
     VERSION = string.format("%sVersion:|r", "|cffffff00"),
 
     -- BLU:RegisterSharedEvents()
@@ -90,9 +91,17 @@ BLU_L = {
 
     -- BLU:DisplayBLUHelp()
     HELP_COMMAND = string.format("%sAvailable commands:", "|cffffff00"),
-    HELP_DEBUG = " " .. colors.prefix .. "/bluc debug|r - Toggle debug mode.",
-    HELP_WELCOME = " " .. colors.prefix .. "/bluc welcome|r - Toggles the welcome message on/off.",
-    HELP_PANEL = " " .. colors.prefix .. "/bluc|r - Open the options panel.",
+    HELP_DEBUG = " " .. colors.prefix .. "/blu debug|r or " .. colors.prefix .. "/bluc debug|r - Toggle debug mode.",
+    HELP_WELCOME = " " .. colors.prefix .. "/blu welcome|r - Toggles the welcome message on/off.",
+    HELP_ICON = " " .. colors.prefix .. "/blu icon on|r or " .. colors.prefix .. "off|r - Show/hide minimap icon.",
+    HELP_PANEL = " " .. colors.prefix .. "/blu|r or " .. colors.prefix .. "/bluc|r - Open the options panel.",
+
+    MINIMAP_TOOLTIP_TITLE = "|cff05dffaBLU|r |cffffffffClassic|r",
+    MINIMAP_TOOLTIP_ACTION = colors.info .. "Left-click|r to open BLU Classic options.|r",
+    MINIMAP_TOOLTIP_DRAG = colors.info .. "Left-drag|r to move the minimap icon.|r",
+    MINIMAP_TOOLTIP_HIDE = colors.info .. "Ctrl+Right-click|r to hide the minimap icon.|r",
+    MINIMAP_ICON_HIDDEN = colors.success .. "Minimap icon hidden. Use |r" .. colors.prefix .. "/blu icon on|r" .. colors.success .. " to show it again.|r",
+    MINIMAP_ICON_SHOWN = colors.success .. "Minimap icon shown.|r",
 
     -- BLU:ToggleDebugMode()
     DEBUG_MODE_ENABLED = string.format("%sDebug Mode Enabled|r", colors.success),

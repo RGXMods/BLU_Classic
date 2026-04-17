@@ -254,6 +254,16 @@ _`Note`: Each game includes Low, Medium, and High volume variants for all sound 
 ## <span style="color:#FFD700">🆕 What's New</span>
 
 <details>
+<summary><strong><span style="color:#FFD700">v1.3.1 — UI Polish and Minimap Icon</span></strong></summary>
+
+- <span style="color:#2dc26b">✅ **Movable Minimap Icon**</span> <span style="color:#e67e23">added a BLU Classic minimap button that opens options, supports drag repositioning, and can be toggled with slash commands</span>
+- <span style="color:#FFD700">✅ **`/blu` Classic Alias**</span> <span style="color:#e67e23">BLU Classic now responds to `/blu` as well as `/bluc` while keeping Classic DB keys separate from retail BLU</span>
+- <span style="color:#ff6b6b">✅ **Options Title Cleanup**</span> <span style="color:#e67e23">fixed the addon-title icon alignment and cleaned up the BLU title coloring in the Blizzard options list</span>
+- <span style="color:#b96ad9">✅ **Dropdown Polish**</span> <span style="color:#e67e23">updated Classic nested dropdowns to feel closer to BLU with better sizing, labels, and variant counts</span>
+
+</details>
+
+<details>
 <summary><strong><span style="color:#FFD700">v1.3.0 — Classic-Only Release</span></strong></summary>
 
 - <span style="color:#2dc26b">✅ **Nested Dropdowns**</span> <span style="color:#e67e23">sound selection now uses grouped nested menus organized by game franchise with variant submenus</span>

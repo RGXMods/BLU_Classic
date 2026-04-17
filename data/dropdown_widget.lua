@@ -9,6 +9,160 @@ local AceGUI = LibStub("AceGUI-3.0")
 
 local Type = "BLU_Classic_SoundSelect"
 local Version = 1
+local BORDER_THICKNESS = UIDROPDOWNMENU_BORDER_THICKNESS or 15
+local BORDER_PAD = BORDER_THICKNESS * 2
+
+local function GetListFrame(level)
+    return _G["DropDownList" .. level] or _G["LibDropDownMenu_List" .. level]
+end
+
+local function ShortenLabel(text, maxChars)
+    if type(text) ~= "string" then
+        return "", false
+    end
+
+    if #text <= maxChars then
+        return text, false
+    end
+
+    return string.sub(text, 1, maxChars - 3) .. "...", true
+end
+
+local function TrimVariantLabel(soundName, parentLabel)
+    if type(soundName) ~= "string" then
+        return ""
+    end
+
+    if type(parentLabel) ~= "string" or parentLabel == "" then
+        return soundName
+    end
+
+    local escapedParent = string.gsub(parentLabel, "([%^%$%(%)%%%.%[%]%*%+%-%?])", "%%%1")
+    local withoutDashPrefix = string.gsub(soundName, "^" .. escapedParent .. "%s*%-%s*", "")
+    if withoutDashPrefix ~= soundName then
+        return withoutDashPrefix
+    end
+
+    local withoutColonPrefix = string.gsub(soundName, "^" .. escapedParent .. "%s*:%s*", "")
+    if withoutColonPrefix ~= soundName then
+        return withoutColonPrefix
+    end
+
+    return soundName
+end
+
+local function HideInlineCountLabels(level)
+    local listFrame = GetListFrame(level)
+    if not listFrame then
+        return
+    end
+
+    local maxButtons = UIDROPDOWNMENU_MAXBUTTONS or 32
+    for i = 1, maxButtons do
+        local button = _G[listFrame:GetName() .. "Button" .. i]
+        if button and button.bluClassicCountLabel then
+            button.bluClassicCountLabel:Hide()
+        end
+    end
+end
+
+local function AttachInlineCountLabel(level, text)
+    local listFrame = GetListFrame(level)
+    if not listFrame or not listFrame.numButtons then
+        return
+    end
+
+    local button = _G[listFrame:GetName() .. "Button" .. listFrame.numButtons]
+    if not button then
+        return
+    end
+
+    local countLabel = button.bluClassicCountLabel
+    if not countLabel then
+        countLabel = button:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
+        countLabel:SetJustifyH("RIGHT")
+        countLabel:SetTextColor(0.72, 0.72, 0.72)
+        button.bluClassicCountLabel = countLabel
+    end
+
+    countLabel:SetText(text or "")
+    countLabel:Show()
+end
+
+local function ForceListFrameWidth(level, minWidth, leftInset)
+    C_Timer.After(0, function()
+        local listFrame = GetListFrame(level)
+        if not listFrame or not listFrame:IsShown() then
+            return
+        end
+
+        local neededContentWidth = math.max((minWidth or 200) - BORDER_PAD, 140)
+        local maxButtons = UIDROPDOWNMENU_MAXBUTTONS or 32
+        local visibleButtons = 0
+
+        for i = 1, maxButtons do
+            local button = _G[listFrame:GetName() .. "Button" .. i]
+            if button and button:IsShown() then
+                visibleButtons = visibleButtons + 1
+                local normalText = _G[button:GetName() .. "NormalText"]
+                local expandArrow = _G[button:GetName() .. "ExpandArrow"]
+                local countLabel = button.bluClassicCountLabel
+                local hasArrow = expandArrow and expandArrow:IsShown()
+                local hasCount = countLabel and countLabel:IsShown()
+                local textWidth = normalText and math.ceil(normalText:GetStringWidth() or 0) or 0
+                local countWidth = hasCount and math.ceil(countLabel:GetStringWidth() or 0) or 0
+                local rightReservation = (hasArrow and 14 or 6) + (hasCount and (countWidth + 6) or 0)
+                neededContentWidth = math.max(neededContentWidth, (leftInset or 10) + textWidth + rightReservation)
+            end
+        end
+
+        if visibleButtons == 0 then
+            return
+        end
+
+        local buttonWidth = neededContentWidth
+        local frameWidth = math.min(neededContentWidth + BORDER_PAD, 460)
+        listFrame:SetWidth(frameWidth)
+
+        for i = 1, maxButtons do
+            local button = _G[listFrame:GetName() .. "Button" .. i]
+            if button and button:IsShown() then
+                local normalText = _G[button:GetName() .. "NormalText"]
+                local expandArrow = _G[button:GetName() .. "ExpandArrow"]
+                local countLabel = button.bluClassicCountLabel
+                local hasArrow = expandArrow and expandArrow:IsShown()
+                local hasCount = countLabel and countLabel:IsShown()
+
+                button:SetWidth(buttonWidth)
+
+                if expandArrow then
+                    expandArrow:ClearAllPoints()
+                    expandArrow:SetPoint("RIGHT", button, "RIGHT", -3, 0)
+                end
+
+                if countLabel and hasCount then
+                    countLabel:ClearAllPoints()
+                    if hasArrow and expandArrow then
+                        countLabel:SetPoint("RIGHT", expandArrow, "LEFT", -4, 0)
+                    else
+                        countLabel:SetPoint("RIGHT", button, "RIGHT", -6, 0)
+                    end
+                end
+
+                if normalText then
+                    normalText:ClearAllPoints()
+                    normalText:SetPoint("LEFT", button, "LEFT", leftInset or 10, 0)
+                    if hasCount and countLabel then
+                        normalText:SetPoint("RIGHT", countLabel, "LEFT", -6, 0)
+                    else
+                        normalText:SetPoint("RIGHT", button, "RIGHT", hasArrow and -16 or -6, 0)
+                    end
+                    normalText:SetJustifyH("LEFT")
+                end
+            end
+        end
+    end)
+end
 
 -- Resolve a numeric sound index to a display name using the group data
 local function GetSoundDisplayName(value)
@@ -96,6 +250,28 @@ local function Constructor()
         level = level or 1
         local groups = BLU_Classic_SoundGroups
         if not groups then return end
+        local baseWidth = math.floor(dropdown:GetWidth())
+        if baseWidth < 100 then
+            baseWidth = 220
+        end
+
+        local function getMinWidthForLevel(levelToUse)
+            if (levelToUse or 1) <= 1 then
+                return baseWidth
+            end
+
+            return math.max(160, math.floor(baseWidth * 0.72))
+        end
+
+        local function getLeftInsetForLevel(levelToUse)
+            if (levelToUse or 1) <= 1 then
+                return 24
+            end
+
+            return 10
+        end
+
+        HideInlineCountLabels(level)
 
         if level == 1 then
             for gi, group in ipairs(groups) do
@@ -103,7 +279,8 @@ local function Constructor()
                 if #group.indices == 1 then
                     -- Single variant group: direct selection (e.g. "[Default]", "Castlevania")
                     local idx = group.indices[1]
-                    info.text = group.name
+                    local displayText, wasTruncated = ShortenLabel(group.name, 46)
+                    info.text = displayText
                     info.value = idx
                     info.checked = function() return widget.value == idx end
                     info.func = function()
@@ -112,15 +289,25 @@ local function Constructor()
                         widget:Fire("OnValueChanged", idx)
                         CloseDropDownMenus()
                     end
+                    if wasTruncated then
+                        info.tooltipTitle = group.name
+                    end
                 else
                     -- Multi-variant group: opens submenu (e.g. "Elden Ring", "Shining Force")
-                    info.text = group.name
+                    local displayText, wasTruncated = ShortenLabel(group.name, 46)
+                    info.text = displayText
                     info.value = gi
                     info.hasArrow = true
                     info.menuList = gi
                     info.notCheckable = true
+                    if wasTruncated then
+                        info.tooltipTitle = group.name
+                    end
                 end
                 UIDropDownMenu_AddButton(info, level)
+                if #group.indices > 1 then
+                    AttachInlineCountLabel(level, "(" .. #group.indices .. ")")
+                end
             end
         elseif level == 2 and menuList then
             -- Submenu: show variant labels for the selected group
@@ -128,7 +315,10 @@ local function Constructor()
             if not group then return end
             for vi, idx in ipairs(group.indices) do
                 local info = UIDropDownMenu_CreateInfo()
-                info.text = group.labels and group.labels[vi] or tostring(vi)
+                local rawText = group.labels and group.labels[vi] or GetSoundDisplayName(idx)
+                local trimmedText = TrimVariantLabel(rawText, group.name)
+                local displayText, wasTruncated = ShortenLabel(trimmedText, 60)
+                info.text = displayText
                 info.value = idx
                 info.checked = function() return widget.value == idx end
                 info.func = function()
@@ -137,9 +327,14 @@ local function Constructor()
                     widget:Fire("OnValueChanged", idx)
                     CloseDropDownMenus()
                 end
+                if wasTruncated or trimmedText ~= rawText then
+                    info.tooltipTitle = rawText
+                end
                 UIDropDownMenu_AddButton(info, level)
             end
         end
+
+        ForceListFrameWidth(level, getMinWidthForLevel(level), getLeftInsetForLevel(level))
     end)
 
     -- Button click toggles the dropdown menu

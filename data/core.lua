@@ -399,8 +399,12 @@ function BLU_Classic:OnInitialize()
     self.functionsHalted = false
     self.sortedOptions = {}
     self.optionsRegistered = false
-    
+
+    self.db.profile.classicMinimapIconEnabled = self.db.profile.classicMinimapIconEnabled ~= false
+    self.db.profile.classicMinimapAngle = self.db.profile.classicMinimapAngle or 220
+
     self:RegisterChatCommand("bluc", "HandleSlashCommands")
+    self:RegisterChatCommand("blu", "HandleSlashCommands")
     self:InitializeOptions()
 end
 
@@ -408,6 +412,15 @@ function BLU_Classic:OnEnable()
     self:RegisterSharedEvents()
     self:InitializeReputationCache()
     self:MuteSounds()
+
+    self:CreateMinimapButton()
+    if self.db and self.db.profile and self.db.profile.classicMinimapIconEnabled == false then
+        if self.minimapButton then
+            self.minimapButton:Hide()
+        end
+    else
+        self:UpdateMinimapButtonPosition()
+    end
     
     if self.showWelcomeMessage then
         local welcomeMsg = BLU_L["WELCOME_MESSAGE"] or "Loaded successfully!" -- From HEAD

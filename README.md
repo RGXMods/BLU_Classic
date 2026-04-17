@@ -3,7 +3,7 @@
 
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/donniedice/BLU_Classic/main/images/BLU_Logo.png" alt="BLU Classic Logo" width="256">
+<img src="images/BLU_Logo.png" alt="BLU Classic Logo" width="256">
 
 [![BLU Classic](https://img.shields.io/badge/BLU%20Classic-Better%20Level%20Up!%20Classic-05dffa?style=for-the-badge&logo=github&logoColor=white)](https://github.com/donniedice/BLU_Classic)
 [![RGX Mods](https://img.shields.io/badge/RGX-Mods%20Collection-8B1538?style=for-the-badge&logo=github&logoColor=white)](https://discord.gg/N7kdKAHVVF)
@@ -80,6 +80,7 @@
 
 ---
 
+<a id="support"></a>
 ## <span style="color:#FFD700">💖 Support </span> <span style="color:#8B1538">R</span><span style="color:#8B1538">G</span><span style="color:#8B1538">X</span> <span style="color:#4ecdc4">Mods</span>
 
 <div align="center">
@@ -112,6 +113,7 @@ _<span style="color:#e67e23">Every coffee helps fund new features and sound addi
 
 ---
 
+<a id="features"></a>
 ## <span style="color:#FFD700">✨ Features</span>
 
 <div align="center">
@@ -187,6 +189,7 @@ _`Note`: Each game includes Low, Medium, and High volume variants for all sound 
 
 ---
 
+<a id="quick-start"></a>
 ## <span style="color:#FFD700">🚀 Quick Start</span>
 
 1. **<span style="color:#2dc26b">Install</span>** <span style="color:#05dffa">B</span><span style="color:#05dffa">L</span><span style="color:#05dffa">U</span> <span style="color:#FFD700">Classic</span> <span style="color:#e67e23">from your preferred platform</span>
@@ -197,6 +200,7 @@ _`Note`: Each game includes Low, Medium, and High volume variants for all sound 
 
 ---
 
+<a id="command-reference"></a>
 ## <span style="color:#FFD700">📋 Command Reference</span>
 
 <span style="color:#e67e23">Use</span> <span style="color:#2dc26b">`/bluc`</span> <span style="color:#e67e23">followed by</span><span style="color:#3598db">:</span>
@@ -214,6 +218,7 @@ _`Note`: Each game includes Low, Medium, and High volume variants for all sound 
 
 ---
 
+<a id="compatibility"></a>
 ## <span style="color:#FFD700">📋 Compatibility</span>
 
 <div align="center">
@@ -235,6 +240,7 @@ _`Note`: Each game includes Low, Medium, and High volume variants for all sound 
 
 ---
 
+<a id="installation"></a>
 ## <span style="color:#FFD700">📥 Installation</span>
 
 1. **<span style="color:#2dc26b">Download</span>** <span style="color:#e67e23">from your preferred platform</span><span style="color:#3598db">:</span>
@@ -253,25 +259,21 @@ _`Note`: Each game includes Low, Medium, and High volume variants for all sound 
 
 ## <span style="color:#FFD700">🆕 What's New</span>
 
-<details>
-<summary><strong><span style="color:#FFD700">v1.3.1 — UI Polish and Minimap Icon</span></strong></summary>
+<span style="color:#FFD700">v1.3.1 — UI Polish and Minimap Icon</span>
 
 - <span style="color:#2dc26b">✅ **Movable Minimap Icon**</span> <span style="color:#e67e23">added a BLU Classic minimap button that opens options, supports drag repositioning, and can be toggled with slash commands</span>
 - <span style="color:#FFD700">✅ **`/blu` Classic Alias**</span> <span style="color:#e67e23">BLU Classic now responds to `/blu` as well as `/bluc` while keeping Classic DB keys separate from retail BLU</span>
 - <span style="color:#ff6b6b">✅ **Options Title Cleanup**</span> <span style="color:#e67e23">fixed the addon-title icon alignment and cleaned up the BLU title coloring in the Blizzard options list</span>
 - <span style="color:#b96ad9">✅ **Dropdown Polish**</span> <span style="color:#e67e23">updated Classic nested dropdowns to feel closer to BLU with better sizing, labels, and variant counts</span>
 
-</details>
 
-<details>
-<summary><strong><span style="color:#FFD700">v1.3.0 — Classic-Only Release</span></strong></summary>
+<span style="color:#FFD700">v1.3.0 — Classic-Only Release</span>
 
 - <span style="color:#2dc26b">✅ **Nested Dropdowns**</span> <span style="color:#e67e23">sound selection now uses grouped nested menus organized by game franchise with variant submenus</span>
 - <span style="color:#FFD700">✅ **Classic-Only Focus**</span> <span style="color:#e67e23">removed Retail WoW support — use</span> [<span style="color:#05dffa">BLU</span>](https://github.com/donniedice/BLU) <span style="color:#e67e23">for Retail instead</span>
 - <span style="color:#ff6b6b">✅ **Removed Retail Features**</span> <span style="color:#e67e23">dropped Delve Companion, Honor Ranks, Renown, and Trading Post event types</span>
 - <span style="color:#b96ad9">✅ **Unmute Safety**</span> <span style="color:#e67e23">default WoW sounds are always restored on logout, reload, or addon disable</span>
 
-</details>
 
 _<span style="color:#e67e23">See</span> [<span style="color:#FFD700">docs/CHANGES.md</span>](./docs/CHANGES.md) <span style="color:#e67e23">for release history.</span>_
 
@@ -364,6 +366,6 @@ _<span style="color:#e67e23">"Make every level count with sounds that matter!"</
 
 [<span style="color:#05dffa">BLU</span>](https://github.com/donniedice/BLU) | [<span style="color:#9b59b6">CCU</span>](https://github.com/donniedice/CoordinationCloakUtility) | [<span style="color:#ffe568">FFLU</span>](https://github.com/donniedice/FFLU) | [<span style="color:#58be81">PetBuddy2</span>](https://github.com/donniedice/PetBuddy2) | [<span style="color:#e74c3c">RND</span>](https://github.com/donniedice/remove_nameplate_debuffs) | [<span style="color:#58be81">SQP</span>](https://github.com/donniedice/SimpleQuestPlates) | [<span style="color:#8B4513">SRLU</span>](https://github.com/donniedice/SRLU)
 
-**<span style="color:#8B1538">🎮</span> <span style="color:#8B1538">R</span><span style="color:#8B1538">G</span><span style="color:#8B1538">X</span> <span style="color:#4ecdc4">Mods</span> <span style="color:#3598db">-</span> <span style="color:#e67e23">Powered by</span> [<span style="color:#8B1538">R</span><span style="color:#7598b6">ealm</span><span style="color:#8B1538">G</span><span style="color:#8B1538">X</span>](https://realmgx.com) <span style="color:#e67e23">Community</span>**
+**<img src="https://raw.githubusercontent.com/donniedice/SimpleQuestPlates/main/images/kiwi.gif" width="18" height="18"> <span style="color:#8B1538">R</span><span style="color:#8B1538">G</span><span style="color:#8B1538">X</span> <span style="color:#4ecdc4">Mods</span> <span style="color:#3598db">-</span> <span style="color:#e67e23">Powered by</span> [<span style="color:#8B1538">R</span><span style="color:#7598b6">ealm</span><span style="color:#8B1538">G</span><span style="color:#8B1538">X</span>](https://realmgx.com) <span style="color:#e67e23">Community</span>**
 
 </div>

@@ -30,7 +30,7 @@ local colors = {
     warning = "|cffffcc00"      -- Warning Color
 }
 
-BLU_Classic_PREFIX = string.format("|Tinterface/addons/BLU_Classic/images/icon:16:16|t - [%sBLU_Classic|r] ", colors.prefix)
+BLU_Classic_PREFIX = string.format("|Tinterface/addons/BLU_Classic/media/icon:16:16|t - [%sBLU_Classic|r] ", colors.prefix)
 DEBUG_PREFIX = string.format("[%sDEBUG|r] ", colors.debug)
 
 -- =====================================================================================
@@ -43,9 +43,9 @@ BLU_L = {
     optionColor2 = colors.white,
 
     -- Option Labels and Descriptions
-    OPTIONS_PANEL_TITLE = string.format("|Tinterface/addons/BLU_Classic/images/icon:16:16:0:0:0:-1|t %sB|r%setter %sL|r%sevel-%sU|r%sp|r%s!|r Classic",
+    OPTIONS_PANEL_TITLE = string.format("|Tinterface/addons/BLU_Classic/media/icon:16:16:0:0:0:-1|t %sB|r%setter %sL|r%sevel-%sU|r%sp|r%s!|r Classic",
         colors.prefix, colors.white, colors.prefix, colors.white, colors.prefix, colors.white, colors.prefix, colors.prefix),
-    OPTIONS_LIST_MENU_TITLE = string.format("|Tinterface/addons/BLU_Classic/images/icon:16:16:0:0:0:-1|t %sB|r%setter %sL|r%sevel-%sU|r%sp|r%s!|r Classic",
+    OPTIONS_LIST_MENU_TITLE = string.format("|Tinterface/addons/BLU_Classic/media/icon:16:16:0:0:0:-1|t %sB|r%setter %sL|r%sevel-%sU|r%sp|r%s!|r Classic",
         colors.prefix, colors.white, colors.prefix, colors.white, colors.prefix, colors.white, colors.prefix, colors.prefix),
     -- Profiles
     PROFILES_TITLE = "Profiles",

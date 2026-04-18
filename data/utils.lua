@@ -281,7 +281,7 @@ function BLU_Classic:CreateMinimapButton()
     local icon = button:CreateTexture(nil, "ARTWORK")
     icon:SetSize(19, 19)
     icon:SetPoint("CENTER", button, "CENTER", 0, -1)
-    icon:SetTexture("Interface\\AddOns\\BLU_Classic\\images\\icon")
+    icon:SetTexture("Interface\\AddOns\\BLU_Classic\\media\\icon")
     icon:SetTexCoord(0.02, 0.98, 0.02, 0.98)
     button.icon = icon
 

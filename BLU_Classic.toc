@@ -8,7 +8,7 @@
 ## Email: 60427166+donniedice@users.noreply.github.com
 ## SavedVariables: BLUClassicDB
 ## OptionalDeps: Ace3
-## IconTexture: Interface\AddOns\BLU_Classic\media\icon
+## IconTexture: Interface\AddOns\BLU_Classic\media\icon.tga
 
 ## X-Category: UI Media, Questing & Leveling, Audio & Video, Miscellaneous
 ## X-Website: https://github.com/donniedice/BLU_Classic

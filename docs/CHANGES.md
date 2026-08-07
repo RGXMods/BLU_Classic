@@ -1,3 +1,6 @@
+## v1.3.3 - 2026-08-07
+- Add Category/Group RGX for addon menu section.
+
 ## v1.3.2 - 2026-08-07
 - Created main `BLU_Classic.toc` with unified interface versions: 11509 (Classic Era), 20506 (TBC Anniversary), 50504 (MoP Classic).
 - Updated variant TOCs to current active versions.

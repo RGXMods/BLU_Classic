@@ -84,7 +84,7 @@ jobs:
       - name: 📦 Extract Version from TOC
         id: version
         run: |
-          version=$(grep -oP '^## Version: \K(.*)' BLU_Classic_Vanilla.toc)
+          version=$(grep -oP '^## Version: \K(.*)' BLU_Classic.toc)
           echo "version=$version" >> $GITHUB_OUTPUT
           echo "timestamp=$(date -u +%Y-%m-%dT%H:%M:%S.000Z)" >> $GITHUB_OUTPUT
 
@@ -92,9 +92,9 @@ jobs:
         shell: bash
         run: |
           version="${{ steps.version.outputs.version }}"
-          curse_id="$(grep -oP '^## X-Curse-Project-ID:\s*\K(.*)' BLU_Classic_Vanilla.toc || true)"
-          wago_id="$(grep -oP '^## X-Wago-ID:\s*\K(.*)' BLU_Classic_Vanilla.toc || true)"
-          wowi_id="$(grep -oP '^## X-WoWI-ID:\s*\K(.*)' BLU_Classic_Vanilla.toc || true)"
+          curse_id="$(grep -oP '^## X-Curse-Project-ID:\s*\K(.*)' BLU_Classic.toc || true)"
+          wago_id="$(grep -oP '^## X-Wago-ID:\s*\K(.*)' BLU_Classic.toc || true)"
+          wowi_id="$(grep -oP '^## X-WoWI-ID:\s*\K(.*)' BLU_Classic.toc || true)"
 
           echo "Detected project IDs:"
           echo "  X-Curse-Project-ID: ${curse_id:-missing}"
@@ -119,7 +119,7 @@ jobs:
             norm_ver="${version#v}"
 
             if [[ "$norm_tag" != "$norm_ver" ]]; then
-              echo "::error::Tag '$tag' does not match BLU_Classic_Vanilla.toc version '$version'."
+              echo "::error::Tag '$tag' does not match BLU_Classic.toc version '$version'."
               exit 1
             fi
 
@@ -173,7 +173,7 @@ jobs:
       - name: ℹ️ Upload Notes
         run: |
           echo "CurseForge, Wago, and WoWInterface uploads are handled by BigWigsMods/packager."
-          echo "Project IDs come from X-Curse-Project-ID, X-Wago-ID, and X-WoWI-ID in BLU_Classic_Vanilla.toc."
+          echo "Project IDs come from X-Curse-Project-ID, X-Wago-ID, and X-WoWI-ID in BLU_Classic.toc."
 
       - name: 📢 Send Discord Notification
         if: success()

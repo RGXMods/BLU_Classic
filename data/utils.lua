@@ -170,16 +170,25 @@ function BLU_Classic:OpenOptionsPanel()
     end
     
     local opened = false
-    
-    -- Try modern API first (Retail 10.0+)
-    if Settings and Settings.OpenToCategory then
-        -- In Retail, optionsFrame.name contains the category name
-        local categoryName = self.optionsFrame.name or BLU_L["OPTIONS_PANEL_TITLE"]
-        Settings.OpenToCategory(categoryName)
+
+    -- Modern API (C_SettingsUtil-era clients, incl. Classic Era 1.15.x):
+    -- Settings.OpenToCategory requires a NUMERIC category ID. Never pass the
+    -- options frame name/title string (icon/color markup would be passed).
+    if type(self.optionsCategoryID) == "number"
+        and Settings and type(Settings.OpenToCategory) == "function" then
+        Settings.OpenToCategory(self.optionsCategoryID)
         opened = true
     end
-    
-    -- Try legacy API (Classic Era, Classic, older Retail)
+
+    -- Ace fallback: open the registered options group directly.
+    if not opened then
+        local ok = pcall(function()
+            LibStub("AceConfigDialog-3.0"):Open("BLU_Classic_Options")
+        end)
+        opened = ok
+    end
+
+    -- Legacy API (pre-Settings clients only)
     if not opened and InterfaceOptionsFrame_OpenToCategory then
         -- Classic needs the frame itself, not just the name
         -- Call twice to ensure it opens to the correct category (known Blizzard bug)

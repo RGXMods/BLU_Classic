@@ -302,11 +302,11 @@ function BLU_Classic:InitializeOptions()
         local profilesTitle = BLU_L["PROFILES_TITLE"] or "Profiles"
         
         AC:RegisterOptionsTable("BLU_Classic_Options", self.options)
-        self.optionsFrame = ACD:AddToBlizOptions("BLU_Classic_Options", optionsTitle)
+        self.optionsFrame, self.optionsCategoryID = ACD:AddToBlizOptions("BLU_Classic_Options", optionsTitle)
 
         local profiles = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db)
         AC:RegisterOptionsTable("BLU_Classic_Profiles", profiles)
-        ACD:AddToBlizOptions("BLU_Classic_Profiles", profilesTitle, optionsTitle)
+        _, self.profilesCategoryID = ACD:AddToBlizOptions("BLU_Classic_Profiles", profilesTitle, optionsTitle)
 
         self.optionsRegistered = true
     else

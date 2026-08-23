@@ -1,3 +1,6 @@
+## v1.3.4 - 2026-08-22
+- Fixed Classic Era `/blu` options failing to open: Settings clients (incl. Era 1.15.x) require a numeric category ID, but the vendored AceConfigDialog returned the category name string. Updated AceConfigDialog-3.0 to upstream minor 92 (Ace3 issue #694 fix: name->ID override only applies on pre-Settings clients) and now capture the returned category IDs for the main and Profiles registrations.
+
 ## v1.3.3 - 2026-08-07
 - Add Category/Group RGX for addon menu section.
 

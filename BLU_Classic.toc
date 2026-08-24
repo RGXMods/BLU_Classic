@@ -11,7 +11,7 @@
 ## IconTexture: Interface\AddOns\BLU_Classic\media\icon.tga
 
 ## X-Category: UI Media, Questing & Leveling, Audio & Video, Miscellaneous
-## X-Website: https://github.com/donniedice/BLU_Classic
+## X-Website: https://github.com/RGXMods/BLU_Classic
 ## X-Curse-Project-ID: 1114093
 ## X-Wago-ID: vEGPgWK1
 ## X-WoWI-ID: 26945

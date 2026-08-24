@@ -6,7 +6,7 @@
 
 ### <span style="color:#e67e23">Iconic game sounds across the Classic World of Warcraft family</span>
 
-[![Release](https://img.shields.io/github/v/release/donniedice/BLU_Classic?style=for-the-badge&logo=github&color=FFD700)](https://github.com/donniedice/BLU_Classic/releases)
+[![Release](https://img.shields.io/github/v/release/donniedice/BLU_Classic?style=for-the-badge&logo=github&color=FFD700)](https://github.com/RGXMods/BLU_Classic/releases)
 [![WoW Classic](https://img.shields.io/badge/WoW-Classic-05dffa?style=for-the-badge&logo=worldofwarcraft&logoColor=white)](https://worldofwarcraft.blizzard.com/)
 [![License](https://img.shields.io/github/license/donniedice/BLU_Classic?style=for-the-badge&color=2dc26b)](LICENSE)
 
@@ -25,7 +25,7 @@
 
 **BLU Classic** brings memorable sounds from more than 50 games to Classic World of Warcraft. Replace repetitive cues for level-ups, quests, reputation, achievements, and battle pets while keeping each client flavor's capabilities in mind.
 
-BLU Classic is the **Classic** edition. Retail players should install [<span style="color:#05dffa">BLU</span>](https://github.com/donniedice/BLU).
+BLU Classic is the **Classic** edition. Retail players should install [<span style="color:#05dffa">BLU</span>](https://github.com/RGXMods/BLU).
 
 ## <span style="color:#FFD700">Features</span>
 
@@ -40,7 +40,7 @@ BLU Classic is the **Classic** edition. Retail players should install [<span sty
 
 ## <span style="color:#FFD700">Quick Start</span>
 
-1. Install BLU Classic from [CurseForge](https://www.curseforge.com/wow/addons/blu-classic), [Wago](https://addons.wago.io/addons/blu-classic), [WoWInterface](https://www.wowinterface.com/downloads/info26945-BLUClassic.html), or [GitHub Releases](https://github.com/donniedice/BLU_Classic/releases).
+1. Install BLU Classic from [CurseForge](https://www.curseforge.com/wow/addons/blu-classic), [Wago](https://addons.wago.io/addons/blu-classic), [WoWInterface](https://www.wowinterface.com/downloads/info26945-BLUClassic.html), or [GitHub Releases](https://github.com/RGXMods/BLU_Classic/releases).
 2. Launch your supported Classic client.
 3. Type `/blu` or `/bluc` to open options.
 4. Choose and preview a sound for each available event.
@@ -75,7 +75,7 @@ The current unified `BLU_Classic.toc` supports Classic Era, Burning Crusade Clas
 
 ## <span style="color:#FFD700">Support</span>
 
-- [GitHub Issues](https://github.com/donniedice/BLU_Classic/issues) for reproducible bugs
+- [GitHub Issues](https://github.com/RGXMods/BLU_Classic/issues) for reproducible bugs
 - [RealmGX Discord](https://discord.gg/N7kdKAHVVF) for help, feedback, and sound suggestions
 - [Release history](docs/CHANGES.md) for detailed changes
 - [GitHub Sponsors](https://github.com/sponsors/donniedice) or [Buy Me a Coffee](https://buymeacoffee.com/donniedice) to support development
@@ -96,7 +96,7 @@ BLU Classic is available under the [MIT License](LICENSE).
 
 **Made by [DonnieDice](https://github.com/donniedice) for the [RealmGX](https://realmgx.com) community.**
 
-[<span style="color:#05dffa">BLU Retail</span>](https://github.com/donniedice/BLU) | [<span style="color:#58be81">Simple Quest Plates</span>](https://github.com/donniedice/SimpleQuestPlates) | [<span style="color:#e74c3c">Remove Nameplate Debuffs</span>](https://github.com/DonnieDice/RemoveNameplateDebuffs)
+[<span style="color:#05dffa">BLU Retail</span>](https://github.com/RGXMods/BLU) | [<span style="color:#58be81">Simple Quest Plates</span>](https://github.com/RGXMods/SimpleQuestPlates) | [<span style="color:#e74c3c">Remove Nameplate Debuffs</span>](https://github.com/RGXMods/RemoveNameplateDebuffs)
 
 _<span style="color:#e67e23">Make every level count with sounds that matter.</span>_
 

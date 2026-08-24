@@ -194,7 +194,7 @@ jobs:
               color=385018
               footer="RGX Mods • Stable Release"
               description="A new stable release is live. Level up in style!"
-              release_url="https://github.com/DonnieDice/BLU_Classic/releases/tag/${version}"
+              release_url="https://github.com/RGXMods/BLU_Classic/releases/tag/${version}"
               downloads="[CurseForge](https://www.curseforge.com/wow/addons/blu-classic) • [Wago](https://addons.wago.io/addons/blu-classic) • [WoWInterface](https://www.wowinterface.com/downloads/info26945) • [GitHub](${release_url})"
               channel="Release"
               ;;
@@ -203,7 +203,7 @@ jobs:
               color=16744448
               footer="RGX Mods • Beta Build"
               description="Beta build available for testing."
-              release_url="https://github.com/DonnieDice/BLU_Classic/releases/tag/${version}"
+              release_url="https://github.com/RGXMods/BLU_Classic/releases/tag/${version}"
               downloads="[CurseForge](https://www.curseforge.com/wow/addons/blu-classic) • [GitHub](${release_url})"
               channel="Beta"
               ;;
@@ -212,7 +212,7 @@ jobs:
               color=9109504
               footer="RGX Mods • Alpha Build"
               description="Alpha build available for testing."
-              release_url="https://github.com/DonnieDice/BLU_Classic/tree/alpha"
+              release_url="https://github.com/RGXMods/BLU_Classic/tree/alpha"
               downloads="[GitHub Alpha Branch](${release_url})"
               channel="Alpha"
               ;;
@@ -221,7 +221,7 @@ jobs:
               color=3447003
               footer="RGX Mods • Dev Build"
               description="Development build from the dev branch."
-              release_url="https://github.com/DonnieDice/BLU_Classic/tree/dev"
+              release_url="https://github.com/RGXMods/BLU_Classic/tree/dev"
               downloads="[GitHub Dev Branch](${release_url})"
               channel="Dev"
               ;;
@@ -230,7 +230,7 @@ jobs:
               color=10000000
               footer="RGX Mods"
               description="Build completed."
-              release_url="https://github.com/DonnieDice/BLU_Classic/releases"
+              release_url="https://github.com/RGXMods/BLU_Classic/releases"
               downloads="[GitHub](${release_url})"
               channel="Unknown"
               ;;
@@ -238,13 +238,13 @@ jobs:
 
           jq -n \
             --arg username "BLU Classic Releases" \
-            --arg avatar_url "https://raw.githubusercontent.com/DonnieDice/BLU_Classic/main/media/BLU_Logo.png" \
+            --arg avatar_url "https://raw.githubusercontent.com/RGXMods/BLU_Classic/main/media/BLU_Logo.png" \
             --arg title "$title" \
             --arg url "$release_url" \
             --arg description "$description" \
             --argjson color "$color" \
             --arg footer "$footer" \
-            --arg icon_url "https://raw.githubusercontent.com/donniedice/SimpleQuestPlates/main/media/kiwi.gif" \
+            --arg icon_url "https://raw.githubusercontent.com/RGXMods/SimpleQuestPlates/main/media/kiwi.gif" \
             --arg timestamp "${RELEASE_TIMESTAMP}" \
             --arg summary "$summary" \
             --arg downloads "$downloads" \
@@ -280,19 +280,19 @@ jobs:
             --arg timestamp "${{ steps.version.outputs.timestamp }}" \
             '{
               username: "BLU Classic Build Failed",
-              avatar_url: "https://raw.githubusercontent.com/DonnieDice/BLU_Classic/main/media/BLU_Logo.png",
+              avatar_url: "https://raw.githubusercontent.com/RGXMods/BLU_Classic/main/media/BLU_Logo.png",
               embeds: [{
                 title: "❌ BLU Classic Build Failed",
                 description: "The release workflow encountered an error",
-                url: "https://github.com/DonnieDice/BLU_Classic/actions/runs/\($run_id)",
+                url: "https://github.com/RGXMods/BLU_Classic/actions/runs/\($run_id)",
                 color: 15158332,
                 fields: [
                   { "name": "Version", "value": $version, "inline": true },
-                  { "name": "Workflow", "value": "[View Logs](https://github.com/DonnieDice/BLU_Classic/actions/runs/\($run_id))", "inline": true }
+                  { "name": "Workflow", "value": "[View Logs](https://github.com/RGXMods/BLU_Classic/actions/runs/\($run_id))", "inline": true }
                 ],
                 footer: {
                   "text": "RGX Mods - Build System",
-                  "icon_url": "https://raw.githubusercontent.com/donniedice/SimpleQuestPlates/main/media/kiwi.gif"
+                  "icon_url": "https://raw.githubusercontent.com/RGXMods/SimpleQuestPlates/main/media/kiwi.gif"
                 },
                 timestamp: $timestamp
               }]

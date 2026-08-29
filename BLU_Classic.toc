@@ -14,7 +14,6 @@
 ## X-Website: https://github.com/RGXMods/BLU_Classic
 ## X-Curse-Project-ID: 1114093
 ## X-Wago-ID: vEGPgWK1
-## X-WoWI-ID: 26945
 
 # Libraries
 Libs\LibStub\LibStub.lua

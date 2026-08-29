@@ -12,7 +12,6 @@
 
 [![CurseForge](https://img.shields.io/badge/CurseForge-Download-f16436?style=flat-square&logo=curseforge&logoColor=white)](https://www.curseforge.com/wow/addons/blu-classic)
 [![Wago](https://img.shields.io/badge/Wago-Download-b96ad9?style=flat-square)](https://addons.wago.io/addons/blu-classic)
-[![WoWInterface](https://img.shields.io/badge/WoWInterface-Download-3598db?style=flat-square)](https://www.wowinterface.com/downloads/info26945-BLUClassic.html)
 [![Discord](https://img.shields.io/badge/Discord-RealmGX-5865f2?style=flat-square&logo=discord&logoColor=white)](https://discord.gg/N7kdKAHVVF)
 
 **[Features](#features) | [Quick Start](#quick-start) | [Commands](#commands) | [Compatibility](#compatibility) | [Support](#support)**
@@ -40,7 +39,7 @@ BLU Classic is the **Classic** edition. Retail players should install [<span sty
 
 ## <span style="color:#FFD700">Quick Start</span>
 
-1. Install BLU Classic from [CurseForge](https://www.curseforge.com/wow/addons/blu-classic), [Wago](https://addons.wago.io/addons/blu-classic), [WoWInterface](https://www.wowinterface.com/downloads/info26945-BLUClassic.html), or [GitHub Releases](https://github.com/RGXMods/BLU_Classic/releases).
+1. Install BLU Classic from [CurseForge](https://www.curseforge.com/wow/addons/blu-classic), [Wago](https://addons.wago.io/addons/blu-classic), or [GitHub Releases](https://github.com/RGXMods/BLU_Classic/releases).
 2. Launch your supported Classic client.
 3. Type `/blu` or `/bluc` to open options.
 4. Choose and preview a sound for each available event.

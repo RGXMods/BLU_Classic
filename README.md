@@ -6,15 +6,15 @@
 
 ### <span style="color:#e67e23">Iconic game sounds across the Classic World of Warcraft family</span>
 
-[![Release](https://img.shields.io/github/v/release/donniedice/BLU_Classic?style=for-the-badge&logo=github&color=FFD700)](https://github.com/RGXMods/BLU_Classic/releases)
+[![Release](https://img.shields.io/github/v/release/RGXMods/BLU_Classic?style=for-the-badge&logo=github&color=FFD700)](https://github.com/RGXMods/BLU_Classic/releases)
 [![WoW Classic](https://img.shields.io/badge/WoW-Classic-05dffa?style=for-the-badge&logo=worldofwarcraft&logoColor=white)](https://worldofwarcraft.blizzard.com/)
-[![License](https://img.shields.io/github/license/donniedice/BLU_Classic?style=for-the-badge&color=2dc26b)](LICENSE)
+[![License](https://img.shields.io/github/license/RGXMods/BLU_Classic?style=for-the-badge&color=2dc26b)](LICENSE)
 
 [![CurseForge](https://img.shields.io/badge/CurseForge-Download-f16436?style=flat-square&logo=curseforge&logoColor=white)](https://www.curseforge.com/wow/addons/blu-classic)
 [![Wago](https://img.shields.io/badge/Wago-Download-b96ad9?style=flat-square)](https://addons.wago.io/addons/blu-classic)
 [![Discord](https://img.shields.io/badge/Discord-RealmGX-5865f2?style=flat-square&logo=discord&logoColor=white)](https://discord.gg/N7kdKAHVVF)
 
-**[Features](#features) | [Quick Start](#quick-start) | [Commands](#commands) | [Compatibility](#compatibility) | [Support](#support)**
+**[Features](#features) | [Installation](#installation) | [Commands](#commands) | [Compatibility](#compatibility) | [Support](#support)**
 
 </div>
 
@@ -35,9 +35,36 @@ BLU Classic is the **Classic** edition. Retail players should install [<span sty
 | 🔊 | **Volume variants** | Low, Medium, and High choices for bundled sounds |
 | 🔇 | **Smart sound handling** | Replaces matching WoW cues without leaving default sounds muted after shutdown |
 | 🎨 | **Organized options** | Nested game menus, previews, persistent profiles, and a movable minimap button |
-| 🧭 | **Multi-client package** | One project with flavor-specific TOCs and guarded behavior |
+| 🧭 | **Multi-client package** | One unified TOC with guarded behavior for each supported client family |
 
-## <span style="color:#FFD700">Quick Start</span>
+## <span style="color:#FFD700">Event Coverage</span>
+
+BLU Classic keeps its event set focused on features available across the
+supported Classic family.
+
+| Event | Availability |
+|---|---|
+| **Character level-up** | All supported clients |
+| **Quest accepted and turned in** | All supported clients |
+| **Reputation rank increase** | All supported clients |
+| **Achievement earned** | Clients with the achievement system |
+| **Battle-pet level-up** | Mists of Pandaria Classic |
+
+Retail-only systems such as Delves, Honor Ranks, Renown, Housing, and the
+Trading Post are intentionally not included. Install
+[BLU](https://github.com/RGXMods/BLU) for Retail event coverage.
+
+## <span style="color:#FFD700">Sound Library</span>
+
+The bundled library contains memorable cues from more than 50 games, including
+Final Fantasy, Zelda, Mario, Pokemon, Skyrim, Warcraft III, Minecraft,
+Morrowind, Path of Exile, RuneScape, Sonic the Hedgehog, and The Witcher 3.
+Selections are organized into nested game menus.
+
+Bundled sounds provide Low, Medium, and High variants. Each event can be
+configured independently and previewed from the options panel.
+
+## <span style="color:#FFD700">Installation</span>
 
 1. Install BLU Classic from [CurseForge](https://www.curseforge.com/wow/addons/blu-classic), [Wago](https://addons.wago.io/addons/blu-classic), or [GitHub Releases](https://github.com/RGXMods/BLU_Classic/releases).
 2. Launch your supported Classic client.
@@ -52,6 +79,28 @@ World of Warcraft/_classic_era_/Interface/AddOns/BLU_Classic
 World of Warcraft/_anniversary_/Interface/AddOns/BLU_Classic
 ```
 
+For manual installation, extract a single folder named `BLU_Classic` into the
+AddOns directory used by the client you launch. Restart WoW or run `/reload`,
+then enable the addon at character select.
+
+### Requirements
+
+BLU Classic packages its required Ace3 components in `Libs/`; no separate
+framework download is required. The TOC lists Ace3 as an optional dependency
+for installations that already provide it.
+
+## <span style="color:#FFD700">Configuration</span>
+
+1. Open the options panel with `/blu` or `/bluc`.
+2. Enable the event types you want to replace.
+3. Choose a game sound and volume variant for each event.
+4. Preview selections before closing the panel.
+5. Use profiles when you need different settings for different characters or
+   play styles.
+
+The movable minimap button also opens options. Its position and visibility are
+saved in the Classic-specific `BLUClassicDB`, separate from Retail BLU.
+
 ## <span style="color:#FFD700">Commands</span>
 
 | Command | Description |
@@ -60,10 +109,18 @@ World of Warcraft/_anniversary_/Interface/AddOns/BLU_Classic
 | `/bluc help` | Show command help |
 | `/bluc debug` | Toggle diagnostics |
 | `/bluc welcome` | Toggle the welcome message |
+| `/bluc icon on` | Show the minimap button |
+| `/bluc icon off` | Hide the minimap button |
 
 ## <span style="color:#FFD700">Compatibility</span>
 
-The current unified `BLU_Classic.toc` supports Classic Era, Burning Crusade Classic, and Mists of Pandaria Classic. Interface values are maintained in the TOC rather than duplicated here, keeping this page accurate as clients update.
+The current unified `BLU_Classic.toc` supports Classic Era, Burning Crusade
+Anniversary, and Mists of Pandaria Classic. Interface values are maintained in
+the TOC rather than duplicated here, keeping this page accurate as clients
+update.
+
+Hardcore and Season of Discovery use the Classic Era client family. Retail is
+not supported by BLU Classic.
 
 ## <span style="color:#FFD700">Troubleshooting</span>
 
@@ -71,6 +128,9 @@ The current unified `BLU_Classic.toc` supports Classic Era, Burning Crusade Clas
 - Confirm WoW's Master volume is enabled.
 - Install the addon in the folder for the client you are actually launching.
 - Some audio may pause briefly the first time WoW caches it.
+- If options do not open, confirm the current release is installed and run
+  `/reload` before trying `/blu` again.
+- Use `/bluc debug` when collecting details for a reproducible report.
 
 ## <span style="color:#FFD700">Support</span>
 
@@ -82,6 +142,15 @@ The current unified `BLU_Classic.toc` supports Classic Era, Burning Crusade Clas
 ## <span style="color:#FFD700">Contributing</span>
 
 Bug reports, translations, feature ideas, and sound suggestions are welcome. Include the client flavor and reproduction steps with bug reports.
+
+Development is maintained in the
+[RGXMods GitLab repository](https://gitlab.dicematrix.cloud/rgxmods/warcraft/BLU_Classic),
+the source of truth for code and CI/CD. Public packages and release notes are
+published through [RGXMods GitHub Releases](https://github.com/RGXMods/BLU_Classic/releases).
+
+The project uses one unified TOC for the active Classic families, with guarded
+runtime behavior for client-specific APIs. See [release history](docs/CHANGES.md)
+for compatibility and packaging changes.
 
 ## <span style="color:#FFD700">License</span>
 

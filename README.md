@@ -14,7 +14,7 @@
 [![Wago](https://img.shields.io/badge/Wago-Download-b96ad9?style=flat-square)](https://addons.wago.io/addons/blu-classic)
 [![Discord](https://img.shields.io/badge/Discord-RealmGX-5865f2?style=flat-square&logo=discord&logoColor=white)](https://discord.gg/N7kdKAHVVF)
 
-**[Features](#features) | [Installation](#installation) | [Commands](#commands) | [Compatibility](#compatibility) | [Support](#support)**
+**[Features](#features) | [Installation](#installation) | [Commands](#commands) | [Compatibility](#compatibility) | [Languages](#languages) | [Support](#support)**
 
 </div>
 
@@ -121,6 +121,29 @@ update.
 
 Hardcore and Season of Discovery use the Classic Era client family. Retail is
 not supported by BLU Classic.
+
+## <span style="color:#FFD700">Languages</span>
+
+BLU Classic ships complete user-facing translations for every supported WoW
+client language. The addon's text (options panel, chat and slash-command
+output, minimap tooltip, and diagnostic messages) is localized in:
+
+- English (enUS) - base language
+- German (deDE)
+- Spanish (esES) - also covers the Latin American Spanish client (esMX)
+- French (frFR)
+- Italian (itIT)
+- Korean (koKR)
+- Brazilian Portuguese (ptBR)
+- European Portuguese (ptPT)
+- Russian (ruRU)
+- Simplified Chinese (zhCN)
+- Traditional Chinese (zhTW)
+
+This matches the `X-Localizations` list in `BLU_Classic.toc` exactly:
+enUS, deDE, esES, esMX, frFR, itIT, koKR, ptBR, ptPT, ruRU, zhCN, zhTW.
+The English strings always load first, and any client locale outside this
+list falls back to English automatically.
 
 ## <span style="color:#FFD700">Troubleshooting</span>
 

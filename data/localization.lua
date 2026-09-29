@@ -76,11 +76,15 @@ BLU_L = {
 -- Localization for utils.lua
 -- =====================================================================================
 
-    --BLU:ProcessEventQueue()
+    -- BLU:ProcessEventQueue()
     ERROR_SOUND_NOT_FOUND = string.format("%sSound not found for sound ID: %%s.|r", colors.error, colors.highlight),
     INVALID_VOLUME_LEVEL = string.format("%sInvalid volume level: %%d.|r", colors.error, colors.highlight),
     DEBUG_MESSAGE_MISSING = string.format("%sDebug message missing for event.|r", colors.warning, colors.highlight),
-    FUNCTIONS_HALTED = string.format("%sFunctions halted.|r", colors.error, colors.highlight),
+    -- FUNCTIONS_HALTED: previously defined twice in this table (an error-colored
+    -- "Functions halted." here and an info-colored "Functions halted. Event not
+    -- processed." in the core.lua section). Lua later-wins semantics made the
+    -- info-colored entry the effective runtime value, so that variant is kept
+    -- as the single deliberate definition; the earlier duplicate is removed.
 
     -- BLU:HaltOperations()
     COUNTDOWN_TICK = string.format("%sCountdown: %s%%d%s seconds remaining.|r", colors.info, colors.highlight, colors.info),

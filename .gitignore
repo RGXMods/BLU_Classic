@@ -11,7 +11,7 @@ Thumbs.db
 *.toc.bak
 
 # Release packaging
-.release/
+artifacts/
 packages/
 *.zip
 

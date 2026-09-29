@@ -5,7 +5,6 @@
 ## Author: DonnieDice
 ## Category: RGX
 ## Group: RGX
-## Email: donniedice@protonmail.com
 ## SavedVariables: BLUClassicDB
 ## OptionalDeps: Ace3
 ## IconTexture: Interface\AddOns\BLU_Classic\media\icon.tga

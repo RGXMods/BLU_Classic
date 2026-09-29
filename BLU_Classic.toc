@@ -14,6 +14,7 @@
 ## X-Website: https://github.com/RGXMods/BLU_Classic
 ## X-Curse-Project-ID: 1114093
 ## X-Wago-ID: vEGPgWK1
+## X-Localizations: enUS, deDE, esES, esMX, frFR, itIT, koKR, ptBR, ptPT, ruRU, zhCN, zhTW
 
 # Libraries
 Libs\LibStub\LibStub.lua
@@ -30,6 +31,21 @@ Libs\AceConfig-3.0\AceConfig-3.0.xml
 
 # Data files - LOAD ORDER CRITICAL
 data\localization.lua
+# Locale override modules (GetLocale-guarded; each only runs on its client,
+# extending the enUS baseline above. esES.lua also guards esMX; ptPT has its
+# own full module. All must load after the enUS baseline and before the
+# runtime data\ files below so translated strings are in place before any
+# data file reads BLU_L at load time.)
+locales\deDE.lua
+locales\esES.lua
+locales\frFR.lua
+locales\itIT.lua
+locales\koKR.lua
+locales\ptBR.lua
+locales\ptPT.lua
+locales\ruRU.lua
+locales\zhCN.lua
+locales\zhTW.lua
 data\initialization.lua
 data\sounds.lua
 data\dropdown_widget.lua

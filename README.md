@@ -30,12 +30,12 @@ BLU Classic is the **Classic** edition. Retail players should install [<span sty
 
 | | Feature | What it provides |
 |---|---|---|
-| 🎵 | **50+ game sound libraries** | Favorites from Final Fantasy, Zelda, Mario, Skyrim, Pokemon, Warcraft, and many more |
-| ⭐ | **Classic event coverage** | Level-up, quest, reputation, achievement, and supported battle-pet cues |
-| 🔊 | **Volume variants** | Low, Medium, and High choices for bundled sounds |
-| 🔇 | **Smart sound handling** | Replaces matching WoW cues without leaving default sounds muted after shutdown |
-| 🎨 | **Organized options** | Nested game menus, previews, persistent profiles, and a movable minimap button |
-| 🧭 | **Multi-client package** | One unified TOC with guarded behavior for each supported client family |
+| | **50+ game sound libraries** | Favorites from Final Fantasy, Zelda, Mario, Skyrim, Pokemon, Warcraft, and many more |
+| | **Classic event coverage** | Level-up, quest, reputation, achievement, and supported battle-pet cues |
+| | **Volume variants** | Low, Medium, and High choices for bundled sounds |
+| | **Smart sound handling** | Replaces matching WoW cues without leaving default sounds muted after shutdown |
+| | **Organized options** | Nested game menus, previews, persistent profiles, and a movable minimap button |
+| | **Multi-client package** | One unified TOC with guarded behavior for each supported client family |
 
 ## <span style="color:#FFD700">Event Coverage</span>
 

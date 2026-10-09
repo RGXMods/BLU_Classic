@@ -5,7 +5,7 @@
 
 -- Safely create or get the BLU_Classic addon (prevents "already exists" error)
 local addonName = "BLU_Classic"
-BLU_Classic = LibStub("AceAddon-3.0"):GetAddon(addonName, true) or LibStub("AceAddon-3.0"):NewAddon(addonName, "AceEvent-3.0", "AceConsole-3.0", "AceTimer-3.0")
+BLU_Classic = LibStub("AceAddon-3.0"):GetAddon(addonName, true) or LibStub("AceAddon-3.0"):NewAddon(addonName, "AceEvent-3.0", "AceTimer-3.0")
 BLU_L = BLU_L or {}
 
 -- Register PLAYER_LOGOUT at file-load time so unmute fires even if init/enable failed.
@@ -403,8 +403,10 @@ function BLU_Classic:OnInitialize()
     self.db.profile.classicMinimapIconEnabled = self.db.profile.classicMinimapIconEnabled ~= false
     self.db.profile.classicMinimapAngle = self.db.profile.classicMinimapAngle or 220
 
-    self:RegisterChatCommand("bluc", "HandleSlashCommands")
-    self:RegisterChatCommand("blu", "HandleSlashCommands")
+    local RGX = _G.RGXFramework
+    if RGX then
+        RGX:RegisterSlashCommand({"blu", "bluc"}, function(msg) self:HandleSlashCommands(msg) end, "BLU_Classic")
+    end
     self:InitializeOptions()
 end
 

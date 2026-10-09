@@ -1,7 +1,7 @@
 --=====================================================================================
 -- BLU_Classic | Better Level-Up! - initialization.lua
 --=====================================================================================
-BLU_Classic = LibStub("AceAddon-3.0"):NewAddon("BLU_Classic", "AceEvent-3.0", "AceConsole-3.0")
+BLU_Classic = LibStub("AceAddon-3.0"):NewAddon("BLU_Classic", "AceEvent-3.0")
 
 --=====================================================================================
 -- Version Number (API differs between Retail and Classic)
@@ -124,7 +124,11 @@ function BLU_Classic:OnInitialize()
     self.showWelcomeMessage = self.db.profile.showWelcomeMessage
 
     -- Register slash commands and events
-    self:RegisterChatCommand("blu", "HandleSlashCommands")
+    -- Register slash commands via RGX-Framework
+    local RGX = _G.RGXFramework
+    if RGX then
+        RGX:RegisterSlashCommand("blu", function(msg) self:HandleSlashCommands(msg) end, "BLU_Classic")
+    end
 
     function BLU_Classic:HandleSlashCommands(input)
         if not input or input:trim() == "" then

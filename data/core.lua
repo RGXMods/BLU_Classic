@@ -418,10 +418,12 @@ function BLU_Classic:OnEnable()
     self:CreateMinimapButton()
     if self.db and self.db.profile and self.db.profile.classicMinimapIconEnabled == false then
         if self.minimapButton then
-            self.minimapButton:Hide()
+            self.minimapButton:SetVisible(false)
         end
     else
-        self:UpdateMinimapButtonPosition()
+        if self.minimapButton then
+            self.minimapButton:SetVisible(true)
+        end
     end
     
     if self.showWelcomeMessage then

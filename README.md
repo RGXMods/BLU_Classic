@@ -175,6 +175,11 @@ The project uses one unified TOC for the active Classic families, with guarded
 runtime behavior for client-specific APIs. See [release history](docs/CHANGES.md)
 for compatibility and packaging changes.
 
+- Framework-first addon development: the [agent directives](docs/AGENT-DIRECTIVES.md)
+  document the MCP tool loop, the declarative `RGXAddon` contract surface,
+  forbidden raw-WoW patterns, this addon's dependency posture, and the release
+  discipline enforced by `AGENTS.md`.
+
 ## <span style="color:#FFD700">License</span>
 
 BLU Classic is available under the [MIT License](LICENSE).

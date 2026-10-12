@@ -303,12 +303,14 @@ function BLU_Classic:CreateMinimapButton()
             BLU_Classic:OpenOptionsPanel()
         end,
 
-        onVisibilityChanged = function(visible, b)
-            if visible then
-                print(BLU_Classic_PREFIX .. (BLU_L["MINIMAP_ICON_SHOWN"] or "Minimap icon shown.|r"))
-            else
-                print(BLU_Classic_PREFIX .. (BLU_L["MINIMAP_ICON_HIDDEN"] or "Minimap icon hidden.|r"))
-            end
+        -- Route Ctrl+Right-Click through the addon's own toggle so the
+        -- setting is persisted and exactly one feedback message prints,
+        -- matching the pre-migration behavior. onVisibilityChanged is
+        -- deliberately not used: the framework fires it on every
+        -- SetVisible() call, which would duplicate ToggleMinimapIcon's
+        -- feedback and print on every login restore.
+        onCtrlRight = function(b)
+            BLU_Classic:ToggleMinimapIcon(false)
         end,
     })
 

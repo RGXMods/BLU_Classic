@@ -416,11 +416,13 @@ function BLU_Classic:OnEnable()
     self:MuteSounds()
 
     self:CreateMinimapButton()
-    if self.db and self.db.profile and self.db.profile.classicMinimapIconEnabled == false then
-        if self.minimapButton then
-            self.minimapButton:Hide()
-        end
-    else
+    if self.minimapButton and self.db and self.db.profile and self.db.profile.classicMinimapIconEnabled == false then
+        -- Silent restore on login: hide the frame directly instead of
+        -- SetVisible(false), which fires onVisibilityChanged and would print
+        -- toggle feedback on every UI load.
+        self.minimapButton.frame:Hide()
+    elseif self.minimapButton then
+        -- Restore the saved angle placement without visibility side effects.
         self:UpdateMinimapButtonPosition()
     end
     

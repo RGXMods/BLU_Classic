@@ -263,136 +263,84 @@ function BLU_Classic:ToggleWelcomeMessage()
 end
 
 function BLU_Classic:CreateMinimapButton()
-    if self.minimapButton or not Minimap then
+    if self.minimapButton then
         return
     end
 
-    local button = CreateFrame("Button", "BLU_Classic_MinimapButton", Minimap)
-    self.minimapButton = button
-    button:SetSize(32, 32)
-    button:SetFrameStrata("MEDIUM")
-    button:SetFrameLevel(Minimap:GetFrameLevel() + 8)
-    button:SetMovable(true)
-    button:EnableMouse(true)
-    button:RegisterForClicks("LeftButtonUp", "RightButtonUp")
-    button:RegisterForDrag("LeftButton")
-
-    local backdrop = button:CreateTexture(nil, "BACKGROUND")
-    backdrop:SetSize(24, 24)
-    backdrop:SetPoint("CENTER", button, "CENTER", 1, 0)
-    backdrop:SetTexture("Interface\\Buttons\\WHITE8X8")
-    if backdrop.SetMask then
-        backdrop:SetMask("Interface\\CharacterFrame\\TempPortraitAlphaMaskSmall")
+    local RGX = _G.RGXFramework
+    if not RGX then
+        return
     end
-    backdrop:SetVertexColor(0.03, 0.03, 0.03, 0.98)
-    button.backdrop = backdrop
 
-    local icon = button:CreateTexture(nil, "ARTWORK")
-    icon:SetSize(19, 19)
-    icon:SetPoint("CENTER", button, "CENTER", 0, -1)
-    icon:SetTexture("Interface\\AddOns\\BLU_Classic\\media\\icon")
-    icon:SetTexCoord(0.02, 0.98, 0.02, 0.98)
-    button.icon = icon
+    local MM = RGX:GetMinimap()
+    if not MM or not MM.Create then
+        return
+    end
 
-    local overlay = button:CreateTexture(nil, "OVERLAY")
-    overlay:SetSize(54, 54)
-    overlay:SetPoint("TOPLEFT", button, "TOPLEFT", 0, 0)
-    overlay:SetTexture("Interface\\Minimap\\MiniMap-TrackingBorder")
-    button.overlay = overlay
+    -- RGX-Framework minimap module already creates the standard backdrop,
+    -- ring, icon texture, highlight, drag handler, and tooltip. BLU_Classic
+    -- only needs to supply the addon-specific icon and click callback.
+    local btn = MM:Create({
+        name = "BLU_Classic_MinimapButton",
+        icon = "Interface\\AddOns\\BLU_Classic\\media\\icon",
+        defaultAngle = 220,
 
-    button:SetHighlightTexture("Interface\\Minimap\\UI-Minimap-ZoomButton-Highlight")
+        storage = self.db and self.db.profile,
+        angleKey = "classicMinimapAngle",
+        enabledKey = "classicMinimapIconEnabled",
 
-    button:SetScript("OnClick", function(self, mouseButton)
-        if mouseButton == "LeftButton" and not self.isDragging then
+        tooltip = {
+            title = BLU_L["MINIMAP_TOOLTIP_TITLE"] or "BLU Classic",
+            lines = {
+                { left = "|cffd9c6ffKeep your BLU Classic settings one click away.|r", right = "" },
+                { left = "|cff05dffaLeft-Click|r",  right = "|cffffffffOpen options|r" },
+                { left = "|cff4ecdc4Left-Drag|r",   right = "|cffffffffMove around minimap|r" },
+                { left = "|cffe74c3cCtrl+Right-Click|r", right = "|cffffffffHide minimap icon|r" },
+            },
+        },
+
+        onLeftClick = function(b)
             BLU_Classic:OpenOptionsPanel()
-        end
-    end)
+        end,
 
-    button:SetScript("OnDragStart", function(self)
-        self.isDragging = true
-        if GameTooltip then
-            GameTooltip:Hide()
-        end
-        self:SetScript("OnUpdate", function()
-            BLU_Classic:UpdateMinimapPositionFromCursor()
-        end)
-    end)
-
-    button:SetScript("OnDragStop", function(self)
-        self.isDragging = false
-        self:SetScript("OnUpdate", nil)
-        BLU_Classic:UpdateMinimapButtonPosition()
-    end)
-
-    button:SetScript("OnEnter", function(self)
-        GameTooltip:SetOwner(self, "ANCHOR_LEFT")
-        GameTooltip:ClearLines()
-        GameTooltip:AddLine(BLU_L["MINIMAP_TOOLTIP_TITLE"] or "BLU Classic")
-        GameTooltip:AddLine(" ")
-        GameTooltip:AddLine("|cffd9c6ffKeep your BLU Classic settings one click away.|r", 1, 1, 1, true)
-        GameTooltip:AddLine(" ")
-        GameTooltip:AddDoubleLine("|cff05dffaLeft-Click|r", "|cffffffffOpen options|r", 1, 1, 1, 1, 1, 1)
-        GameTooltip:AddDoubleLine("|cff4ecdc4Left-Drag|r", "|cffffffffMove around minimap|r", 1, 1, 1, 1, 1, 1)
-        GameTooltip:AddDoubleLine("|cffe74c3cCtrl+Right-Click|r", "|cffffffffHide minimap icon|r", 1, 1, 1, 1, 1, 1)
-        GameTooltip:Show()
-    end)
-
-    button:SetScript("OnLeave", function()
-        GameTooltip:Hide()
-    end)
-
-    button:SetScript("OnMouseDown", function(self, mouseButton)
-        if mouseButton == "RightButton" and IsControlKeyDown() then
-            self.isCtrlRightClick = true
-        end
-    end)
-
-    button:SetScript("OnMouseUp", function(self, mouseButton)
-        if mouseButton == "RightButton" and self.isCtrlRightClick and IsControlKeyDown() then
-            self.isCtrlRightClick = false
-            GameTooltip:Hide()
+        -- Route Ctrl+Right-Click through the addon's own toggle so the
+        -- setting is persisted and exactly one feedback message prints,
+        -- matching the pre-migration behavior. onVisibilityChanged is
+        -- deliberately not used: the framework fires it on every
+        -- SetVisible() call, which would duplicate ToggleMinimapIcon's
+        -- feedback and print on every login restore.
+        onCtrlRight = function(b)
             BLU_Classic:ToggleMinimapIcon(false)
-        end
-    end)
+        end,
+    })
+
+    self.minimapButton = btn
 end
 
 function BLU_Classic:UpdateMinimapButtonPosition()
-    if not self.minimapButton or not Minimap or not self.db or not self.db.profile then
+    if not self.minimapButton then
         return
     end
 
-    local angle = math.rad(self.db.profile.classicMinimapAngle or 220)
-    local minimapRadius = math.max(Minimap:GetWidth() or 140, Minimap:GetHeight() or 140) / 2 + 10
-    local x = math.cos(angle) * minimapRadius
-    local y = math.sin(angle) * minimapRadius
-    self.minimapButton:ClearAllPoints()
-    self.minimapButton:SetPoint("CENTER", Minimap, "CENTER", x, y)
+    if type(self.minimapButton.PlaceAtAngle) == "function" then
+        self.minimapButton:PlaceAtAngle()
+    else
+        if not self.db or not self.db.profile then
+            return
+        end
+        local angle = math.rad(self.db.profile.classicMinimapAngle or 220)
+        local minimapRadius = math.max(Minimap:GetWidth() or 140, Minimap:GetHeight() or 140) / 2 + 10
+        local x = math.cos(angle) * minimapRadius
+        local y = math.sin(angle) * minimapRadius
+        self.minimapButton.frame:ClearAllPoints()
+        self.minimapButton.frame:SetPoint("CENTER", Minimap, "CENTER", x, y)
+    end
 end
 
 function BLU_Classic:UpdateMinimapPositionFromCursor()
-    if not self.minimapButton or not Minimap or not self.db or not self.db.profile then
-        return
-    end
-
-    local mx, my = Minimap:GetCenter()
-    local scale = Minimap:GetEffectiveScale()
-    local cx, cy = GetCursorPosition()
-    cx = cx / scale
-    cy = cy / scale
-
-    if not mx or not my then
-        return
-    end
-
-    local dy = cy - my
-    local dx = cx - mx
-    local angle = math.deg((math.atan2 and math.atan2(dy, dx)) or math.atan(dy, dx))
-    if angle < 0 then
-        angle = angle + 360
-    end
-
-    self.db.profile.classicMinimapAngle = angle
-    self:UpdateMinimapButtonPosition()
+    -- Dragging is handled internally by the RGX-Framework minimap module.
+    -- This function is kept for API compatibility but no longer needs
+    -- to compute angle/position manually.
 end
 
 function BLU_Classic:ToggleMinimapIcon(show)
@@ -407,13 +355,25 @@ function BLU_Classic:ToggleMinimapIcon(show)
             self:CreateMinimapButton()
         end
         if self.minimapButton then
-            self.minimapButton:Show()
+            if type(self.minimapButton.SetVisible) == "function" then
+                self.minimapButton:SetVisible(true)
+            else
+                if self.minimapButton.frame then
+                    self.minimapButton.frame:Show()
+                end
+            end
             self:UpdateMinimapButtonPosition()
         end
         print(BLU_Classic_PREFIX .. (BLU_L["MINIMAP_ICON_SHOWN"] or "Minimap icon shown.|r"))
     else
         if self.minimapButton then
-            self.minimapButton:Hide()
+            if type(self.minimapButton.SetVisible) == "function" then
+                self.minimapButton:SetVisible(false)
+            else
+                if self.minimapButton.frame then
+                    self.minimapButton.frame:Hide()
+                end
+            end
         end
         print(BLU_Classic_PREFIX .. (BLU_L["MINIMAP_ICON_HIDDEN"] or "Minimap icon hidden.|r"))
     end

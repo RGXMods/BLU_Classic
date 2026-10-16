@@ -6,7 +6,9 @@
 ## Category: RGX
 ## Group: RGX
 ## SavedVariables: BLUClassicDB
-## OptionalDeps: Ace3, RGX-Framework
+## RequiredDeps: RGX-Framework
+## OptionalDeps: Ace3
+## X-RGX-Framework-MinVersion: 2.7.0
 ## IconTexture: Interface\AddOns\BLU_Classic\media\icon.tga
 
 ## X-Category: UI Media, Questing & Leveling, Audio & Video, Miscellaneous

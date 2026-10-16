@@ -10,11 +10,11 @@ BLU_Classic_EventQueue = {}
 -- Database Get/Set Functions
 --=====================================================================================
 function BLU_Classic:GetValue(info)
-    return self.db.profile[info[#info]]
+    return self.db[info[#info]]
 end
 
 function BLU_Classic:SetValue(info, value)
-    self.db.profile[info[#info]] = value
+    self.db[info[#info]] = value
 end
 
 --=====================================================================================
@@ -65,14 +65,14 @@ function BLU_Classic:ProcessEventQueue()
         self:PrintDebugMessage(event.debugMessage)
     end
 
-    local sound = self:SelectSound(self.db.profile[event.soundSelectKey])
+    local sound = self:SelectSound(self.db[event.soundSelectKey])
     if not sound then
         self:PrintDebugMessage("ERROR_SOUND_NOT_FOUND", tostring(event.soundSelectKey))
         C_Timer.After(1, function() self:ProcessEventQueue() end)
         return
     end
 
-    local volumeLevel = self.db.profile[event.volumeKey]
+    local volumeLevel = self.db[event.volumeKey]
     if not volumeLevel or volumeLevel < 0 or volumeLevel > 3 then
         volumeLevel = 2 -- Default to medium
     end
@@ -239,7 +239,7 @@ end
 --=====================================================================================
 function BLU_Classic:ToggleDebugMode()
     self.debugMode = not self.debugMode
-    self.db.profile.debugMode = self.debugMode
+    self.db.debugMode = self.debugMode
 
     -- Use the localized strings directly, assuming they are defined
     local statusMessage = self.debugMode and BLU_L["DEBUG_MODE_ENABLED"] or BLU_L["DEBUG_MODE_DISABLED"]
@@ -254,12 +254,12 @@ end
 
 function BLU_Classic:ToggleWelcomeMessage()
     self.showWelcomeMessage = not self.showWelcomeMessage
-    self.db.profile.showWelcomeMessage = self.showWelcomeMessage
+    self.db.showWelcomeMessage = self.showWelcomeMessage
 
     local status = self.showWelcomeMessage and BLU_Classic_PREFIX .. BLU_L["WELCOME_MSG_ENABLED"] or BLU_Classic_PREFIX .. BLU_L["WELCOME_MSG_DISABLED"]
     print(status)
     self:PrintDebugMessage("SHOW_WELCOME_MESSAGE_TOGGLED", tostring(self.showWelcomeMessage))
-    self:PrintDebugMessage("CURRENT_DB_SETTING", tostring(self.db.profile.showWelcomeMessage))
+    self:PrintDebugMessage("CURRENT_DB_SETTING", tostring(self.db.showWelcomeMessage))
 end
 
 function BLU_Classic:CreateMinimapButton()
@@ -285,7 +285,7 @@ function BLU_Classic:CreateMinimapButton()
         icon = "Interface\\AddOns\\BLU_Classic\\media\\icon",
         defaultAngle = 220,
 
-        storage = self.db and self.db.profile,
+        storage = self.db,
         angleKey = "classicMinimapAngle",
         enabledKey = "classicMinimapIconEnabled",
 
@@ -325,10 +325,10 @@ function BLU_Classic:UpdateMinimapButtonPosition()
     if type(self.minimapButton.PlaceAtAngle) == "function" then
         self.minimapButton:PlaceAtAngle()
     else
-        if not self.db or not self.db.profile then
+        if not self.db or not self.db then
             return
         end
-        local angle = math.rad(self.db.profile.classicMinimapAngle or 220)
+        local angle = math.rad(self.db.classicMinimapAngle or 220)
         local minimapRadius = math.max(Minimap:GetWidth() or 140, Minimap:GetHeight() or 140) / 2 + 10
         local x = math.cos(angle) * minimapRadius
         local y = math.sin(angle) * minimapRadius
@@ -344,11 +344,11 @@ function BLU_Classic:UpdateMinimapPositionFromCursor()
 end
 
 function BLU_Classic:ToggleMinimapIcon(show)
-    if not self.db or not self.db.profile then
+    if not self.db or not self.db then
         return
     end
 
-    self.db.profile.classicMinimapIconEnabled = show and true or false
+    self.db.classicMinimapIconEnabled = show and true or false
 
     if show then
         if not self.minimapButton then
@@ -453,13 +453,13 @@ end
 function BLU_Classic:TestSound(soundID, volumeKey, defaultSound, debugMessage)
     self:PrintDebugMessage(debugMessage)
 
-    local sound = self:SelectSound(self.db.profile[soundID])
+    local sound = self:SelectSound(self.db[soundID])
     if not sound then
         self:PrintDebugMessage("ERROR_SOUND_NOT_FOUND", tostring(soundID))
         return
     end
     
-    local volumeLevel = self.db.profile[volumeKey]
+    local volumeLevel = self.db[volumeKey]
     if not volumeLevel or volumeLevel < 0 or volumeLevel > 3 then
         volumeLevel = 2
     end

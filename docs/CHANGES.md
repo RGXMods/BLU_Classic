@@ -1,3 +1,6 @@
+## v1.3.6 - 2026-10-16
+- Added `docs/AGENT-DIRECTIVES.md`: framework-first addon development and TOC version policy documentation (issue #4).
+
 ## v1.3.5 - 2026-09-29
 - Added the `AGENTS.md` framework-build and interface-versioning directives; TOC metadata cleaned to the sanctioned author field.
 

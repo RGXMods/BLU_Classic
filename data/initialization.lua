@@ -111,17 +111,23 @@ end
 --=====================================================================================
 function BLU_Classic:OnInitialize()
     -- Initialize the database with defaults
-    self.db = LibStub("AceDB-3.0"):New("BLUClassicDB", self.defaults, true)
+    local RGXDB = _G.RGXFramework
+    if RGXDB and RGXDB.NewDatabase then
+        self.db = RGXDB:NewDatabase("BLUClassicDB", self.defaults and self.defaults.profile or {}, {})
+    end
 
-    -- Apply default values if they are not set
-    for key, value in pairs(self.defaults.profile) do
-        if self.db.profile[key] == nil then
-            self.db.profile[key] = value
+    -- Apply default values if they are not set (the RGX proxy fills
+    -- defaults itself; this pass covers migrated SavedVariables).
+    if self.db then
+        for key, value in pairs(self.defaults.profile) do
+            if self.db[key] == nil then
+                self.db[key] = value
+            end
         end
     end
 
-    self.debugMode = self.db.profile.debugMode
-    self.showWelcomeMessage = self.db.profile.showWelcomeMessage
+    self.debugMode = self.db.debugMode
+    self.showWelcomeMessage = self.db.showWelcomeMessage
 
     -- Register slash commands and events
     -- Register slash commands via RGX-Framework
@@ -183,7 +189,7 @@ function BLU_Classic:InitializeOptions()
         AC:RegisterOptionsTable("BLU_Classic_Options", self.options)
         self.optionsFrame, self.optionsCategoryID = ACD:AddToBlizOptions("BLU_Classic_Options", BLU_L["OPTIONS_LIST_MENU_TITLE"] or "BLU_Classic") 
 
-        local profiles = LibStub("AceDBOptions-3.0"):GetOptionsTable(self.db)
+        local profiles = self.BuildProfilesOptions and self:BuildProfilesOptions() or { type = "group", name = "Profiles", args = {} }
         AC:RegisterOptionsTable("BLU_Classic_Profiles", profiles)
         _, self.profilesCategoryID = ACD:AddToBlizOptions("BLU_Classic_Profiles", BLU_L["PROFILES_TITLE"] or "Profiles", BLU_L["OPTIONS_LIST_MENU_TITLE"] or "BLU_Classic")
 

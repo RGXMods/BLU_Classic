@@ -1,3 +1,6 @@
+## v1.3.8 - 2026-10-23
+- Fixed CurseForge and Wago publishing: the release publisher now sends the upload `metadata` as a plain form value instead of a Blob file part, which CurseForge rejected with `1001 Missing field 'metadata'` and Wago with `422 The metadata must be a string`. Synced the publisher with the framework's corrected release tooling.
+
 ## v1.3.6 - 2026-10-16
 - Added `docs/AGENT-DIRECTIVES.md`: framework-first addon development and TOC version policy documentation (issue #4).
 

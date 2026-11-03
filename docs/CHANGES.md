@@ -1,3 +1,13 @@
+## v1.4.0-beta.12 - 2026-11-03
+- The four settings tabs (General, Profiles, Debug, Sounds) sit in a bordered box that lines up with the tab buttons, with an even margin around them.
+- Highlights (the active tab, a switch that is on, and the current sound name) use BLU's brand cyan instead of the RGX-Framework theme colour. Surfaces, borders, and text still follow the framework.
+- Each event page (Level Up, Quest, Reputation, Combat, Loot, Hardcore, Honor, Collectibles) has an ON/OFF switch in its header. Turning a page off stops BLU from playing its sounds and keeps your sound choices. Level Up, Quest, and Reputation then fall back to the game's own sounds.
+- The Level Up and Collectibles tabs use icons that Classic's own UI loads: XP for Level Up and a mount for Collectibles. The old icons did not show in game.
+- Requires RGX-Framework 2.11.0 or newer.
+- Known gap: these events are not yet confirmed to fire on every Classic client.
+- Known gap: the Loot tab icon is still being investigated.
+- Known gap: new options labels, including the ON and OFF switch text, are English only until the locale files are updated.
+
 ## v1.4.0-beta.11 - 2026-11-03
 - Mists of Pandaria Classic is no longer supported. BLU Classic targets Classic Era (11509) and Burning Crusade Classic (20506).
 - The Achievement and Battle Pet tabs were Mists-only, so they are gone. The Pet Collected battle-pet trigger goes with them.

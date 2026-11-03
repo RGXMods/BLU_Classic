@@ -339,7 +339,7 @@ function Tabs:Init()
         -- Row 1
         {text = "General",     create = general,  row = 1, col = 1, icon = "Interface\\Icons\\INV_Misc_Gear_08"},
         {text = "Profiles",    create = profiles, row = 1, col = 2, icon = "Interface\\Icons\\Ability_Marksmanship"},
-        {text = "Level Up",    eventType = "levelup",     row = 1, col = 3, feature = "Level",       icon = "Interface\\Icons\\Achievement_Level_100"},
+        {text = "Level Up",    eventType = "levelup",     row = 1, col = 3, feature = "Level",       icon = "Interface\\Icons\\XP_Icon"},
         {text = "Quest",       eventType = "quest",       row = 1, col = 4, feature = "Quest",       icon = "Interface\\Icons\\INV_Misc_Note_01"},
         {text = "Combat",      eventType = "combat",      row = 1, col = 5, feature = "Combat",      icon = "Interface\\Icons\\Ability_Warrior_Charge"},
         -- Row 2
@@ -350,7 +350,7 @@ function Tabs:Init()
         {text = "Hardcore",    eventType = "hardcore",    row = 2, col = 5, feature = "Hardcore",    icon = "Interface\\Icons\\Spell_Shadow_AnimateDead"},
         -- Column 6 of rows 1 and 2, one per row. The strip stays two rows.
         {text = "Honor",       eventType = "honor",       row = 1, col = 6, feature = "Honor",       icon = "Interface\\Icons\\Achievement_PVP_A_A"},
-        {text = "Collectibles", eventType = "collectibles", row = 2, col = 6, feature = "Collectibles", icon = "Interface\\Icons\\INV_Pet_BattlePetTraining"},
+        {text = "Collectibles", eventType = "collectibles", row = 2, col = 6, feature = "Collectibles", icon = "Interface\\Icons\\Ability_Mount_RidingHorse"},
     }
 
     BLU.OptionsTabs = {}

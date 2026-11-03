@@ -94,8 +94,9 @@ end
 -- Flat list for defaults and lookups
 BLU.TriggerList = {}
 BLU.TriggersById = {}
-for _, page in pairs(BLU.TriggerPages) do
+for pageKey, page in pairs(BLU.TriggerPages) do
     for _, trigger in ipairs(page) do
+        trigger.page = pageKey
         trigger.sound = trigger.id .. "SoundSelect"
         trigger.volume = trigger.id .. "Volume"
         BLU.TriggerList[#BLU.TriggerList + 1] = trigger
@@ -115,10 +116,33 @@ local LOOT_TRIGGER_BY_QUALITY = {
 
 local lastPlayed = {}
 
+-- Module switches: each event page has an ON/OFF switch in its header. A module that is off
+-- stays silent but keeps the player's sound choices. Missing entries count as on.
+BLU.ModuleBySoundKey = {
+    LevelSoundSelect = "levelup",
+    QuestAcceptSoundSelect = "quest",
+    QuestSoundSelect = "quest",
+    RepSoundSelect = "reputation",
+    AchievementSoundSelect = "achievement",
+    BattlePetLevelSoundSelect = "battlepet",
+}
+
+function BLU:IsModuleEnabled(key)
+    local modules = self.db and self.db.modules
+    return not (modules and modules[key] == false)
+end
+
+function BLU:SetModuleEnabled(key, enabled)
+    if not self.db then return end
+    self.db.modules = self.db.modules or {}
+    self.db.modules[key] = enabled and true or false
+end
+
 --- Play the sound saved for a trigger. Silent when none is selected.
 function BLU:PlayTrigger(id)
     local trigger = self.TriggersById[id]
     if not trigger or not self.db or self.functionsHalted then return end
+    if trigger.page and not self:IsModuleEnabled(trigger.page) then return end
 
     local selected = self.db[trigger.sound]
     if selected == nil or selected == 0 then return end

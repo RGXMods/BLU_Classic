@@ -1,43 +1,105 @@
 --=====================================================================================
 -- BLU_Classic - data/ui/sounds.lua
--- Sounds page. Mirrors BLU / BLU Forever: title bar, intro, a scrolling list of the
--- installed sounds on the left, details on the right. BLU_Classic ships one fixed
--- library (no sound-pack manager), so the list previews the bundled sounds.
+-- Sounds page. Ported from BLU / BLU Forever core/interface/options/sounds.lua:
+-- title bar, intro, "Installed Sound Packs" list on the left, and the "User Custom
+-- Sounds" manager on the right (Add Custom Sound, loaded count, Remove per sound).
+-- BLU Classic has no SharedMedia pack discovery, so that row is not shown.
 --=====================================================================================
 
+local addonName = ...
+local ADDON_PATH = "Interface\\AddOns\\" .. (addonName or "BLU_Classic") .. "\\"
 local BLU = _G.BLU_Classic
 local Design = BLU.Modules["design"]
 
-local ROW_HEIGHT = 28
-
-local function SoundDisplayName(index)
-    local groupIndex = BLU_Classic_IndexToGroup and BLU_Classic_IndexToGroup[index]
-    local group = groupIndex and BLU_Classic_SoundGroups and BLU_Classic_SoundGroups[groupIndex]
-    if not group then
-        return soundOptions and soundOptions[index] or tostring(index)
-    end
-    if #group.indices == 1 then
-        return group.name
-    end
-    local variant = BLU_Classic_IndexToVariant and BLU_Classic_IndexToVariant[index]
-    local label = group.labels and group.labels[variant] or tostring(variant)
-    return group.name .. " - " .. label
+-- Rebuild every visible page so lists and event dropdowns pick up custom sound changes.
+function BLU.RefreshSoundPackUI()
+    if BLU.InvalidateAllTabs then BLU:InvalidateAllTabs() end
+    if BLU.RefreshOptions then BLU:RefreshOptions() end
 end
 
--- Every previewable sound index (1 = [Default], 2 = [Random] are selection modes).
-local function CollectSoundIndices()
-    local indices = {}
+local function EditBoxOf(dialog)
+    return dialog.editBox or dialog.EditBox
+end
+
+local function CountBundledSounds()
+    local count = 0
     for index = 3, #(soundOptions or {}) do
         if sounds and sounds[index] then
-            indices[#indices + 1] = index
+            count = count + 1
         end
     end
-    return indices
+    return count
 end
+
+local function CountDefaultSets()
+    local count = 0
+    for _ in pairs(defaultSounds or {}) do
+        count = count + 1
+    end
+    return count
+end
+
+StaticPopupDialogs["BLU_CLASSIC_ADD_CUSTOM_SOUND"] = {
+    text = "Add a custom sound file for BLU.|n|nEnter a short file name like myfile or myfile.ogg. You can also paste a full path like Interface\\AddOns\\myfile.ogg. BLU will try common AddOns folders automatically.",
+    button1 = ADD or ACCEPT,
+    button2 = CANCEL,
+    hasEditBox = true,
+    maxLetters = 255,
+    editBoxWidth = 320,
+    OnShow = function(self)
+        local box = EditBoxOf(self)
+        if box then
+            box:SetText("")
+            box:SetAutoFocus(false)
+            box:SetFocus()
+        end
+    end,
+    EditBoxOnEnterPressed = function(self)
+        local parent = self:GetParent()
+        if parent and parent.button1 then
+            parent.button1:Click()
+        end
+    end,
+    EditBoxOnEscapePressed = function(self)
+        self:GetParent():Hide()
+    end,
+    OnAccept = function(self)
+        local box = EditBoxOf(self)
+        local soundInput = (box and box:GetText() or ""):gsub("^%s+", ""):gsub("%s+$", "")
+        BLU:PrintDebug("[Options/Sounds] Add Custom Sound popup accepted with input '" .. tostring(soundInput) .. "'")
+
+        if soundInput == "" then
+            BLU:Print("Enter a file name like myfile or myfile.ogg.")
+            return
+        end
+
+        local userSounds = BLU.UserSounds
+        if not userSounds then
+            BLU:Print("User custom sounds are not available yet.")
+            return
+        end
+
+        local ok, result, resolvedPath = userSounds:Add(soundInput)
+        if ok then
+            if resolvedPath and soundInput:find("[/\\]") then
+                BLU:Print("Added custom sound: " .. tostring(result) .. " (" .. tostring(resolvedPath) .. ")")
+            else
+                BLU:Print("Added custom sound: " .. tostring(result))
+            end
+            BLU.RefreshSoundPackUI()
+        else
+            BLU:Print("Failed to add custom sound: " .. tostring(result))
+        end
+    end,
+    timeout = 0,
+    whileDead = true,
+    hideOnEscape = true,
+    preferredIndex = 3,
+}
 
 function BLU.CreateSoundsPanel(panel)
     BLU:PrintDebug("[Options/Sounds] Creating Sounds panel")
-
+    -- Wipe existing content
     for _, child in ipairs({panel:GetChildren()}) do
         child:Hide()
         child:SetParent(nil)
@@ -74,20 +136,19 @@ function BLU.CreateSoundsPanel(panel)
     intro:SetJustifyH("LEFT")
     intro:SetWordWrap(true)
     intro:SetTextColor(0.6, 0.66, 0.72)
-    intro:SetText("Browse and preview the sounds bundled with BLU Classic.")
+    intro:SetText("Browse installed sound packs and manage sounds for the active profile.")
 
-    local indices = CollectSoundIndices()
+    local pageContent = content
 
-    -- Left: scrolling list
-    local listPanel = CreateFrame("Frame", nil, content, "BackdropTemplate")
-    listPanel:SetPoint("TOPLEFT", content, "TOPLEFT", 0, -102)
-    listPanel:SetPoint("TOPRIGHT", content, "TOP", -12, -102)
-    listPanel:SetPoint("BOTTOMLEFT", content, "BOTTOMLEFT", 0, 5)
-    listPanel:SetBackdrop(Design.Backdrops.Dark)
-    listPanel:SetBackdropColor(0.06, 0.06, 0.06, 0.95)
-    listPanel:SetBackdropBorderColor(0.14, 0.20, 0.28, 1)
+    local installedPanel = CreateFrame("Frame", nil, content, "BackdropTemplate")
+    installedPanel:SetPoint("TOPLEFT", pageContent, "TOPLEFT", 0, -102)
+    installedPanel:SetPoint("TOPRIGHT", pageContent, "TOP", -12, -102)
+    installedPanel:SetPoint("BOTTOMLEFT", pageContent, "BOTTOMLEFT", 0, 5)
+    installedPanel:SetBackdrop(Design.Backdrops.Dark)
+    installedPanel:SetBackdropColor(0.06, 0.06, 0.06, 0.95)
+    installedPanel:SetBackdropBorderColor(0.14, 0.20, 0.28, 1)
 
-    local scrollFrame = CreateFrame("ScrollFrame", nil, listPanel, "UIPanelScrollFrameTemplate")
+    local scrollFrame = CreateFrame("ScrollFrame", nil, installedPanel, "UIPanelScrollFrameTemplate")
     scrollFrame:SetPoint("TOPLEFT", 8, -8)
     scrollFrame:SetPoint("BOTTOMRIGHT", -8, 8)
     scrollFrame:EnableMouseWheel(true)
@@ -102,59 +163,228 @@ function BLU.CreateSoundsPanel(panel)
     scrollFrame:SetScrollChild(list)
     scrollFrame:SetScript("OnMouseWheel", function(self, delta)
         local current = self:GetVerticalScroll() or 0
+        local step = 28
         local maxScroll = math.max(0, (list:GetHeight() or 0) - self:GetHeight())
-        local nextValue = current - (delta * ROW_HEIGHT)
-        if nextValue < 0 then nextValue = 0 elseif nextValue > maxScroll then nextValue = maxScroll end
+        local nextValue = current - (delta * step)
+        if nextValue < 0 then
+            nextValue = 0
+        elseif nextValue > maxScroll then
+            nextValue = maxScroll
+        end
         self:SetVerticalScroll(nextValue)
     end)
 
-    local header = Design:CreateHeader(list, "Bundled Sounds", "Interface\\Icons\\INV_Misc_Bag_33")
+    local header = Design:CreateHeader(list, "Installed Sound Packs", "Interface\\Icons\\INV_Misc_Bag_33")
     header:SetPoint("TOPLEFT", 0, 0)
     header:SetPoint("TOPRIGHT", 0, 0)
 
-    local rowTop = -40
-    for position, index in ipairs(indices) do
-        local row = CreateFrame("Frame", nil, list)
-        row:SetHeight(ROW_HEIGHT)
-        row:SetPoint("TOPLEFT", 0, rowTop - (position - 1) * ROW_HEIGHT)
-        row:SetPoint("TOPRIGHT", 0, rowTop - (position - 1) * ROW_HEIGHT)
+    local headerNote = list:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
+    headerNote:SetPoint("TOPLEFT", header, "BOTTOMLEFT", 10, -6)
+    headerNote:SetPoint("TOPRIGHT", header, "BOTTOMRIGHT", -12, -6)
+    headerNote:SetJustifyH("LEFT")
+    headerNote:SetWordWrap(true)
+    headerNote:SetTextColor(0.78, 0.78, 0.78)
+    headerNote:SetText("BLU lists its built-in libraries and your manually added custom sounds.")
 
-        local name = row:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
-        name:SetPoint("LEFT", 8, 0)
-        name:SetPoint("RIGHT", -64, 0)
-        name:SetJustifyH("LEFT")
-        name:SetWordWrap(false)
-        name:SetText(SoundDisplayName(index))
+    local startY = -72
+    local columnXStart = 10
+    local columnWidth = 244
+    local rowStep = 45
 
-        local play = Design:CreateActionButton(row, "Play", 52, 20)
-        play:SetPoint("RIGHT", -4, 0)
-        play:SetScript("OnClick", function()
-            local files = sounds and sounds[index]
-            local file = files and (files[2] or files[1] or files[3])
-            if file then
-                PlaySoundFile(file, "MASTER")
+    local function createPackEntry(parent, pack, x, y)
+        local frame = CreateFrame("Frame", nil, parent)
+        frame:SetSize(columnWidth, 40)
+        frame:SetPoint("TOPLEFT", x, y)
+
+        local icon = frame:CreateTexture(nil, "ARTWORK")
+        icon:SetSize(24, 24)
+        icon:SetPoint("LEFT", 0, 0)
+        icon:SetTexture(pack.icon or "Interface\\Icons\\INV_Misc_QuestionMark")
+
+        local name = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+        frame.name = name
+        name:SetPoint("LEFT", icon, "RIGHT", 10, 5)
+        name:SetText(pack.name or "Unknown Pack")
+
+        local status = frame:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
+        status:SetPoint("TOPLEFT", name, "BOTTOMLEFT", 0, -2)
+        status:SetText(pack.status or "|cff00ff00Loaded|r")
+
+        frame:EnableMouse(true)
+        frame:SetScript("OnEnter", function(self)
+            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+            GameTooltip:SetText(pack.name or "Unknown Pack", 1, 1, 1)
+            GameTooltip:AddLine((pack.status or "Status unavailable"):gsub("|c%x%x%x%x%x%x%x%x", ""):gsub("|r", ""), 0.02, 0.87, 0.98, true)
+            GameTooltip:AddLine("Registered sounds: " .. tostring(pack.soundCount or 0), 0.82, 0.82, 0.82, true)
+            if pack.id == "wow_default_blu" then
+                GameTooltip:AddLine("BLU's built-in Warcraft-style defaults.", 0.82, 0.82, 0.82, true)
+            elseif pack.id == "other_games_blu" then
+                GameTooltip:AddLine("BLU's built-in game sound library with low, medium, and high variants.", 0.82, 0.82, 0.82, true)
+            elseif pack.id == "user_custom_sounds" then
+                GameTooltip:AddLine("Sounds you added manually from the Sounds tab.", 0.82, 0.82, 0.82, true)
             end
+            GameTooltip:Show()
         end)
+        frame:SetScript("OnLeave", GameTooltip_Hide)
+
+        return frame
     end
-    list:SetHeight(math.abs(rowTop) + #indices * ROW_HEIGHT + 8)
 
-    -- Right: details
-    local aboutSection = Design:CreateSection(content, "About Sounds", "Interface\\Icons\\INV_Misc_Book_09")
-    aboutSection:SetPoint("TOPLEFT", content, "TOP", 12, -102)
-    aboutSection:SetPoint("TOPRIGHT", content, "TOPRIGHT", -10, -102)
-    aboutSection:SetHeight(190)
+    local customEntries = {}
+    if BLU.UserSounds then
+        customEntries = BLU.UserSounds:GetEntries()
+    end
+    local customSoundCount = #customEntries
 
-    local count = aboutSection.content:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-    count:SetPoint("TOPLEFT", 8, -8)
-    count:SetText("|cff05dffa" .. tostring(#indices) .. "|r bundled sounds from more than 50 games")
+    local packRows = {
+        {
+            id = "wow_default_blu",
+            name = "wow default-blu",
+            icon = ADDON_PATH .. "media\\icon.tga",
+            status = "|cff05dffaBLU defaults|r",
+            soundCount = CountDefaultSets(),
+        },
+        {
+            id = "other_games_blu",
+            name = "other games-blu",
+            icon = ADDON_PATH .. "media\\icon.tga",
+            status = "|cff05dffaBLU game library|r",
+            soundCount = CountBundledSounds(),
+        },
+        {
+            id = "user_custom_sounds",
+            name = "user custom sounds",
+            icon = "Interface\\Icons\\INV_Misc_Coin_18",
+            status = customSoundCount > 0 and "|cff00ff00Loaded|r" or "|cffffaa00No user custom sounds loaded|r",
+            soundCount = customSoundCount,
+        },
+    }
 
-    local note = aboutSection.content:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
-    note:SetPoint("TOPLEFT", count, "BOTTOMLEFT", 0, -10)
-    note:SetPoint("RIGHT", aboutSection.content, "RIGHT", -8, 0)
-    note:SetJustifyH("LEFT")
-    note:SetWordWrap(true)
-    note:SetTextColor(0.72, 0.78, 0.86)
-    note:SetText("Use Play to hear a sound at medium volume. Choose the sound and volume for each event on the Level Up, Quest, and Reputation pages.")
+    for index, pack in ipairs(packRows) do
+        local frame = createPackEntry(list, pack, columnXStart, startY - ((index - 1) * rowStep))
+        frame.name:SetText(pack.name .. " (" .. pack.soundCount .. ")")
+    end
+
+    list:SetHeight(math.abs(startY) + (#packRows * rowStep) + 50)
+    BLU:PrintDebug("[Options/Sounds] Rendered " .. tostring(#packRows) .. " sound pack entries")
+
+    local managerPanel = CreateFrame("Frame", nil, content, "BackdropTemplate")
+    managerPanel:SetPoint("TOPLEFT", pageContent, "TOP", 12, -102)
+    managerPanel:SetPoint("TOPRIGHT", pageContent, "TOPRIGHT", -10, -102)
+    managerPanel:SetPoint("BOTTOMRIGHT", pageContent, "BOTTOMRIGHT", -10, 5)
+    managerPanel:SetBackdrop(Design.Backdrops.Dark)
+    managerPanel:SetBackdropColor(0.06, 0.06, 0.06, 0.95)
+    managerPanel:SetBackdropBorderColor(0.14, 0.20, 0.28, 1)
+
+    local managerHeader = Design:CreateHeader(managerPanel, "User Custom Sounds", "Interface\\Icons\\INV_Misc_Coin_18")
+    managerHeader:SetPoint("TOPLEFT", 8, -8)
+    managerHeader:SetPoint("TOPRIGHT", -8, -8)
+
+    local managerNote = managerPanel:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
+    managerNote:SetPoint("TOPLEFT", managerHeader, "BOTTOMLEFT", 4, -8)
+    managerNote:SetPoint("TOPRIGHT", managerHeader, "BOTTOMRIGHT", -4, -8)
+    managerNote:SetJustifyH("LEFT")
+    managerNote:SetWordWrap(true)
+    managerNote:SetTextColor(0.78, 0.78, 0.78)
+    managerNote:SetText("Add .ogg, .mp3, or .wav files from an AddOns sound folder. Enter a filename such as victory.ogg, or paste its full Interface\\AddOns path. These sounds belong to the active profile; select them on an event page after adding them here.")
+
+    local addButton = Design:CreateActionButton(
+        managerPanel,
+        "Add Custom Sound",
+        140,
+        24,
+        "Add Custom Sound",
+        "Type a short file name like myfile or myfile.ogg.\nOr paste a full Interface\\\\AddOns path.\nBLU will search common custom-sound folders automatically."
+    )
+    addButton:SetPoint("TOPLEFT", managerNote, "BOTTOMLEFT", 0, -10)
+    addButton:SetScript("OnClick", function()
+        BLU:PrintDebug("[Options/Sounds] Add Custom Sound button clicked")
+        StaticPopup_Show("BLU_CLASSIC_ADD_CUSTOM_SOUND")
+    end)
+
+    local countLabel = managerPanel:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
+    countLabel:SetPoint("LEFT", addButton, "RIGHT", 10, 0)
+    countLabel:SetTextColor(0.7, 0.7, 0.7)
+    countLabel:SetText("Loaded: " .. tostring(customSoundCount))
+
+    local listFrame = CreateFrame("ScrollFrame", nil, managerPanel, "UIPanelScrollFrameTemplate")
+    listFrame:SetPoint("TOPLEFT", addButton, "BOTTOMLEFT", 0, -12)
+    listFrame:SetPoint("BOTTOMRIGHT", -10, 10)
+    listFrame:EnableMouseWheel(true)
+
+    if listFrame.ScrollBar then
+        listFrame.ScrollBar:Hide()
+        listFrame.ScrollBar.Show = function() end
+    end
+
+    local listContent = CreateFrame("Frame", nil, listFrame)
+    listContent:SetWidth(294)
+    listFrame:SetScrollChild(listContent)
+    listFrame:SetScript("OnMouseWheel", function(self, delta)
+        local current = self:GetVerticalScroll() or 0
+        local step = 28
+        local maxScroll = math.max(0, (listContent:GetHeight() or 0) - self:GetHeight())
+        local nextValue = current - (delta * step)
+        if nextValue < 0 then
+            nextValue = 0
+        elseif nextValue > maxScroll then
+            nextValue = maxScroll
+        end
+        self:SetVerticalScroll(nextValue)
+    end)
+
+    if #customEntries == 0 then
+        local emptyText = listContent:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
+        emptyText:SetPoint("TOPLEFT", 4, -4)
+        emptyText:SetPoint("RIGHT", -4, 0)
+        emptyText:SetJustifyH("LEFT")
+        emptyText:SetTextColor(0.65, 0.65, 0.65)
+        emptyText:SetText("No user custom sounds are loaded.")
+        listContent:SetHeight(40)
+    else
+        local rowHeight = 48
+        for index, entry in ipairs(customEntries) do
+            local row = CreateFrame("Frame", nil, listContent, "BackdropTemplate")
+            row:SetPoint("TOPLEFT", 0, -((index - 1) * (rowHeight + 6)))
+            row:SetWidth(294)
+            row:SetHeight(rowHeight)
+            row:SetBackdrop(Design.Backdrops.Solid)
+            row:SetBackdropColor(0.08, 0.11, 0.15, 0.90)
+            row:SetBackdropBorderColor(0.14, 0.20, 0.28, 1)
+
+            local soundName = row:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+            soundName:SetPoint("TOPLEFT", 8, -6)
+            soundName:SetPoint("RIGHT", -88, 0)
+            soundName:SetJustifyH("LEFT")
+            soundName:SetText(entry.name or "Custom Sound")
+
+            local soundPath = row:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
+            soundPath:SetPoint("TOPLEFT", soundName, "BOTTOMLEFT", 0, -2)
+            soundPath:SetPoint("RIGHT", -88, 0)
+            soundPath:SetJustifyH("LEFT")
+            soundPath:SetTextColor(0.65, 0.65, 0.65)
+            soundPath:SetText(entry.file or "")
+
+            local removeButton = Design:CreateButton(row, "Remove", 68, 22)
+            removeButton:SetPoint("TOPRIGHT", row, "TOPRIGHT", -6, -11)
+            removeButton:SetFrameStrata("HIGH")
+            removeButton:Show()
+            if removeButton.label then
+                removeButton.label:SetTextColor(1.0, 0.35, 0.35)
+            end
+            removeButton:SetScript("OnClick", function()
+                local ok, err = BLU.UserSounds:Remove(entry.file)
+                if ok then
+                    BLU:Print("Removed custom sound: " .. tostring(entry.name))
+                    BLU.RefreshSoundPackUI()
+                else
+                    BLU:Print("Failed to remove custom sound: " .. tostring(err))
+                end
+            end)
+        end
+
+        listContent:SetHeight((#customEntries * (rowHeight + 6)) + 4)
+    end
 
     return content
 end

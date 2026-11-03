@@ -1,3 +1,9 @@
+## v1.4.0-beta.3 - 2026-11-02
+- Debug tab rebuilt to match BLU Forever: Debug Mode switch in the title bar and a Debug Scopes card with a checkbox per scope (Core, Options, Tabs, Registry, Loader / Init, Database / Config, Profiles, Events / Combat, Sounds / Media, Feature Modules). Scopes now filter which debug messages print.
+- Sounds tab rebuilt to match BLU Forever: Installed Sound Packs list on the left and a User Custom Sounds manager on the right.
+- New user custom sounds (issue #12): Add Custom Sound takes a file name like myfile or myfile.ogg, or a full Interface/AddOns path, and searches common AddOns sound folders. Custom sounds are stored per profile, appear under User Custom Sounds in every event dropdown, and can be removed from the Sounds tab. Existing saved sounds are unchanged.
+- Known gap: new options labels are English only until the locale files are updated.
+
 ## v1.4.0-beta.2 - 2026-11-02
 - Beta: options tabs now match BLU Forever's layout: General and Profiles on row 1, Debug and Sounds on row 2, then the divider and the event tabs.
 - New Debug tab with the debug switch and client details (addon, client, RGX-Framework, profile, and options page errors). The debug option moved here from General.

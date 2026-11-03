@@ -1,20 +1,46 @@
 --=====================================================================================
 -- BLU_Classic - data/ui/debug.lua
--- Debug page. Mirrors BLU / BLU Forever: title bar with the master ON/OFF switch,
--- intro line, then a card of diagnostics. BLU_Classic has a single debug switch, so
--- the Forever "Debug Scopes" list is replaced by client and addon details.
+-- Debug page. Ported from BLU / BLU Forever modules/Debug/Debug.lua: title bar with
+-- the Debug Mode switch, an intro line, and a "Debug Scopes" card of checkboxes that
+-- choose which diagnostic messages print while debug mode is on.
 --=====================================================================================
 
 local BLU = _G.BLU_Classic
 local Design = BLU.Modules["design"]
 
-local VERSION_LABELS = {
-    vanilla = "Classic Era",
-    tbc = "TBC Anniversary",
-    wrath = "Wrath of the Lich King Classic",
-    cata = "Cataclysm Classic",
-    mists = "Mists of Pandaria Classic",
+-- Scopes BLU Classic emits (BLU Forever's list minus the module-loader scope).
+local DEBUG_SCOPES = {
+    {key = "core",     label = "Core",              description = "Addon state and slash commands."},
+    {key = "options",  label = "Options",           description = "Options panel creation and layout."},
+    {key = "tabs",     label = "Tabs",              description = "Tab hover, clicks, and positioning."},
+    {key = "registry", label = "Registry",          description = "Sound selection and playback."},
+    {key = "loader",   label = "Loader / Init",     description = "Init and loading flow."},
+    {key = "database", label = "Database / Config", description = "Saved variables and config writes."},
+    {key = "profiles", label = "Profiles",          description = "Profile switching and management."},
+    {key = "events",   label = "Events / Combat",   description = "Event registration and timers."},
+    {key = "sounds",   label = "Sounds / Media",    description = "Sound UI and custom sound discovery."},
+    {key = "features", label = "Feature Modules",   description = "Level-up, quest, reputation, and other event sounds."},
 }
+
+BLU.DebugScopeDefinitions = DEBUG_SCOPES
+
+local function EnsureDebugDefaults()
+    if not (BLU and BLU.db) then
+        return false
+    end
+
+    local profile = BLU.db
+    profile.debugScopes = profile.debugScopes or {}
+    for _, scopeInfo in ipairs(DEBUG_SCOPES) do
+        if profile.debugScopes[scopeInfo.key] == nil then
+            profile.debugScopes[scopeInfo.key] = true
+        end
+    end
+
+    return true
+end
+
+BLU.EnsureDebugDefaults = EnsureDebugDefaults
 
 local function CreateToggleState(parent, enabled)
     local switchFrame = CreateFrame("Frame", nil, parent)
@@ -45,17 +71,64 @@ local function CreateToggleState(parent, enabled)
     end
 
     update(enabled == true)
+
     return switchFrame, toggle, update
 end
 
-local function Line(parent, anchor, label, value)
-    local fs = parent:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
-    fs:SetPoint("TOPLEFT", anchor, "BOTTOMLEFT", 0, -8)
-    fs:SetPoint("RIGHT", parent, "RIGHT", -8, 0)
-    fs:SetJustifyH("LEFT")
-    fs:SetWordWrap(true)
-    fs:SetText("|cff9fb3c8" .. label .. "|r  " .. tostring(value))
-    return fs
+local function CreateDebugControls(parent, options)
+    if not EnsureDebugDefaults() then
+        local unavailable = parent:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
+        unavailable:SetPoint("TOPLEFT", 0, -12)
+        unavailable:SetText("|cffff6666Database not ready. Reopen this tab in a moment.|r")
+        return nil
+    end
+
+    options = options or {}
+
+    local profile = BLU.db
+    local section = Design:CreateSection(parent, options.title, options.icon)
+    if options.height then
+        section:SetHeight(options.height)
+    end
+
+    local content = section.content
+
+    local startY = options.startY or -2
+    local rowStep = options.rowStep or 38
+    local detailWidth = options.detailWidth or 200
+    local centered = options.centerColumns == true
+    local columnGap = options.columnGap or 24
+    local leftColumnX = centered and -(detailWidth + 26 + columnGap / 2) or (options.leftColumnX or 0)
+    local rightColumnX = centered and (columnGap / 2) or (options.rightColumnX or 260)
+
+    for index, scopeInfo in ipairs(DEBUG_SCOPES) do
+        local column = ((index - 1) % 2)
+        local row = math.floor((index - 1) / 2)
+        local x = column == 0 and leftColumnX or rightColumnX
+        local y = startY - (row * rowStep)
+
+        local checkbox = Design:CreateCheckbox(content, scopeInfo.label)
+        if centered then
+            checkbox:SetPoint("TOPLEFT", content, "TOP", x, y)
+            checkbox:SetWidth(detailWidth + 26)
+        else
+            checkbox:SetPoint("TOPLEFT", x, y)
+        end
+        checkbox.check:SetChecked(profile.debugScopes[scopeInfo.key] ~= false)
+        checkbox.check:SetScript("OnClick", function(self)
+            profile.debugScopes[scopeInfo.key] = self:GetChecked() and true or false
+            BLU:PrintDebug("[Options/Debug] Debug scope '" .. tostring(scopeInfo.key) .. "' set to " .. tostring(profile.debugScopes[scopeInfo.key]))
+        end)
+
+        local detail = content:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
+        detail:SetPoint("TOPLEFT", checkbox, "BOTTOMLEFT", 26, -1)
+        detail:SetWidth(detailWidth)
+        detail:SetJustifyH("LEFT")
+        detail:SetTextColor(0.72, 0.72, 0.72)
+        detail:SetText(scopeInfo.description)
+    end
+
+    return section
 end
 
 function BLU.CreateDebugPanel(panel)
@@ -92,12 +165,12 @@ function BLU.CreateDebugPanel(panel)
     intro:SetJustifyH("LEFT")
     intro:SetWordWrap(true)
     intro:SetTextColor(0.6, 0.66, 0.72)
-    intro:SetText("Print diagnostic messages to chat and review client details for bug reports.")
+    intro:SetText("Choose which diagnostic messages BLU prints to chat.")
 
     local status = titleBar:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
     status:SetPoint("RIGHT", titleBar, "RIGHT", -60, 0)
 
-    if not BLU.db then
+    if not EnsureDebugDefaults() then
         local unavailable = content:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
         unavailable:SetPoint("TOPLEFT", 0, -102)
         unavailable:SetText("|cffff6666Database not ready. Reopen this tab in a moment.|r")
@@ -111,54 +184,32 @@ function BLU.CreateDebugPanel(panel)
     local function RefreshMasterToggle()
         local enabled = profile.debugMode == true
         updateToggle(enabled)
-        status:SetText(enabled and "|cff00ff00ON|r" or "|cffff0000OFF|r")
+        if enabled then
+            status:SetText("|cff00ff00ON|r")
+        else
+            status:SetText("|cffff0000OFF|r")
+        end
     end
 
     toggle:SetScript("OnClick", function()
-        local enabled = not (profile.debugMode == true)
-        profile.debugMode = enabled
-        BLU.debugMode = enabled
+        profile.debugMode = not (profile.debugMode == true)
+        BLU.debugMode = profile.debugMode
         RefreshMasterToggle()
+        BLU:PrintDebug("[Options/Debug] Debug mode set to " .. tostring(profile.debugMode))
     end)
+
     RefreshMasterToggle()
 
-    -- Diagnostics card
-    local section = Design:CreateSection(content, "Diagnostics", "Interface\\Icons\\INV_Misc_Gear_03")
-    section:SetPoint("TOPLEFT", titleBar, "BOTTOMLEFT", 0, -48)
-    section:SetPoint("TOPRIGHT", titleBar, "BOTTOMRIGHT", -10, -48)
-    section:SetHeight(250)
-
-    local _, buildNumber, _, interfaceVersion = GetBuildInfo()
-    local gameVersion = BLU:GetGameVersion()
-    local RGX = _G.RGXFramework
-
-    local anchor = section.content:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
-    anchor:SetPoint("TOPLEFT", 8, -2)
-    anchor:SetText("|cff9fb3c8Addon|r  BLU Classic " .. tostring(BLU.VersionNumber or "?"))
-    local last = anchor
-    last = Line(section.content, last, "Client", (VERSION_LABELS[gameVersion] or tostring(gameVersion)) .. "  (interface " .. tostring(interfaceVersion) .. ")")
-    last = Line(section.content, last, "RGX-Framework", RGX and tostring(RGX.version or "loaded") or "|cffff6666not loaded|r")
-    last = Line(section.content, last, "Active profile", profile.GetActiveProfile and profile:GetActiveProfile() or "Default")
-
-    local errorCount = 0
-    local errorNames = {}
-    for tabName in pairs(BLU._panelErrors or {}) do
-        errorCount = errorCount + 1
-        errorNames[#errorNames + 1] = tabName
-    end
-    table.sort(errorNames)
-    last = Line(section.content, last, "Options page errors",
-        errorCount == 0 and "|cff00ff00none|r" or ("|cffff6666" .. table.concat(errorNames, ", ") .. "|r"))
-
-    local helpButton = Design:CreateActionButton(section.content, "Show Commands", 120, 22,
-        "Show Commands", "Prints the list of /blu commands to chat.")
-    helpButton:SetPoint("TOPLEFT", last, "BOTTOMLEFT", 0, -16)
-    helpButton:SetScript("OnClick", function() BLU:DisplayBLUHelp() end)
-
-    local reloadButton = Design:CreateActionButton(section.content, "Reload UI", 120, 22,
-        "Reload UI", "Reloads the interface. Useful after changing debug mode.")
-    reloadButton:SetPoint("LEFT", helpButton, "RIGHT", 8, 0)
-    reloadButton:SetScript("OnClick", function() ReloadUI() end)
+    local scopesSection = CreateDebugControls(content, {
+        height = 304,
+        startY = -10,
+        title = "Debug Scopes",
+        icon = "Interface\\Icons\\INV_Misc_Gear_03",
+        rowStep = 40,
+        centerColumns = true,
+    })
+    scopesSection:SetPoint("TOPLEFT", titleBar, "BOTTOMLEFT", 0, -48)
+    scopesSection:SetPoint("TOPRIGHT", titleBar, "BOTTOMRIGHT", -10, -48)
 
     return content
 end

@@ -38,6 +38,12 @@ BLU.TriggerPages = {
         { id = "LootLegendary", label = "Legendary Item Looted", description = "You receive an orange item." },
         { id = "LootCoin",     label = "Coin Looted",          description = "You loot coin." },
     },
+    hardcore = {
+        { id = "DeathSelf",  label = "Your death",         description = "Your character dies." },
+        { id = "DeathParty", label = "Party member death", description = "A member of your party dies." },
+        { id = "DeathRaid",  label = "Raid member death",  description = "A member of your raid dies." },
+        { id = "DeathOther", label = "Other player death", description = "Any other player dies nearby." },
+    },
 }
 
 -- Flat list for defaults and lookups
@@ -51,6 +57,8 @@ for _, page in pairs(BLU.TriggerPages) do
         BLU.TriggersById[trigger.id] = trigger
     end
 end
+
+local COMBATLOG_OBJECT_TYPE_PLAYER = 0x400
 
 -- Item link colour -> quality id (Poor 0 ... Legendary 5)
 local QUALITY_BY_COLOR = {
@@ -136,6 +144,32 @@ function BLU:InitializeTriggers()
         local id = quality and LOOT_TRIGGER_BY_QUALITY[quality]
         if id then BLU:PlayTrigger(id) end
     end, "BLU_Classic:loot")
+
+    -- Hardcore deaths: your own death, then everyone else from the combat log
+    RGX:RegisterEvent("PLAYER_DEAD", function()
+        BLU:PlayTrigger("DeathSelf")
+    end, "BLU_Classic:death")
+
+    local combatLogAllowed = true
+    if RGX.HasCapability and RGX:HasCapability("combatLogEvent") ~= nil then
+        combatLogAllowed = RGX:HasCapability("combatLogEvent")
+    end
+    if combatLogAllowed and CombatLogGetCurrentEventInfo then
+        RGX:RegisterEvent("COMBAT_LOG_EVENT_UNFILTERED", function()
+            local _, subevent, _, _, _, _, _, destGUID, destName, destFlags = CombatLogGetCurrentEventInfo()
+            if subevent ~= "UNIT_DIED" or not destName or destName == "" then return end
+            if destGUID == UnitGUID("player") then return end   -- PLAYER_DEAD handles you
+            if bit.band(destFlags or 0, COMBATLOG_OBJECT_TYPE_PLAYER) == 0 then return end
+
+            if UnitInRaid and UnitInRaid(destName) then
+                BLU:PlayTrigger("DeathRaid")
+            elseif UnitInParty and UnitInParty(destName) then
+                BLU:PlayTrigger("DeathParty")
+            else
+                BLU:PlayTrigger("DeathOther")
+            end
+        end, "BLU_Classic:combatlog")
+    end
 
     -- Coin loot (own share only: the event is not sent for other players' money)
     RGX:RegisterEvent("CHAT_MSG_MONEY", function()

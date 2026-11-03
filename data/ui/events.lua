@@ -9,12 +9,17 @@
 local BLU = _G.BLU_Classic
 local Design = BLU.Modules["design"]
 
--- Nested menu helpers (carried over from the previous AceGUI sound-select widget).
-local BORDER_THICKNESS = UIDROPDOWNMENU_BORDER_THICKNESS or 15
-local BORDER_PAD = BORDER_THICKNESS * 2
-
+-- Nested menu helpers. Sizing and inline buttons come from the RGX-Framework dropdown module.
 local function GetListFrame(level)
     return _G["DropDownList" .. level] or _G["LibDropDownMenu_List" .. level]
+end
+
+local function GetDrops()
+    local RGX = _G.RGXFramework
+    if RGX and type(RGX.GetDropdowns) == "function" then
+        return RGX:GetDropdowns()
+    end
+    return nil
 end
 
 local function ShortenLabel(text, maxChars)
@@ -90,81 +95,6 @@ local function AttachInlineCountLabel(level, text)
     countLabel:Show()
 end
 
-local function ForceListFrameWidth(level, minWidth, leftInset)
-    BLU:UIAfter(0, function()
-        local listFrame = GetListFrame(level)
-        if not listFrame or not listFrame:IsShown() then
-            return
-        end
-
-        local neededContentWidth = math.max((minWidth or 200) - BORDER_PAD, 140)
-        local maxButtons = UIDROPDOWNMENU_MAXBUTTONS or 32
-        local visibleButtons = 0
-
-        for i = 1, maxButtons do
-            local button = _G[listFrame:GetName() .. "Button" .. i]
-            if button and button:IsShown() then
-                visibleButtons = visibleButtons + 1
-                local normalText = _G[button:GetName() .. "NormalText"]
-                local expandArrow = _G[button:GetName() .. "ExpandArrow"]
-                local countLabel = button.bluClassicCountLabel
-                local hasArrow = expandArrow and expandArrow:IsShown()
-                local hasCount = countLabel and countLabel:IsShown()
-                local textWidth = normalText and math.ceil(normalText:GetStringWidth() or 0) or 0
-                local countWidth = hasCount and math.ceil(countLabel:GetStringWidth() or 0) or 0
-                local rightReservation = (hasArrow and 14 or 6) + (hasCount and (countWidth + 6) or 0)
-                neededContentWidth = math.max(neededContentWidth, (leftInset or 10) + textWidth + rightReservation)
-            end
-        end
-
-        if visibleButtons == 0 then
-            return
-        end
-
-        local buttonWidth = neededContentWidth
-        local frameWidth = math.min(neededContentWidth + BORDER_PAD, 460)
-        listFrame:SetWidth(frameWidth)
-
-        for i = 1, maxButtons do
-            local button = _G[listFrame:GetName() .. "Button" .. i]
-            if button and button:IsShown() then
-                local normalText = _G[button:GetName() .. "NormalText"]
-                local expandArrow = _G[button:GetName() .. "ExpandArrow"]
-                local countLabel = button.bluClassicCountLabel
-                local hasArrow = expandArrow and expandArrow:IsShown()
-                local hasCount = countLabel and countLabel:IsShown()
-
-                button:SetWidth(buttonWidth)
-
-                if expandArrow then
-                    expandArrow:ClearAllPoints()
-                    expandArrow:SetPoint("RIGHT", button, "RIGHT", -3, 0)
-                end
-
-                if countLabel and hasCount then
-                    countLabel:ClearAllPoints()
-                    if hasArrow and expandArrow then
-                        countLabel:SetPoint("RIGHT", expandArrow, "LEFT", -4, 0)
-                    else
-                        countLabel:SetPoint("RIGHT", button, "RIGHT", -6, 0)
-                    end
-                end
-
-                if normalText then
-                    normalText:ClearAllPoints()
-                    normalText:SetPoint("LEFT", button, "LEFT", leftInset or 10, 0)
-                    if hasCount and countLabel then
-                        normalText:SetPoint("RIGHT", countLabel, "LEFT", -6, 0)
-                    else
-                        normalText:SetPoint("RIGHT", button, "RIGHT", hasArrow and -16 or -6, 0)
-                    end
-                    normalText:SetJustifyH("LEFT")
-                end
-            end
-        end
-    end)
-end
-
 -- Resolve a numeric sound index to a display name using the group data
 local function GetSoundDisplayName(value)
     if not value then return "" end
@@ -193,20 +123,20 @@ end
 -- Rows per event page: saved-variable keys are unchanged from earlier releases.
 local EVENT_ROWS = {
     levelup = {
-        { labelKey = "LEVEL_UP", label = "Level Up", sound = "LevelSoundSelect", volume = "LevelVolume", test = "TestLevelSound" },
+        { labelKey = "LEVEL_UP", label = "Level Up", sound = "LevelSoundSelect", volume = "LevelVolume", test = "TestLevelSound", defaultIndex = 4 },
     },
     quest = {
-        { labelKey = "QUEST_ACCEPTED", label = "Quest Accepted", sound = "QuestAcceptSoundSelect", volume = "QuestAcceptVolume", test = "TestQuestAcceptSound" },
-        { labelKey = "QUEST_COMPLETE", label = "Quest Complete", sound = "QuestSoundSelect", volume = "QuestVolume", test = "TestQuestSound" },
+        { labelKey = "QUEST_ACCEPTED", label = "Quest Accepted", sound = "QuestAcceptSoundSelect", volume = "QuestAcceptVolume", test = "TestQuestAcceptSound", defaultIndex = 7 },
+        { labelKey = "QUEST_COMPLETE", label = "Quest Complete", sound = "QuestSoundSelect", volume = "QuestVolume", test = "TestQuestSound", defaultIndex = 8 },
     },
     reputation = {
-        { labelKey = "REPUTATION_RANK_UP", label = "Reputation Rank Up", sound = "RepSoundSelect", volume = "RepVolume", test = "TestRepSound" },
+        { labelKey = "REPUTATION_RANK_UP", label = "Reputation Rank Up", sound = "RepSoundSelect", volume = "RepVolume", test = "TestRepSound", defaultIndex = 6 },
     },
     achievement = {
-        { labelKey = "ACHIEVEMENT_EARNED", label = "Achievement Earned", sound = "AchievementSoundSelect", volume = "AchievementVolume", test = "TestAchievementSound" },
+        { labelKey = "ACHIEVEMENT_EARNED", label = "Achievement Earned", sound = "AchievementSoundSelect", volume = "AchievementVolume", test = "TestAchievementSound", defaultIndex = 1 },
     },
     battlepet = {
-        { labelKey = "BATTLE_PET_LEVEL_UP", label = "Battle Pet Level Up", sound = "BattlePetLevelSoundSelect", volume = "BattlePetLevelVolume", test = "TestBattlePetLevelSound" },
+        { labelKey = "BATTLE_PET_LEVEL_UP", label = "Battle Pet Level Up", sound = "BattlePetLevelSoundSelect", volume = "BattlePetLevelVolume", test = "TestBattlePetLevelSound", defaultIndex = 2 },
     },
 }
 
@@ -488,6 +418,48 @@ local function CreateSoundRow(parent, rowInfo, yOffset, compact)
         CloseDropDownMenus()
     end
 
+    -- Play one sound at this row's volume. Used by the inline Play button in the menu.
+    local function previewSound(value)
+        if value == nil or value == 0 then return end
+        local sound = BLU:SelectSound(value)
+        if not sound then return end
+        local volumeLevel = BLU.db and BLU.db[rowInfo.volume]
+        if not volumeLevel or volumeLevel < 0 or volumeLevel > 3 then volumeLevel = 2 end
+        local defaultTable = rowInfo.defaultIndex and defaultSounds and defaultSounds[rowInfo.defaultIndex] or nil
+        BLU:PlaySelectedSound(sound, volumeLevel, defaultTable)
+    end
+
+    -- Attach a Play button to the menu row just added on this level, as BLU Retail does.
+    local function attachInlinePreview(level, value)
+        local listFrame = GetListFrame(level)
+        if not listFrame or not listFrame.numButtons then return end
+        local button = _G[listFrame:GetName() .. "Button" .. listFrame.numButtons]
+        if not button then return end
+
+        local previewButton = button.bluPreviewButton
+        if not previewButton then
+            previewButton = CreateFrame("Button", nil, button, "BackdropTemplate")
+            previewButton:SetSize(34, 16)
+            previewButton:SetBackdrop(Design.Backdrops.Button)
+            previewButton:SetBackdropColor(0.08, 0.10, 0.13, 0.95)
+            previewButton:SetBackdropBorderColor(Design.Rgba("border", 1))
+            previewButton:RegisterForClicks("LeftButtonUp")
+            previewButton:SetScript("OnClick", function(btn) previewSound(btn.soundValue) end)
+            previewButton:SetScript("OnEnter", function(btn) btn:SetBackdropBorderColor(Design.Rgb("brand")) end)
+            previewButton:SetScript("OnLeave", function(btn) btn:SetBackdropBorderColor(Design.Rgba("border", 1)) end)
+
+            local label = previewButton:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
+            label:SetPoint("CENTER", 0, 0)
+            label:SetText("Play")
+            label:SetTextColor(Design.Rgb("brand"))
+            previewButton.label = label
+            button.bluPreviewButton = previewButton
+        end
+
+        previewButton.soundValue = value
+        previewButton:Show()
+    end
+
     UIDropDownMenu_Initialize(dropdown, function(_, level, menuList)
         level = level or 1
         local groups = BLU_Classic_SoundGroups
@@ -503,6 +475,10 @@ local function CreateSoundRow(parent, rowInfo, yOffset, compact)
         end
 
         HideInlineCountLabels(level)
+        local drops = GetDrops()
+        if drops then
+            drops:HideInlineButtons(level, "bluPreviewButton")
+        end
 
         if level == 1 then
             if rowInfo.none then
@@ -534,6 +510,9 @@ local function CreateSoundRow(parent, rowInfo, yOffset, compact)
                     info.tooltipTitle = group.name
                 end
                 UIDropDownMenu_AddButton(info, level)
+                if #group.indices == 1 then
+                    attachInlinePreview(level, group.indices[1])
+                end
                 if #group.indices > 1 then
                     AttachInlineCountLabel(level, "(" .. #group.indices .. ")")
                 end
@@ -563,6 +542,7 @@ local function CreateSoundRow(parent, rowInfo, yOffset, compact)
                     info.tooltipTitle = entry.name
                 end
                 UIDropDownMenu_AddButton(info, level)
+                attachInlinePreview(level, entry.id)
             end
         elseif level == 2 and menuList then
             local group = groups[menuList]
@@ -580,10 +560,16 @@ local function CreateSoundRow(parent, rowInfo, yOffset, compact)
                     info.tooltipTitle = rawText
                 end
                 UIDropDownMenu_AddButton(info, level)
+                attachInlinePreview(level, index)
             end
         end
 
-        ForceListFrameWidth(level, minWidthFor(level), leftInsetFor(level))
+        if drops then
+            drops:ForceWidth(level, minWidthFor(level), leftInsetFor(level), {
+                countKey = "bluClassicCountLabel",
+                inlineKeys = { "bluPreviewButton" },
+            })
+        end
     end)
 
     renderVolume()

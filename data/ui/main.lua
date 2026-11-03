@@ -7,6 +7,7 @@
 local addonName = ...
 local ADDON_PATH = "Interface\\AddOns\\" .. addonName .. "\\"
 local BLU = _G.BLU_Classic
+local Design = BLU.Modules["design"]
 local Tabs = BLU.Modules and BLU.Modules["tabs"]
 
 -- Layout Constants
@@ -91,16 +92,16 @@ function Options:CreateOptionsPanel()
     container:SetPoint("TOPLEFT", 0, 0)
     container:SetPoint("BOTTOMRIGHT", 0, 0)
     container:SetBackdrop(BLU.Modules.design.Backdrops.Dark)
-    container:SetBackdropColor(0.05, 0.07, 0.10, 0.95)
-    container:SetBackdropBorderColor(0.10, 0.18, 0.24, 1)
+    container:SetBackdropColor(Design.Rgba("background", 0.95))
+    container:SetBackdropBorderColor(Design.Rgba("border", 1))
 
     local header = CreateFrame("Frame", nil, container, "BackdropTemplate")
     header:SetHeight(52)
     header:SetPoint("TOPLEFT", 8, -8)
     header:SetPoint("TOPRIGHT", -8, -8)
     header:SetBackdrop(BLU.Modules.design.Backdrops.Dark)
-    header:SetBackdropColor(0.07, 0.10, 0.14, 0.95)
-    header:SetBackdropBorderColor(0.12, 0.22, 0.30, 1)
+    header:SetBackdropColor(Design.Rgba("surface", 0.95))
+    header:SetBackdropBorderColor(Design.Rgba("border", 1))
 
     local headerAccent = header:CreateTexture(nil, "ARTWORK")
     headerAccent:SetHeight(2)
@@ -127,13 +128,13 @@ function Options:CreateOptionsPanel()
     local subtitle = header:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
     subtitle:SetPoint("LEFT", header, "TOPLEFT", leftX, rowTwoY)
     subtitle:SetText("Iconic game sounds for WoW Classic")
-    subtitle:SetTextColor(0.7, 0.7, 0.7)
+    subtitle:SetTextColor(Design.Rgb("subtext"))
     subtitle:SetJustifyV("MIDDLE")
 
     local discord = header:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
     discord:SetPoint("LEFT", header, "TOPLEFT", leftX, rowThreeY)
     discord:SetText("|cff7289daDiscord:|r |cffffd700discord.gg/N7kdKAHVVF|r")
-    discord:SetTextColor(0.85, 0.85, 0.85)
+    discord:SetTextColor(Design.Rgb("text"))
     discord:SetJustifyV("MIDDLE")
 
     local version = header:CreateFontString(nil, "OVERLAY", "GameFontNormal")
@@ -147,7 +148,7 @@ function Options:CreateOptionsPanel()
     local author = header:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
     author:SetPoint("RIGHT", header, "TOPRIGHT", rightX, rowTwoY)
     author:SetText("by donniedice")
-    author:SetTextColor(0.7, 0.7, 0.7)
+    author:SetTextColor(Design.Rgb("subtext"))
     author:SetJustifyH("RIGHT")
     author:SetJustifyV("MIDDLE")
 
@@ -168,7 +169,7 @@ function Options:CreateOptionsPanel()
 
     local tabBg = tabContainer:CreateTexture(nil, "BACKGROUND")
     tabBg:SetAllPoints()
-    tabBg:SetColorTexture(0.03, 0.03, 0.03, 0.6)
+    tabBg:SetColorTexture(Design.Rgba("background", 0.6))
 
     -- No settings box (operator rev 3): tabs render directly on the strip.
     -- The frame remains only as a layout helper for height tracking.
@@ -182,7 +183,7 @@ function Options:CreateOptionsPanel()
     -- Divider after column 2 (col 2 right edge = 208): separates the
     -- settings columns from the event columns.
     leftSeparator:SetPoint("TOPLEFT", tabContainer, "TOPLEFT", 214, -8)
-    leftSeparator:SetColorTexture(0.25, 0.32, 0.40, 0.9)
+    leftSeparator:SetColorTexture(Design.Rgba("border", 0.9))
 
     -- Dynamic reflow: whenever the tab strip's width changes (UI scale,
     -- panel resize), re-wrap the buttons and resize the container and its
@@ -242,8 +243,8 @@ function Options:CreateOptionsPanel()
         content:SetPoint("TOPLEFT", tabContainer, "BOTTOMLEFT", 1, -12)
         content:SetPoint("BOTTOMRIGHT", container, "BOTTOMRIGHT", -7, 8)
         content:SetBackdrop(BLU.Modules.design.Backdrops.Dark)
-        content:SetBackdropColor(0.06, 0.06, 0.06, 0.95)
-        content:SetBackdropBorderColor(0.14, 0.20, 0.28, 1)
+        content:SetBackdropColor(Design.Rgba("background", 0.95))
+        content:SetBackdropBorderColor(Design.Rgba("border", 1))
         content:Hide()
 
         if tabInfo.greyed and tabInfo.greyedMessage then

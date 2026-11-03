@@ -56,6 +56,8 @@ local FEATURE_AVAILABILITY = {
     Quest = { mists = true, cata = true, wrath = true, tbc = true, vanilla = true },
     QuestAccept = { mists = true, cata = true, wrath = true, tbc = true, vanilla = true },
     Reputation = { mists = true, cata = true, wrath = true, tbc = true, vanilla = true },
+    Combat = { mists = true, cata = true, wrath = true, tbc = true, vanilla = true },
+    Loot = { mists = true, cata = true, wrath = true, tbc = true, vanilla = true },
 }
 
 function BLU_Classic:IsFeatureAvailable(feature)
@@ -351,6 +353,7 @@ end
 
 function BLU_Classic:OnEnable()
     self:RegisterSharedEvents()
+    self:InitializeTriggers()
     self:InitializeReputationCache()
     self:MuteSounds()
 

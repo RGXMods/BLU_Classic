@@ -210,7 +210,20 @@ local EVENT_ROWS = {
     },
 }
 
+-- Combat and Loot pages: one row per trigger (see data/triggers.lua)
+for pageKey, triggers in pairs(BLU.TriggerPages or {}) do
+    EVENT_ROWS[pageKey] = {}
+    for _, trigger in ipairs(triggers) do
+        EVENT_ROWS[pageKey][#EVENT_ROWS[pageKey] + 1] = {
+            label = trigger.label, sound = trigger.sound, volume = trigger.volume,
+            trigger = trigger.id, description = trigger.description, none = true,
+        }
+    end
+end
+
 local EVENT_ICONS = {
+    combat = "Interface\\Icons\\Ability_Warrior_Charge",
+    loot = "Interface\\Icons\\INV_Misc_Coin_02",
     levelup = "Interface\\Icons\\Achievement_Level_100",
     quest = "Interface\\Icons\\INV_Misc_Note_01",
     reputation = "Interface\\Icons\\Achievement_Reputation_01",
@@ -219,6 +232,8 @@ local EVENT_ICONS = {
 }
 
 local EVENT_DESCRIPTIONS = {
+    combat = "Pick a sound for each combat moment. Triggers start off; choose [None] to silence one.",
+    loot = "Pick a sound for items and coin you loot, by item quality. Triggers start off.",
     levelup = "Pick a sound for each level-up.",
     quest = "Pick sounds for accepting and completing quests.",
     reputation = "Pick a sound for reputation rank-ups.",
@@ -247,6 +262,17 @@ local function CreateSoundRow(parent, rowInfo, yOffset)
     container:SetBackdrop(Design.Backdrops.Solid)
     container:SetBackdropColor(0.08, 0.11, 0.15, 0.92)
     container:SetBackdropBorderColor(0.14, 0.20, 0.28, 1)
+
+    if rowInfo.description then
+        container:EnableMouse(true)
+        container:SetScript("OnEnter", function(self)
+            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+            GameTooltip:SetText(rowInfo.label, 1, 1, 1)
+            GameTooltip:AddLine(rowInfo.description, 0.82, 0.82, 0.82, true)
+            GameTooltip:Show()
+        end)
+        container:SetScript("OnLeave", GameTooltip_Hide)
+    end
 
     local rowLabel = container:CreateFontString(nil, "OVERLAY", "GameFontNormal")
     rowLabel:SetPoint("TOPLEFT", 10, -6)
@@ -345,6 +371,10 @@ local function CreateSoundRow(parent, rowInfo, yOffset)
     -- Test button ---------------------------------------------------------------------
     local testBtn = Design:CreateButton(container, BLU:GetText("TEST_BUTTON", "Test"), 60, 22)
     testBtn:SetScript("OnClick", function()
+        if rowInfo.trigger then
+            BLU:TestTrigger(rowInfo.trigger)
+            return
+        end
         local testFn = BLU[rowInfo.test]
         if type(testFn) == "function" then
             testFn(BLU)
@@ -405,7 +435,7 @@ local function CreateSoundRow(parent, rowInfo, yOffset)
         if isCustomSelection(value) then
             return value
         end
-        return tonumber(value) or 1
+        return tonumber(value) or (rowInfo.none and 0 or 1)
     end
 
     local function refreshLabels()
@@ -413,13 +443,15 @@ local function CreateSoundRow(parent, rowInfo, yOffset)
         local name
         if isCustomSelection(value) then
             name = BLU.UserSounds:GetName(value)
+        elseif value == 0 then
+            name = "[None]"
         else
             name = GetSoundDisplayName(value)
         end
         currentSound:SetText(name)
         dropdownButtonLabel:SetText(name)
         -- Custom sounds have one file, so the low/medium/high track does not apply
-        volumeControl:SetShown(not isCustomSelection(value))
+        volumeControl:SetShown(not isCustomSelection(value) and value ~= 0)
     end
 
     local function chooseSound(index)
@@ -447,7 +479,17 @@ local function CreateSoundRow(parent, rowInfo, yOffset)
         HideInlineCountLabels(level)
 
         if level == 1 then
+            if rowInfo.none then
+                local noneInfo = UIDropDownMenu_CreateInfo()
+                noneInfo.text = "[None]"
+                noneInfo.value = 0
+                noneInfo.checked = function() return selectedIndex() == 0 end
+                noneInfo.func = function() chooseSound(0) end
+                UIDropDownMenu_AddButton(noneInfo, level)
+            end
             for groupIndex, group in ipairs(groups) do
+              -- Triggers have no shipped default file, so [Default] is not offered there
+              if not (rowInfo.none and #group.indices == 1 and group.indices[1] == 1) then
                 local info = UIDropDownMenu_CreateInfo()
                 local displayText, truncated = ShortenLabel(group.name, 46)
                 info.text = displayText
@@ -469,6 +511,7 @@ local function CreateSoundRow(parent, rowInfo, yOffset)
                 if #group.indices > 1 then
                     AttachInlineCountLabel(level, "(" .. #group.indices .. ")")
                 end
+              end
             end
 
             local customEntries = BLU.UserSounds and BLU.UserSounds:GetEntries() or {}
@@ -559,8 +602,41 @@ function BLU.CreateEventSoundPanel(panel, eventType, eventName)
     intro:SetText(EVENT_DESCRIPTIONS[eventType] or ("Pick a sound for " .. eventName .. "."))
 
     local dropY = -102
-    for rowIndex, rowInfo in ipairs(EVENT_ROWS[eventType] or {}) do
-        CreateSoundRow(content, rowInfo, dropY - (rowIndex - 1) * 80)
+    local rows = EVENT_ROWS[eventType] or {}
+    local rowParent, rowStart = content, dropY
+
+    if #rows > 3 then
+        -- Long pages (Combat, Loot) scroll with the mouse wheel; the bar stays hidden
+        -- like the Sounds page.
+        local scrollFrame = CreateFrame("ScrollFrame", nil, content, "UIPanelScrollFrameTemplate")
+        scrollFrame:SetPoint("TOPLEFT", content, "TOPLEFT", 0, dropY)
+        scrollFrame:SetPoint("BOTTOMRIGHT", content, "BOTTOMRIGHT", -2, 4)
+        scrollFrame:EnableMouseWheel(true)
+        if scrollFrame.ScrollBar then
+            scrollFrame.ScrollBar:Hide()
+            scrollFrame.ScrollBar.Show = function() end
+        end
+
+        local scrollChild = CreateFrame("Frame", nil, scrollFrame)
+        scrollChild:SetWidth(math.max(1, scrollFrame:GetWidth() or 1))
+        scrollChild:SetHeight(#rows * 80)
+        scrollFrame:SetScrollChild(scrollChild)
+        scrollFrame:SetScript("OnSizeChanged", function(self)
+            scrollChild:SetWidth(math.max(1, self:GetWidth() or 1))
+        end)
+        scrollFrame:SetScript("OnMouseWheel", function(self, delta)
+            local current = self:GetVerticalScroll() or 0
+            local maxScroll = math.max(0, (scrollChild:GetHeight() or 0) - self:GetHeight())
+            local nextValue = current - (delta * 40)
+            if nextValue < 0 then nextValue = 0 elseif nextValue > maxScroll then nextValue = maxScroll end
+            self:SetVerticalScroll(nextValue)
+        end)
+
+        rowParent, rowStart = scrollChild, 0
+    end
+
+    for rowIndex, rowInfo in ipairs(rows) do
+        CreateSoundRow(rowParent, rowInfo, rowStart - (rowIndex - 1) * 80)
     end
 
     return content

@@ -51,7 +51,7 @@ BLU.TriggerPages = {
     },
     collectibles = {
         { id = "MountLearned", label = "Mount Learned", description = "You learn a new mount.", event = "NEW_MOUNT_ADDED" },
-        { id = "PetCollected", label = "Pet Collected", description = "You add a new pet to your collection.", event = "NEW_PET_ADDED" },
+        { id = "PetCollected", label = "Pet Collected", description = "You add a new battle pet to your collection.", event = "NEW_PET_ADDED", feature = "BattlePet" },
         { id = "ToyLearned",   label = "Toy Learned",   description = "You add a new toy to your collection.", event = "NEW_TOY_ADDED" },
     },
 }
@@ -59,6 +59,10 @@ BLU.TriggerPages = {
 -- Does this client know the event? Blizzard's own UI uses C_EventUtils.IsEventValid, which is
 -- present on Classic Era. Without it, registration is attempted and failure is absorbed.
 local function KnownEvent(event)
+    local RGX = _G.RGXFramework
+    if RGX and type(RGX.HasEvent) == "function" then
+        return RGX:HasEvent(event) == true
+    end
     local EventUtils = _G.C_EventUtils
     if EventUtils and type(EventUtils.IsEventValid) == "function" then
         local ok, valid = pcall(EventUtils.IsEventValid, event)
@@ -73,6 +77,7 @@ for _, page in pairs(BLU.TriggerPages) do
     for _, trigger in ipairs(page) do
         if trigger.event then
             trigger.available = KnownEvent(trigger.event)
+                and (trigger.feature == nil or BLU:IsFeatureAvailable(trigger.feature))
         end
     end
 end
@@ -217,26 +222,33 @@ function BLU:InitializeTriggers()
         BLU:PlayTrigger("LootCoin")
     end, "BLU_Classic:money")
 
-    -- Honor and collection triggers
-    RGX:RegisterEvent("PLAYER_ENTERING_WORLD", function()
-        BLU.enteredWorldAt = GetTime and GetTime() or 0
-    end, "BLU_Classic:enterworld")
+    -- Honor and collection triggers. The rank baseline is read here, so a later rise is
+    -- measured from the rank the character had when the addon enabled.
+    if type(UnitPVPRank) == "function" then
+        BLU.lastPvPRank = tonumber(UnitPVPRank("player")) or 0
+    end
+
+    local handlers = {
+        PvPRankUp = function(_, unitTarget)
+            -- The event names the unit whose rank changed; only the player's own rank counts.
+            if unitTarget ~= nil and unitTarget ~= "player" then return end
+            if type(UnitPVPRank) == "function" then
+                local rank = tonumber(UnitPVPRank("player")) or 0
+                local previous = BLU.lastPvPRank
+                BLU.lastPvPRank = rank
+                -- A drop or an unchanged rank is not a rank up.
+                if previous == nil or rank <= previous then return end
+            end
+            BLU:PlayTrigger("PvPRankUp")
+        end,
+    }
 
     for _, page in pairs(BLU.TriggerPages) do
         for _, trigger in ipairs(page) do
             if trigger.event and trigger.available ~= false then
                 local id = trigger.id
-                local ok = pcall(function()
-                    RGX:RegisterEvent(trigger.event, function()
-                        -- PvP rank events can arrive while the character loads; ignore them then.
-                        local now = GetTime and GetTime() or 0
-                        if id == "PvPRankUp" and BLU.enteredWorldAt and (now - BLU.enteredWorldAt) < 5 then
-                            return
-                        end
-                        BLU:PlayTrigger(id)
-                    end, "BLU_Classic:" .. id)
-                end)
-                trigger.available = ok == true
+                local handler = handlers[id] or function() BLU:PlayTrigger(id) end
+                RGX:RegisterEvent(trigger.event, handler, "BLU_Classic:" .. id)
             end
         end
     end

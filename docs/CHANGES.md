@@ -1,6 +1,6 @@
 ## v1.4.0-beta.9 - 2026-11-03
-- New Honor tab with PvP Rank Up. This is Classic's counterpart to Retail's honor-level trigger. It fires on the PvP rank change event; rank events in the first five seconds after login are ignored.
-- New Collectibles tab with Mount Learned, Pet Collected, and Toy Learned. Each trigger appears only if your game client knows its event.
+- New Honor tab with PvP Rank Up. This is Classic's counterpart to Retail's honor-level trigger. It fires only for your own rank going up, not for other units or rank drops, when the client reports your rank.
+- New Collectibles tab with Mount Learned, Pet Collected (Mists of Pandaria Classic only, because it is a battle-pet event), and Toy Learned. Each trigger appears only if your game client knows its event.
 - Tabs and rows are hidden when the client does not know their events. A page with nothing usable says so.
 - Honor and Collectibles use icons that Classic Era's own UI files reference.
 - The tab strip has a third row for Honor and Collectibles. The settings box stays around the four settings tabs.

@@ -350,11 +350,17 @@ function Tabs:Init()
         {text = "Loot",        eventType = "loot",        row = 2, col = 4, feature = "Loot",        icon = "Interface\\Icons\\INV_Misc_Coin_02"},
         {text = "Hardcore",    eventType = "hardcore",    row = 2, col = 5, feature = "Hardcore",    icon = "Interface\\Icons\\Spell_Shadow_AnimateDead"},
         {text = "Battle Pet",  eventType = "battlepet",   row = 2, col = 6, feature = "BattlePet",   icon = "Interface\\Icons\\INV_Pet_BattlePetTraining"},
+        -- Row 3 (below the settings box)
+        {text = "Honor",       eventType = "honor",        row = 3, col = 3, feature = "Honor",       icon = "Interface\\Icons\\Achievement_PVP_A_A"},
+        {text = "Collectibles", eventType = "collectibles", row = 3, col = 4, feature = "Collectibles", icon = "Interface\\Icons\\INV_Pet_BattlePetTraining"},
     }
 
     BLU.OptionsTabs = {}
     for _, tabInfo in ipairs(spec) do
-        if not tabInfo.feature or BLU:IsFeatureAvailable(tabInfo.feature) then
+        local featureOk = not tabInfo.feature or BLU:IsFeatureAvailable(tabInfo.feature)
+        local pageOk = not tabInfo.eventType or not BLU.TriggerPages[tabInfo.eventType]
+            or BLU:PageHasUsableTriggers(tabInfo.eventType)
+        if featureOk and pageOk then
             BLU.OptionsTabs[#BLU.OptionsTabs + 1] = tabInfo
         end
     end

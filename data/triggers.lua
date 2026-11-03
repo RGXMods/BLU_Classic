@@ -44,7 +44,48 @@ BLU.TriggerPages = {
         { id = "DeathRaid",  label = "Raid member death",  description = "A member of your raid dies." },
         { id = "DeathOther", label = "Other player death", description = "Any other player dies nearby." },
     },
+    -- Classic's counterpart to Retail's honor level is the PvP rank. Event triggers name the
+    -- WoW event; a trigger whose event the client does not know is hidden (see InitializeTriggers).
+    honor = {
+        { id = "PvPRankUp", label = "PvP Rank Up", description = "Your PvP rank increases.", event = "PLAYER_PVP_RANK_CHANGED" },
+    },
+    collectibles = {
+        { id = "MountLearned", label = "Mount Learned", description = "You learn a new mount.", event = "NEW_MOUNT_ADDED" },
+        { id = "PetCollected", label = "Pet Collected", description = "You add a new pet to your collection.", event = "NEW_PET_ADDED" },
+        { id = "ToyLearned",   label = "Toy Learned",   description = "You add a new toy to your collection.", event = "NEW_TOY_ADDED" },
+    },
 }
+
+-- Does this client know the event? Blizzard's own UI uses C_EventUtils.IsEventValid, which is
+-- present on Classic Era. Without it, registration is attempted and failure is absorbed.
+local function KnownEvent(event)
+    local EventUtils = _G.C_EventUtils
+    if EventUtils and type(EventUtils.IsEventValid) == "function" then
+        local ok, valid = pcall(EventUtils.IsEventValid, event)
+        return ok and valid == true
+    end
+    return true
+end
+
+-- Decide at load which event triggers this client can use, so the tab strip can hide
+-- pages that have nothing to fire.
+for _, page in pairs(BLU.TriggerPages) do
+    for _, trigger in ipairs(page) do
+        if trigger.event then
+            trigger.available = KnownEvent(trigger.event)
+        end
+    end
+end
+
+-- A page is shown only when at least one of its triggers is usable on this client.
+function BLU:PageHasUsableTriggers(pageKey)
+    for _, trigger in ipairs(self.TriggerPages[pageKey] or {}) do
+        if trigger.event == nil or trigger.available ~= false then
+            return true
+        end
+    end
+    return false
+end
 
 -- Flat list for defaults and lookups
 BLU.TriggerList = {}
@@ -175,4 +216,28 @@ function BLU:InitializeTriggers()
     RGX:RegisterEvent("CHAT_MSG_MONEY", function()
         BLU:PlayTrigger("LootCoin")
     end, "BLU_Classic:money")
+
+    -- Honor and collection triggers
+    RGX:RegisterEvent("PLAYER_ENTERING_WORLD", function()
+        BLU.enteredWorldAt = GetTime and GetTime() or 0
+    end, "BLU_Classic:enterworld")
+
+    for _, page in pairs(BLU.TriggerPages) do
+        for _, trigger in ipairs(page) do
+            if trigger.event and trigger.available ~= false then
+                local id = trigger.id
+                local ok = pcall(function()
+                    RGX:RegisterEvent(trigger.event, function()
+                        -- PvP rank events can arrive while the character loads; ignore them then.
+                        local now = GetTime and GetTime() or 0
+                        if id == "PvPRankUp" and BLU.enteredWorldAt and (now - BLU.enteredWorldAt) < 5 then
+                            return
+                        end
+                        BLU:PlayTrigger(id)
+                    end, "BLU_Classic:" .. id)
+                end)
+                trigger.available = ok == true
+            end
+        end
+    end
 end

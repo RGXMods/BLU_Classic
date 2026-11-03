@@ -1,3 +1,14 @@
+## v1.4.0-beta.9 - 2026-11-03
+- New Honor tab with PvP Rank Up. This is Classic's counterpart to Retail's honor-level trigger. It fires on the PvP rank change event; rank events in the first five seconds after login are ignored.
+- New Collectibles tab with Mount Learned, Pet Collected, and Toy Learned. Each trigger appears only if your game client knows its event.
+- Tabs and rows are hidden when the client does not know their events. A page with nothing usable says so.
+- Honor and Collectibles use icons that Classic Era's own UI files reference.
+- The tab strip has a third row for Honor and Collectibles. The settings box stays around the four settings tabs.
+- Requires RGX-Framework 2.11.0 or newer.
+- Known gap: these events are not yet confirmed to fire on every Classic client. Please report which ones play.
+- Known gap: the Loot tab icon is still being investigated.
+- Known gap: new options labels are English only until the locale files are updated.
+
 ## v1.4.0-beta.8 - 2026-11-03
 - Profiles page now uses RGX-Framework's shared profile editor: the framework header, active-profile box, profile dropdown, and Create / Rename / Copy / Delete dialogs are themed by the framework.
 - Presets are on that page again, as a framework Presets card with donniedice's Preset and five reserved slots.

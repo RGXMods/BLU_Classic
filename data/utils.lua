@@ -323,15 +323,35 @@ end
 -- Debug Messaging
 --=====================================================================================
 
-function BLU_Classic:DebugMessage(message)
-    if self.debugMode then
+function BLU_Classic:DebugMessage(message, scope)
+    if self.debugMode and self:IsDebugScopeEnabled(scope or "core") then
         print(BLU_Classic_PREFIX .. DEBUG_PREFIX .. message)
     end
 end
 
+-- Debug scope for each localized debug message key (see data/ui/debug.lua for the
+-- scope list). Keys ending in _TRIGGERED belong to the feature scope.
+local DEBUG_KEY_SCOPES = {
+    SELECTING_SOUND = "registry", USING_SPECIFIED_SOUND_ID = "registry",
+    USING_RANDOM_SOUND_ID = "registry", PLAYING_SOUND = "registry",
+    SOUND_FILE_TO_PLAY = "registry", ERROR_SOUND_NOT_FOUND = "registry",
+    VOLUME_LEVEL_ZERO = "registry", SELECTING_RANDOM_SOUND_ID = "registry",
+    RANDOM_SOUND_ID_SELECTED = "registry", NO_VALID_SOUND_IDS = "registry",
+    FUNCTIONS_HALTED = "events",
+    INIT_LOAD_COMPLETE = "loader",
+    OPTIONS_ALREADY_REGISTERED = "options",
+    CURRENT_DB_SETTING = "database",
+}
+
+function BLU_Classic:GetDebugScopeForKey(key)
+    if DEBUG_KEY_SCOPES[key] then return DEBUG_KEY_SCOPES[key] end
+    if type(key) == "string" and key:find("_TRIGGERED$") then return "features" end
+    return "core"
+end
+
 function BLU_Classic:PrintDebugMessage(key, ...)
     if self.debugMode and BLU_L[key] then -- Changed BLU_Classic_L to BLU_L for consistency
-        self:DebugMessage(BLU_L[key]:format(...))
+        self:DebugMessage(BLU_L[key]:format(...), self:GetDebugScopeForKey(key))
     end
 end
 
@@ -373,6 +393,16 @@ end
 function BLU_Classic:SelectSound(soundID)
     self:PrintDebugMessage("SELECTING_SOUND", "|cff8080ff" .. tostring(soundID) .. "|r")
 
+    -- User custom sound ("custom:<path>"): play the stored file; a removed sound falls back
+    local userSounds = self.UserSounds
+    if userSounds and userSounds:IsCustomId(soundID) then
+        local entry = userSounds:Find(soundID)
+        if entry then
+            return {customFile = entry.file, id = soundID}
+        end
+        soundID = 1
+    end
+
     -- Random sound (value 2)
     if not soundID or soundID == 2 then
         local randomSound = self:RandomSoundID()
@@ -413,13 +443,20 @@ end
 function BLU_Classic:PlaySelectedSound(sound, volumeLevel, defaultTable)
     self:PrintDebugMessage("PLAYING_SOUND", sound.id, volumeLevel)
 
+    if sound.customFile then
+        -- Custom sounds have a single file (no low/medium/high variants), so the
+        -- per-event volume steps do not apply to them.
+        PlaySoundFile(sound.customFile, "MASTER")
+        return
+    end
+
     if volumeLevel == 0 then
         self:PrintDebugMessage("VOLUME_LEVEL_ZERO")
         return
     end
 
     local soundFile
-    
+
     -- Default sound (value 1)
     if sound.id == 1 then
         soundFile = defaultTable and defaultTable[volumeLevel]

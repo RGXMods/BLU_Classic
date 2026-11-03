@@ -7,17 +7,6 @@ BLU_L = BLU_L or {}
 BLU_Classic_EventQueue = {}
 
 --=====================================================================================
--- Database Get/Set Functions
---=====================================================================================
-function BLU_Classic:GetValue(info)
-    return self.db[info[#info]]
-end
-
-function BLU_Classic:SetValue(info, value)
-    self.db[info[#info]] = value
-end
-
---=====================================================================================
 -- Event Handling
 --=====================================================================================
 function BLU_Classic:HandleEvent(eventName, soundSelectKey, volumeKey, defaultSound, debugMessage)
@@ -156,70 +145,21 @@ function BLU_Classic:HandleSlashCommands(input)
 end
 
 --=====================================================================================
--- Open Options Panel (with Classic Era compatibility)
+-- Open Options Panel
 --=====================================================================================
 function BLU_Classic:OpenOptionsPanel()
-    -- Make sure options are initialized first
-    if not self.optionsFrame then
+    if not self.optionsRegistered then
         self:InitializeOptions()
     end
-    
-    if not self.optionsFrame then
+
+    if type(self.OpenOptions) ~= "function" then
         print(BLU_Classic_PREFIX .. "Options not initialized. Please reload UI.")
         return
     end
-    
-    local opened = false
 
-    -- Modern API (C_SettingsUtil-era clients, incl. Classic Era 1.15.x):
-    -- Settings.OpenToCategory requires a NUMERIC category ID. Never pass the
-    -- options frame name/title string (icon/color markup would be passed).
-    if type(self.optionsCategoryID) == "number"
-        and Settings and type(Settings.OpenToCategory) == "function" then
-        Settings.OpenToCategory(self.optionsCategoryID)
-        opened = true
-    end
-
-    -- Ace fallback: open the registered options group directly.
-    if not opened then
-        local ok = pcall(function()
-            LibStub("AceConfigDialog-3.0"):Open("BLU_Classic_Options")
-        end)
-        opened = ok
-    end
-
-    -- Legacy API (pre-Settings clients only)
-    if not opened and InterfaceOptionsFrame_OpenToCategory then
-        -- Classic needs the frame itself, not just the name
-        -- Call twice to ensure it opens to the correct category (known Blizzard bug)
-        InterfaceOptionsFrame_OpenToCategory(self.optionsFrame)
-        InterfaceOptionsFrame_OpenToCategory(self.optionsFrame)
-        opened = true
-    end
-    
-    -- Fallback: Try to show the Interface Options frame directly
-    if not opened then
-        if InterfaceOptionsFrame then
-            InterfaceOptionsFrame:Show()
-            opened = true
-        elseif SettingsPanel then
-            SettingsPanel:Show()
-            opened = true
-        end
-    end
-    
-    if opened then
-        if self.debugMode then
-            self:PrintDebugMessage("OPTIONS_PANEL_OPENED")
-        end
-    else
-        print(BLU_Classic_PREFIX .. "Unable to open options panel. Try /interface instead.")
-    end
+    self:OpenOptions()
 end
 
---=====================================================================================
--- Display BLU Help
---=====================================================================================
 function BLU_Classic:DisplayBLUHelp()
     local helpCommand = BLU_L["HELP_COMMAND"] or "/bluc help - Displays help information."
     local helpDebug = BLU_L["HELP_DEBUG"] or "/blu debug or /bluc debug - Toggles debug mode."

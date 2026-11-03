@@ -2,6 +2,7 @@
 - The four settings tabs (General, Profiles, Debug, Sounds) sit in a bordered box that lines up with the tab buttons, with an even margin around them.
 - Highlights (the active tab, a switch that is on, and the current sound name) use BLU's brand cyan instead of the RGX-Framework theme colour. Surfaces, borders, and text still follow the framework.
 - Each event page (Level Up, Quest, Reputation, Combat, Loot, Hardcore, Honor, Collectibles) has an ON/OFF switch in its header. Turning a page off stops BLU from playing its sounds and keeps your sound choices. Level Up, Quest, and Reputation then fall back to the game's own sounds.
+- The Level Up and Collectibles tabs use icons that Classic's own UI loads: XP for Level Up and a mount for Collectibles. The old icons did not show in game.
 - Requires RGX-Framework 2.11.0 or newer.
 - Known gap: these events are not yet confirmed to fire on every Classic client.
 - Known gap: the Loot tab icon is still being investigated.

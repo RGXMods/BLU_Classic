@@ -233,13 +233,13 @@ local EVENT_ICONS = {
     hardcore = "Interface\\Icons\\Spell_Shadow_AnimateDead",
     combat = "Interface\\Icons\\Ability_Warrior_Charge",
     loot = "Interface\\Icons\\INV_Misc_Coin_02",
-    levelup = "Interface\\Icons\\Achievement_Level_100",
+    levelup = "Interface\\Icons\\XP_Icon",
     quest = "Interface\\Icons\\INV_Misc_Note_01",
     reputation = "Interface\\Icons\\Achievement_Reputation_01",
     achievement = "Interface\\Icons\\Achievement_Quests_Completed_08",
     battlepet = "Interface\\Icons\\INV_Pet_BattlePetTraining",
     honor = "Interface\\Icons\\Achievement_PVP_A_A",
-    collectibles = "Interface\\Icons\\INV_Pet_BattlePetTraining",
+    collectibles = "Interface\\Icons\\Ability_Mount_RidingHorse",
 }
 
 local EVENT_DESCRIPTIONS = {

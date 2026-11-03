@@ -82,3 +82,13 @@ function BLU:UIAfter(seconds, callback)
     end
     callback()
 end
+
+-- The framework's shared UI module (themed dialogs, buttons, labels, panels).
+-- Returns nil when the framework is missing; callers show a message instead.
+function BLU:GetFrameworkUI()
+    local RGX = _G.RGXFramework
+    if RGX and RGX.GetUI then
+        return RGX:GetUI()
+    end
+    return _G.RGXUI
+end

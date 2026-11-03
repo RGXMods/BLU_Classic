@@ -1,5 +1,5 @@
 ## Interface: 11509,20506,50504
-## Version: v1.4.0-beta.6
+## Version: v1.4.0-beta.7
 ## Title: |cff05dffaB|r|cffffffffetter|r |cff05dffaL|r|cffffffffevel-|r|cff05dffaU|r|cffffffffp|cff05dffa!|r |cffFFD700(Classic)|r
 ## Notes: |cff05dffaClassic-only sound replacement addon.|r |n|r |cff05dffa/blu|r or |cff05dffa/bluc|r opens options. Includes a movable minimap button.
 ## Author: DonnieDice
@@ -8,7 +8,7 @@
 ## SavedVariables: BLUClassicDB
 ## RequiredDeps: RGX-Framework
 ## OptionalDeps: Ace3
-## X-RGX-Framework-MinVersion: 2.7.0
+## X-RGX-Framework-MinVersion: 2.11.0
 ## IconTexture: Interface\AddOns\BLU_Classic\media\icon.tga
 
 ## X-Category: UI Media, Questing & Leveling, Audio & Video, Miscellaneous

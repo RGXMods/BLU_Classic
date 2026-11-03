@@ -1,3 +1,9 @@
+## v1.4.0-beta.7 - 2026-11-03
+- Combat tab is now a paged, two-column page using the RGX-Framework pager: all 11 triggers are kept, 6 per page, with Prev and Next buttons at the top right. Each trigger is a compact card with the sound dropdown, Test button, and a volume track.
+- The Loot tab uses the same two-column layout.
+- Requires RGX-Framework 2.11.0 or newer (the pager and column helpers).
+- Known gap: new options labels are English only until the locale files are updated.
+
 ## v1.4.0-beta.6 - 2026-11-03
 - Fixed the volume track not showing the saved level: it is now redrawn from the saved value whenever a page is shown or resized, so Off, Low, Medium, and High stay where you set them after switching tabs or reloading.
 - Fixed the BLU icon in the AddOns options list sitting above the title text. The icon now scales to the list font.

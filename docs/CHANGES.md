@@ -1,3 +1,10 @@
+## v1.4.0-beta.4 - 2026-11-02
+- New Combat tab with 11 triggers: Combat Start, Combat End, Low Health, Execute Window, Critical Hit, Critical Heal, Resource Capped, Resource Low, Target Lost, Encounter End, and Encounter Victory. Encounter triggers fire only on clients that report boss encounters.
+- New Loot tab with 5 triggers: Uncommon, Rare, Epic, and Legendary item looted, and Coin looted. Item quality is read from the item link color, so it works in every language.
+- Every new trigger starts set to [None], so nothing changes until you pick a sound. Triggers use your own sounds too, including User Custom Sounds. Hover a row for what fires it.
+- Long trigger pages scroll with the mouse wheel.
+- Known gap: new options labels are English only until the locale files are updated.
+
 ## v1.4.0-beta.3 - 2026-11-02
 - Debug tab rebuilt to match BLU Forever: Debug Mode switch in the title bar and a Debug Scopes card with a checkbox per scope (Core, Options, Tabs, Registry, Loader / Init, Database / Config, Profiles, Events / Combat, Sounds / Media, Feature Modules). Scopes now filter which debug messages print.
 - Sounds tab rebuilt to match BLU Forever: Installed Sound Packs list on the left and a User Custom Sounds manager on the right.

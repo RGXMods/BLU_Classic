@@ -254,13 +254,15 @@ local function NormalizeVolume(value)
     return value
 end
 
-local function CreateSoundRow(parent, rowInfo, yOffset)
+-- compact = true builds the narrow two-column variant used on long pages (Combat, Loot):
+-- label, then the dropdown and Test button on one line, then the volume track below.
+local function CreateSoundRow(parent, rowInfo, yOffset, compact)
     local soundKey, volumeKey = rowInfo.sound, rowInfo.volume
 
     local container = CreateFrame("Frame", nil, parent, "BackdropTemplate")
     container:SetPoint("TOPLEFT", parent, "TOPLEFT", 0, yOffset)
     container:SetPoint("TOPRIGHT", parent, "TOPRIGHT", -10, yOffset)
-    container:SetHeight(68)
+    container:SetHeight(compact and 76 or 68)
     container:SetBackdrop(Design.Backdrops.Solid)
     container:SetBackdropColor(0.08, 0.11, 0.15, 0.92)
     container:SetBackdropBorderColor(0.14, 0.20, 0.28, 1)
@@ -295,7 +297,7 @@ local function CreateSoundRow(parent, rowInfo, yOffset)
 
     -- Volume track -----------------------------------------------------------------
     local volumeControl = CreateFrame("Frame", nil, container)
-    volumeControl:SetHeight(18)
+    volumeControl:SetHeight(compact and 14 or 18)
 
     local volButton = CreateFrame("Button", nil, volumeControl)
     volButton:SetAllPoints(volumeControl)
@@ -389,7 +391,9 @@ local function CreateSoundRow(parent, rowInfo, yOffset)
 
     local dropdownButton = CreateFrame("Button", nil, container, "BackdropTemplate")
     dropdownButton:SetHeight(22)
-    dropdownButton:SetWidth(220)
+    if not compact then
+        dropdownButton:SetWidth(220)
+    end
     dropdownButton:SetBackdrop(Design.Backdrops.Button)
     dropdownButton:SetBackdropColor(0.10, 0.14, 0.19, 0.96)
     dropdownButton:SetBackdropBorderColor(0.14, 0.20, 0.28, 1)
@@ -416,13 +420,23 @@ local function CreateSoundRow(parent, rowInfo, yOffset)
         self:SetBackdropBorderColor(0.14, 0.20, 0.28, 1)
     end)
 
-    dropdownButton:SetPoint("LEFT", container, "LEFT", 10, 0)
-    dropdownButton:SetPoint("TOP", currentSound, "BOTTOM", 0, -5)
-    testBtn:SetPoint("RIGHT", container, "RIGHT", -10, 0)
-    testBtn:SetPoint("TOP", currentSound, "BOTTOM", 0, -5)
-    volumeControl:SetPoint("CENTER", dropdownButton, "CENTER", 0, 0)
-    volumeControl:SetPoint("LEFT", dropdownButton, "RIGHT", 12, 0)
-    volumeControl:SetPoint("RIGHT", testBtn, "LEFT", -12, 0)
+    if compact then
+        -- The current sound is already the dropdown text, so the extra line is dropped.
+        currentSound:Hide()
+        testBtn:SetPoint("TOPRIGHT", container, "TOPRIGHT", -10, -24)
+        dropdownButton:SetPoint("TOPLEFT", container, "TOPLEFT", 10, -24)
+        dropdownButton:SetPoint("TOPRIGHT", testBtn, "TOPLEFT", -8, 0)
+        volumeControl:SetPoint("TOPLEFT", container, "TOPLEFT", 10, -54)
+        volumeControl:SetPoint("TOPRIGHT", container, "TOPRIGHT", -10, -54)
+    else
+        dropdownButton:SetPoint("LEFT", container, "LEFT", 10, 0)
+        dropdownButton:SetPoint("TOP", currentSound, "BOTTOM", 0, -5)
+        testBtn:SetPoint("RIGHT", container, "RIGHT", -10, 0)
+        testBtn:SetPoint("TOP", currentSound, "BOTTOM", 0, -5)
+        volumeControl:SetPoint("CENTER", dropdownButton, "CENTER", 0, 0)
+        volumeControl:SetPoint("LEFT", dropdownButton, "RIGHT", 12, 0)
+        volumeControl:SetPoint("RIGHT", testBtn, "LEFT", -12, 0)
+    end
 
     local function isCustomSelection(value)
         return BLU.UserSounds and BLU.UserSounds:IsCustomId(value)
@@ -451,6 +465,7 @@ local function CreateSoundRow(parent, rowInfo, yOffset)
         dropdownButtonLabel:SetText(name)
         -- Custom sounds have one file, so the low/medium/high track does not apply
         volumeControl:SetShown(not isCustomSelection(value) and value ~= 0)
+        if compact then currentSound:Hide() end
     end
 
     local function chooseSound(index)
@@ -602,40 +617,38 @@ function BLU.CreateEventSoundPanel(panel, eventType, eventName)
 
     local dropY = -102
     local rows = EVENT_ROWS[eventType] or {}
-    local rowParent, rowStart = content, dropY
+    local RGX = _G.RGXFramework
+    local UI = RGX and RGX.GetUI and RGX:GetUI() or _G.RGXUI
+    local usePager = #rows > 4 and UI and UI.CreatePager and UI.CreateColumns
 
-    if #rows > 4 then
-        -- Long pages (Combat, Loot) scroll with the mouse wheel; the bar stays hidden
-        -- like the Sounds page.
-        local scrollFrame = CreateFrame("ScrollFrame", nil, content, "UIPanelScrollFrameTemplate")
-        scrollFrame:SetPoint("TOPLEFT", content, "TOPLEFT", 0, dropY)
-        scrollFrame:SetPoint("BOTTOMRIGHT", content, "BOTTOMRIGHT", -2, 4)
-        scrollFrame:EnableMouseWheel(true)
-        if scrollFrame.ScrollBar then
-            scrollFrame.ScrollBar:Hide()
-            scrollFrame.ScrollBar.Show = function() end
+    if usePager then
+        -- Long pages (Combat, Loot): the framework pager with two columns per page.
+        -- Rows fill the left column first, then the right.
+        local ROWS_PER_PAGE, ROW_STEP = 6, 80
+        local pageCount = math.ceil(#rows / ROWS_PER_PAGE)
+        local body = CreateFrame("Frame", nil, content)
+        body:SetPoint("TOPLEFT", content, "TOPLEFT", 0, dropY)
+        body:SetPoint("BOTTOMRIGHT", content, "BOTTOMRIGHT", 0, 4)
+
+        local pager = UI:CreatePager(body, { pages = pageCount })
+        for pageIndex = 1, pageCount do
+            local left, right = UI:CreateColumns(pager.frames[pageIndex], 2, { gap = 10 })
+            local columns = { left, right }
+            local first = (pageIndex - 1) * ROWS_PER_PAGE + 1
+            local perColumn = math.ceil(ROWS_PER_PAGE / 2)
+            for offset = 0, ROWS_PER_PAGE - 1 do
+                local rowInfo = rows[first + offset]
+                if rowInfo then
+                    local column = columns[math.floor(offset / perColumn) + 1]
+                    CreateSoundRow(column, rowInfo, -((offset % perColumn) * ROW_STEP), true)
+                end
+            end
         end
-
-        local scrollChild = CreateFrame("Frame", nil, scrollFrame)
-        scrollChild:SetWidth(math.max(1, scrollFrame:GetWidth() or 1))
-        scrollChild:SetHeight(#rows * 80)
-        scrollFrame:SetScrollChild(scrollChild)
-        scrollFrame:SetScript("OnSizeChanged", function(self)
-            scrollChild:SetWidth(math.max(1, self:GetWidth() or 1))
-        end)
-        scrollFrame:SetScript("OnMouseWheel", function(self, delta)
-            local current = self:GetVerticalScroll() or 0
-            local maxScroll = math.max(0, (scrollChild:GetHeight() or 0) - self:GetHeight())
-            local nextValue = current - (delta * 40)
-            if nextValue < 0 then nextValue = 0 elseif nextValue > maxScroll then nextValue = maxScroll end
-            self:SetVerticalScroll(nextValue)
-        end)
-
-        rowParent, rowStart = scrollChild, 0
-    end
-
-    for rowIndex, rowInfo in ipairs(rows) do
-        CreateSoundRow(rowParent, rowInfo, rowStart - (rowIndex - 1) * 80)
+        content.pager = pager
+    else
+        for rowIndex, rowInfo in ipairs(rows) do
+            CreateSoundRow(content, rowInfo, dropY - (rowIndex - 1) * 80)
+        end
     end
 
     return content

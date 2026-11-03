@@ -35,14 +35,14 @@ My primary goal is to assist with the development and maintenance of the BLU_Cla
 *   **`images/`**: Contains addon assets like icons.
 *   **`Libs/`**: Contains third-party libraries, primarily the Ace3 framework.
 *   **`sounds/`**: Contains all `.ogg` sound files.
-*   **`.toc` Files**: (`BLU_Classic.toc`, `BLU_Classic_Vanilla.toc`, `BLU_Classic_Mists.toc`) Table of Contents files that tell WoW how to load the addon for different game versions.
+*   **`.toc` Files**: (`BLU_Classic.toc`) Table of Contents files that tell WoW how to load the addon for different game versions.
 *   **`README.md`**: The main project overview.
 
 ## 📝 Repository Standards
 
 I am aware of and will adhere to the following standards:
 
-*   **`.toc` File Path Separators:** I will use the correct path separator style for each `.toc` file (`/` for Retail/Cata, `\` for Mists, `\` for Vanilla).
+*   **`.toc` File Path Separators:** I will use the correct path separator style for each `.toc` file (`/` for Retail, `\` for Classic).
 *   **Changelog:** I will follow the strict format outlined in `docs/guidelines_changelog.md` when updating `CHANGES.md` and `changelog.txt`.
 
 ## 🤝 How to Interact With Me
@@ -68,7 +68,7 @@ You can direct me with natural language commands to perform the tasks outlined a
 - Forbidden patterns that fail `rgx_audit_lua`: raw `C_Timer`, manual event frames, `SLASH_` globals, unguarded `SetAttribute`, raw aura plumbing, and raw hook reassignment. New code uses framework-managed equivalents.
 - Validation: Lua 5.1 (`luac5.1 -p`) and XML (`xmllint`) must pass through the shared CI include before every MR, and the root README stays nonempty and substantive.
 - Dependencies: keep `## RequiredDeps: RGX-Framework` and any `## X-RGX-Framework-MinVersion` accurate against the framework version line if the fork adopts the framework, and match the TOC SavedVariables name (`BLUClassicDB`) with the declarative `dbName` at that point.
-- Repo facts: the current layout is a single `BLU_Classic.toc` serving Classic Era (`11509`), Burning Crusade Classic (`20506`), and Mists of Pandaria Classic (`50504`) as a comma-separated list; the multi-TOC and earlier-version references in the introduction above are historical. Commands are `/blu` only (`/bluc` is not a user command; it names the backend namespace). The TOC owns the `vX.Y.Z` version and load order. Recheck facts in the TOC and README when they change.
+- Repo facts: the current layout is a single `BLU_Classic.toc` serving Classic Era (`11509`), Burning Crusade Classic (`20506`); Mists of Pandaria Classic (`50504`) is not supported as a comma-separated list; the multi-TOC and earlier-version references in the introduction above are historical. Commands are `/blu` only (`/bluc` is not a user command; it names the backend namespace). The TOC owns the `vX.Y.Z` version and load order. Recheck facts in the TOC and README when they change.
 
 ## Keeping Interface Versions Current
 

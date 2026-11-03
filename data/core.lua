@@ -49,18 +49,19 @@ end
 --=====================================================================================
 -- Feature Compatibility Tables (single source of truth)
 --=====================================================================================
+-- Supported clients: Classic Era (vanilla, 11509) and TBC Anniversary (tbc, 20506).
+-- Mists of Pandaria Classic is not supported; features only it had (Achievement, Battle Pet)
+-- are gone from this table, so their tabs and triggers stay off.
 local FEATURE_AVAILABILITY = {
-    Achievement = { mists = true, cata = true, wrath = true },
-    BattlePet = { mists = true },
-    Level = { mists = true, cata = true, wrath = true, tbc = true, vanilla = true },
-    Quest = { mists = true, cata = true, wrath = true, tbc = true, vanilla = true },
-    QuestAccept = { mists = true, cata = true, wrath = true, tbc = true, vanilla = true },
-    Reputation = { mists = true, cata = true, wrath = true, tbc = true, vanilla = true },
-    Combat = { mists = true, cata = true, wrath = true, tbc = true, vanilla = true },
-    Loot = { mists = true, cata = true, wrath = true, tbc = true, vanilla = true },
-    Hardcore = { mists = true, cata = true, wrath = true, tbc = true, vanilla = true },
-    Honor = { mists = true, cata = true, wrath = true, tbc = true, vanilla = true },
-    Collectibles = { mists = true, cata = true, wrath = true, tbc = true, vanilla = true },
+    Level = { vanilla = true, tbc = true },
+    Quest = { vanilla = true, tbc = true },
+    QuestAccept = { vanilla = true, tbc = true },
+    Reputation = { vanilla = true, tbc = true },
+    Combat = { vanilla = true, tbc = true },
+    Loot = { vanilla = true, tbc = true },
+    Hardcore = { vanilla = true, tbc = true },
+    Honor = { vanilla = true, tbc = true },
+    Collectibles = { vanilla = true, tbc = true },
 }
 
 function BLU_Classic:IsFeatureAvailable(feature)

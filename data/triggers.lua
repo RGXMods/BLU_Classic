@@ -51,7 +51,6 @@ BLU.TriggerPages = {
     },
     collectibles = {
         { id = "MountLearned", label = "Mount Learned", description = "You learn a new mount.", event = "NEW_MOUNT_ADDED" },
-        { id = "PetCollected", label = "Pet Collected", description = "You add a new battle pet to your collection.", event = "NEW_PET_ADDED", feature = "BattlePet" },
         { id = "ToyLearned",   label = "Toy Learned",   description = "You add a new toy to your collection.", event = "NEW_TOY_ADDED" },
     },
 }

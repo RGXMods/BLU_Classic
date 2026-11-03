@@ -173,10 +173,15 @@ function Options:CreateOptionsPanel()
 
     -- No settings box (operator rev 3): tabs render directly on the strip.
     -- The frame remains only as a layout helper for height tracking.
-    local leftTabGroup = CreateFrame("Frame", nil, tabContainer)
+    -- Settings box: General, Profiles, Debug and Sounds sit inside a bordered frame, like
+    -- BLU Retail's settings column. It spans both tab columns (x 8..208 of the strip).
+    local SETTINGS_BOX_WIDTH = 207
+    local leftTabGroup = CreateFrame("Frame", nil, tabContainer, "BackdropTemplate")
     leftTabGroup:SetPoint("TOPLEFT", tabContainer, "TOPLEFT", 5, -4)
-    leftTabGroup:SetSize(100, tabContainerHeight - 8)
-    leftTabGroup:Hide()
+    leftTabGroup:SetSize(SETTINGS_BOX_WIDTH, tabContainerHeight - 8)
+    leftTabGroup:SetBackdrop(BLU.Modules.design.Backdrops.Dark)
+    leftTabGroup:SetBackdropColor(Design.Rgba("surface", 0.95))
+    leftTabGroup:SetBackdropBorderColor(Design.Rgba("border", 1))
 
     local leftSeparator = tabContainer:CreateTexture(nil, "OVERLAY")
     leftSeparator:SetSize(1, tabContainerHeight - 12)
@@ -197,7 +202,7 @@ function Options:CreateOptionsPanel()
             if newHeight ~= tabContainerHeight then
                 tabContainerHeight = newHeight
                 tabContainer:SetHeight(newHeight)
-                leftTabGroup:SetSize(100, newHeight - 8)
+                leftTabGroup:SetSize(SETTINGS_BOX_WIDTH, newHeight - 8)
                 leftSeparator:SetSize(1, newHeight - 12)
             end
         end

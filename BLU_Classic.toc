@@ -1,5 +1,5 @@
 ## Interface: 11509,20506,50504
-## Version: v1.3.8
+## Version: v1.4.0-beta.1
 ## Title: |cff05dffaB|r|cffffffffetter|r |cff05dffaL|r|cffffffffevel-|r|cff05dffaU|r|cffffffffp|cff05dffa!|r |cffFFD700(Classic)|r
 ## Notes: |cff05dffaClassic-only sound replacement addon.|r |n|r |cff05dffa/blu|r or |cff05dffa/bluc|r opens options. Includes a movable minimap button.
 ## Author: DonnieDice
@@ -24,10 +24,7 @@ Libs\AceAddon-3.0\AceAddon-3.0.xml
 Libs\AceEvent-3.0\AceEvent-3.0.xml
 Libs\AceTimer-3.0\AceTimer-3.0.xml
 Libs\AceDB-3.0\AceDB-3.0.xml
-Libs\AceDBOptions-3.0\AceDBOptions-3.0.xml
 Libs\AceLocale-3.0\AceLocale-3.0.xml
-Libs\AceGUI-3.0\AceGUI-3.0.xml
-Libs\AceConfig-3.0\AceConfig-3.0.xml
 
 # Data files - LOAD ORDER CRITICAL
 data\localization.lua
@@ -48,8 +45,14 @@ locales\zhCN.lua
 locales\zhTW.lua
 data\initialization.lua
 data\sounds.lua
-data\dropdown_widget.lua
 data\core.lua
 data\utils.lua
 data\options.lua
+data\ui\shim.lua
+data\ui\design.lua
+data\ui\tabs.lua
+data\ui\events.lua
+data\ui\general.lua
+data\ui\profiles.lua
+data\ui\main.lua
 data\battlepets.lua

@@ -223,29 +223,6 @@ function BLU_Classic:ScheduleReputationScan()
     self.reputationScanTimer = self:ScheduleTimer("ScanForReputationChanges", 1)
 end
 
---=====================================================================================
--- Options System
---=====================================================================================
--- Map option groups to features for filtering (from HEAD, adapted)
-local OPTION_GROUP_FEATURES = {
-    group2 = "Achievement",
-    group3 = "BattlePet",
-    group4 = "Level",
-    group5 = "QuestAccept",
-    group6 = "Quest",
-    group7 = "Reputation",
-}
-
-function BLU_Classic:FilterOptionsForVersion()
-    if not self.options or not self.options.args then return end
-    
-    for groupKey, feature in pairs(OPTION_GROUP_FEATURES) do
-        if not self:IsFeatureAvailable(feature) then
-            self.options.args[groupKey] = nil
-        end
-    end
-end
-
 -- Saved Variables Cleanup for Version Compatibility (from be75efd, adapted)
 function BLU_Classic:CleanupIncompatibleSavedVariables(version)
     -- Clean up any leftover retail-only saved variables
@@ -271,130 +248,21 @@ end
 
 
 --=====================================================================================
--- Profiles options (RGX proxy; AceDBOptions retired with the AceDB layer)
---=====================================================================================
-function BLU_Classic:BuildProfilesOptions()
-    local db = self.db
-    local function list()
-        local values = {}
-        if db and db.ListProfiles then
-            for _, name in ipairs(db:ListProfiles()) do values[name] = name end
-        end
-        return values
-    end
-    return {
-        type = "group",
-        name = BLU_L["PROFILES_TITLE"] or "Profiles",
-        args = {
-            active = {
-                type = "select", order = 1,
-                name = BLU_L["PROFILES_SELECT"] or "Active profile",
-                desc = BLU_L["PROFILES_SELECT_DESC"] or "Switch the active settings profile.",
-                values = list,
-                get = function()
-                    if db and db.GetActiveProfile then return db:GetActiveProfile() end
-                    return "Default"
-                end,
-                set = function(_, value)
-                    if db and db.LoadProfile then db:LoadProfile(value) end
-                end,
-            },
-            new = {
-                type = "input", order = 2,
-                name = BLU_L["PROFILES_NEW"] or "New profile",
-                desc = BLU_L["PROFILES_NEW_DESC"] or "Create a new profile with defaults.",
-                get = function() return "" end,
-                set = function(_, value)
-                    value = (value or ""):trim()
-                    if value ~= "" and db and db.CreateProfile then db:CreateProfile(value) end
-                end,
-            },
-            delete = {
-                type = "select", order = 3,
-                name = BLU_L["PROFILES_DELETE"] or "Delete profile",
-                desc = BLU_L["PROFILES_DELETE_DESC"] or "Delete a profile (the Default profile is protected).",
-                values = list,
-                get = function() return "" end,
-                set = function(_, value)
-                    if db and db.DeleteProfile then db:DeleteProfile(value) end
-                end,
-            },
-        },
-    }
-end
-
---=====================================================================================
--- Options Initialization
+-- Options Initialization (BLU-style options panel, see data/ui/)
 --=====================================================================================
 function BLU_Classic:InitializeOptions()
-    local AC = LibStub("AceConfig-3.0")
-    local ACD = LibStub("AceConfigDialog-3.0")
-
-    if not self.options or not self.options.args then
-        if self.debugMode then
-            print(BLU_Classic_PREFIX .. "|cffff0000Options table not loaded|r")
-        end
+    if self.optionsRegistered then
+        self:PrintDebugMessage("OPTIONS_ALREADY_REGISTERED")
         return
     end
 
-    -- Filter options based on game version (single pass)
-    self:FilterOptionsForVersion()
-    
-    -- Build sorted options list and apply colors
-    self.sortedOptions = {}
-    for _, group in pairs(self.options.args) do
-        if group.order then
-            table.insert(self.sortedOptions, group)
-        end
+    if type(self.CreateOptionsPanel) ~= "function" then
+        print(BLU_Classic_PREFIX .. "|cffff0000Options panel module not loaded|r")
+        return
     end
-    
-    self:AssignGroupColors()
 
-    if not self.optionsRegistered then
-        local optionsTitle = BLU_L["OPTIONS_PANEL_TITLE"] or "BLU | Better Level-Up!"
-        local profilesTitle = BLU_L["PROFILES_TITLE"] or "Profiles"
-        
-        AC:RegisterOptionsTable("BLU_Classic_Options", self.options)
-        self.optionsFrame, self.optionsCategoryID = ACD:AddToBlizOptions("BLU_Classic_Options", optionsTitle)
-
-        local profiles = self:BuildProfilesOptions()
-        AC:RegisterOptionsTable("BLU_Classic_Profiles", profiles)
-        _, self.profilesCategoryID = ACD:AddToBlizOptions("BLU_Classic_Profiles", profilesTitle, optionsTitle)
-
+    if self:CreateOptionsPanel() then
         self.optionsRegistered = true
-    else
-        self:PrintDebugMessage("OPTIONS_ALREADY_REGISTERED") -- This line was only in be75efd
-    end
-end
-
-function BLU_Classic:AssignGroupColors()
-    local colors = { 
-        BLU_L.optionColor1 or "|cffffffff", -- Using HEAD's robust color definitions
-        BLU_L.optionColor2 or "|cffcccccc" 
-    }
-    local patternIndex = 1
-
-    if not self.sortedOptions or #self.sortedOptions == 0 then return end
-    
-    table.sort(self.sortedOptions, function(a, b) 
-        return (a.order or 0) < (b.order or 0) 
-    end)
-
-    for _, group in ipairs(self.sortedOptions) do
-        if group.name and group.args then
-            group.name = colors[patternIndex] .. group.name .. "|r"
-
-            for _, arg in pairs(group.args) do
-                if arg.name and arg.name ~= "" then
-                    arg.name = colors[patternIndex] .. arg.name .. "|r"
-                end
-                if arg.desc and arg.desc ~= "" then
-                    arg.desc = colors[(patternIndex % 2) + 1] .. arg.desc .. "|r"
-                end
-            end
-
-            patternIndex = patternIndex % 2 + 1
-        end
     end
 end
 
@@ -439,6 +307,10 @@ function BLU_Classic:OnInitialize()
             if self.minimapButton and self.minimapButton.SetVisible then
                 self.minimapButton:SetVisible(self.db.classicMinimapIconEnabled ~= false)
             end
+            self.debugMode = self.db.debugMode == true
+            self.showWelcomeMessage = self.db.showWelcomeMessage ~= false
+            if self.InvalidateAllTabs then self:InvalidateAllTabs() end
+            if self.RefreshOptions then self:RefreshOptions() end
         end,
     })
 
@@ -465,7 +337,6 @@ function BLU_Classic:OnInitialize()
     end
 
     self.functionsHalted = false
-    self.sortedOptions = {}
     self.optionsRegistered = false
 
     self.db.classicMinimapIconEnabled = self.db.classicMinimapIconEnabled ~= false

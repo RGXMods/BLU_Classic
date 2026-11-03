@@ -176,9 +176,11 @@ function Options:CreateOptionsPanel()
     -- Settings box: General, Profiles, Debug and Sounds sit inside a bordered frame, like
     -- BLU Retail's settings column. It spans both tab columns (x 8..208 of the strip).
     local SETTINGS_BOX_WIDTH = 207
+    -- Rows 1 and 2 (the four settings tabs): top -4 to bottom -57.
+    local SETTINGS_BOX_HEIGHT = 53
     local leftTabGroup = CreateFrame("Frame", nil, tabContainer, "BackdropTemplate")
     leftTabGroup:SetPoint("TOPLEFT", tabContainer, "TOPLEFT", 5, -4)
-    leftTabGroup:SetSize(SETTINGS_BOX_WIDTH, tabContainerHeight - 8)
+    leftTabGroup:SetSize(SETTINGS_BOX_WIDTH, SETTINGS_BOX_HEIGHT)
     leftTabGroup:SetBackdrop(BLU.Modules.design.Backdrops.Dark)
     leftTabGroup:SetBackdropColor(Design.Rgba("surface", 0.95))
     leftTabGroup:SetBackdropBorderColor(Design.Rgba("border", 1))
@@ -202,7 +204,6 @@ function Options:CreateOptionsPanel()
             if newHeight ~= tabContainerHeight then
                 tabContainerHeight = newHeight
                 tabContainer:SetHeight(newHeight)
-                leftTabGroup:SetSize(SETTINGS_BOX_WIDTH, newHeight - 8)
                 leftSeparator:SetSize(1, newHeight - 12)
             end
         end

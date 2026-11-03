@@ -1,3 +1,15 @@
+## v1.4.0-beta.8 - 2026-11-03
+- Profiles page now uses RGX-Framework's shared profile editor: the framework header, active-profile box, profile dropdown, and Create / Rename / Copy / Delete dialogs are themed by the framework.
+- Presets are on that page again, as a framework Presets card with donniedice's Preset and five reserved slots.
+- Reset asks for confirmation first, and applying a preset asks for confirmation first. Both explain what they change.
+- Add Custom Sound is a framework-styled dialog instead of a Blizzard popup. Enter adds the sound and Escape closes it.
+- Options colours now come from the RGX-Framework theme. BLU's own palette is used only when the framework is not loaded.
+- The four settings tabs (General, Profiles, Debug, Sounds) sit inside a bordered settings box, as on BLU Retail.
+- The slash command is /blu only. /bluc is no longer registered; the internal BLUClassic names are unchanged.
+- README and CurseForge description: BLU Classic requires RGX-Framework 2.11.0 or newer, and the command list uses /blu.
+- Requires RGX-Framework 2.11.0 or newer.
+- Known gap: new options labels are English only until the locale files are updated.
+
 ## v1.4.0-beta.7 - 2026-11-03
 - Combat tab is now a paged, two-column page using the RGX-Framework pager: all 11 triggers are kept, 6 per page, with Prev and Next buttons at the top right. Each trigger is a compact card with the sound dropdown, Test button, and a volume track.
 - The Loot tab uses the same two-column layout.

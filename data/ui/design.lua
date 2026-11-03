@@ -13,21 +13,61 @@ BLU.Modules["design"] = Design
 
 BLU.Design = Design
 
--- Color palette
-Design.Colors = {
-    Primary = {0.02, 0.87, 0.98},      -- #05DFFA (BLU cyan)
-    PrimaryHex = "cff05dffa",
-    Secondary = {1.0, 0.84, 0.0},      -- #FFD700 (RGX gold)
-    Accent = {0.08, 0.22, 0.30},       -- Deep cyan accent
-    Surface = {0.07, 0.09, 0.12},      -- Panel surface
-    Success = {0.0, 0.8, 0.0},          -- Green
-    Warning = {1.0, 0.65, 0.0},         -- Orange
-    Error = {1.0, 0.2, 0.2},            -- Red
-    Dark = {0.05, 0.05, 0.05},          -- Almost black
-    Light = {0.9, 0.9, 0.9},            -- Almost white
-    Gray = {0.5, 0.5, 0.5},             -- Gray
-    Text = {1.0, 1.0, 1.0},             -- White
+-- Colour adapter. Every colour in BLU Classic's options UI comes from the RGX-Framework
+-- theme: Design.Rgb(role) / Design.Rgba(role, alpha) read the framework's token for a
+-- role when a panel is built. Values are never cached at load (the framework restores its
+-- saved style after this file loads), and nothing here changes the framework's style or
+-- theme. FALLBACK holds BLU's original palette and is used only when the framework is not
+-- loaded.
+local FALLBACK = {
+    primary = {0.02, 0.87, 0.98}, surface = {0.08, 0.11, 0.15}, background = {0.05, 0.05, 0.05},
+    border = {0.14, 0.20, 0.28}, hover = {0.11, 0.18, 0.24}, track = {0.30, 0.30, 0.30},
+    text = {0.80, 0.80, 0.80}, subtext = {0.60, 0.66, 0.72},
+    success = {0.36, 0.88, 0.52}, error = {1.00, 0.35, 0.35}, warning = {1.00, 0.82, 0.18},
+    label = {0.36, 0.36, 0.40},
 }
+
+-- Old palette names, kept so existing call sites (Design.Colors.Primary) keep working.
+-- Secondary is the gold used for tooltip hints. The framework "warning" token is amber in every style.
+local ROLE_BY_KEY = { Primary = "primary", Accent = "border", Secondary = "warning" }
+
+local function FrameworkDesign()
+    local RGX = _G.RGXFramework
+    local D = RGX and RGX.GetDesign and RGX:GetDesign()
+    if D and type(D.Unpack) == "function" then
+        return D
+    end
+    return nil
+end
+
+function Design.Rgb(role)
+    local D = FrameworkDesign()
+    if D then
+        local r, g, b = D:Unpack(role)
+        if type(r) == "number" then
+            return r, g, b
+        end
+    end
+    local fallback = FALLBACK[role] or FALLBACK.text
+    return fallback[1], fallback[2], fallback[3]
+end
+
+function Design.Rgba(role, alpha)
+    local r, g, b = Design.Rgb(role)
+    return r, g, b, alpha
+end
+
+-- Read on each access, so a panel built after a theme change picks up the new colour.
+Design.Colors = setmetatable({}, {
+    __index = function(_, key)
+        local role = ROLE_BY_KEY[key]
+        if not role then
+            return nil
+        end
+        local r, g, b = Design.Rgb(role)
+        return { r, g, b }
+    end,
+})
 
 -- Backdrop templates
 Design.Backdrops = {
@@ -112,19 +152,19 @@ function Design:CreateActionButton(parent, text, width, height, tooltipTitle, to
 
     local bg = button:CreateTexture(nil, "BACKGROUND")
     bg:SetAllPoints()
-    bg:SetColorTexture(0.08, 0.11, 0.15, 0.90)
+    bg:SetColorTexture(Design.Rgba("surface", 0.90))
     button.bg = bg
 
     local border = CreateFrame("Frame", nil, button, "BackdropTemplate")
     border:SetAllPoints()
     border:SetBackdrop({ edgeFile = "Interface\\Buttons\\WHITE8x8", edgeSize = 1 })
-    border:SetBackdropBorderColor(0.14, 0.20, 0.28, 1)
+    border:SetBackdropBorderColor(Design.Rgba("border", 1))
     button.border = border
 
     local label = button:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
     label:SetPoint("CENTER", 0, 0)
     label:SetText(text or "Button")
-    label:SetTextColor(0.80, 0.80, 0.80, 1)
+    label:SetTextColor(Design.Rgba("text", 1))
     button.label = label
 
     function button:SetText(value)
@@ -141,14 +181,14 @@ function Design:CreateActionButton(parent, text, width, height, tooltipTitle, to
     end
 
     local function applyHover(self)
-        self.bg:SetColorTexture(0.11, 0.18, 0.24, 1)
+        self.bg:SetColorTexture(Design.Rgba("hover", 1))
         self.border:SetBackdropBorderColor(unpack(Design.Colors.Primary))
         self.label:SetTextColor(unpack(Design.Colors.Primary))
     end
     local function applyIdle(self)
-        self.bg:SetColorTexture(0.08, 0.11, 0.15, 0.90)
-        self.border:SetBackdropBorderColor(0.14, 0.20, 0.28, 1)
-        self.label:SetTextColor(0.80, 0.80, 0.80, 1)
+        self.bg:SetColorTexture(Design.Rgba("surface", 0.90))
+        self.border:SetBackdropBorderColor(Design.Rgba("border", 1))
+        self.label:SetTextColor(Design.Rgba("text", 1))
     end
 
     button:SetScript("OnEnter", function(self)
@@ -199,7 +239,7 @@ function Design:CreateSectionHeader(parent, text, icon)
     local header = CreateFrame("Frame", nil, parent, "BackdropTemplate")
     header:SetHeight(32)
     header:SetBackdrop(Design.Backdrops.Solid)
-    header:SetBackdropColor(0.09, 0.12, 0.16, 0.95)
+    header:SetBackdropColor(Design.Rgba("surface", 0.95))
     header:SetBackdropBorderColor(unpack(Design.Colors.Accent))
 
     local leftInset = 10
@@ -224,7 +264,7 @@ end
 function Design:CreateDivider(parent)
     local divider = parent:CreateTexture(nil, "ARTWORK")
     divider:SetHeight(1)
-    divider:SetColorTexture(0.3, 0.3, 0.3, 0.8)
+    divider:SetColorTexture(Design.Rgba("track", 0.8))
     return divider
 end
 

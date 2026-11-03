@@ -39,63 +39,74 @@ local function CountDefaultSets()
     return count
 end
 
-StaticPopupDialogs["BLU_CLASSIC_ADD_CUSTOM_SOUND"] = {
-    text = "Add a custom sound file for BLU.|n|nEnter a short file name like myfile or myfile.ogg. You can also paste a full path like Interface\\AddOns\\myfile.ogg. BLU will try common AddOns folders automatically.",
-    button1 = ADD or ACCEPT,
-    button2 = CANCEL,
-    hasEditBox = true,
-    maxLetters = 255,
-    editBoxWidth = 320,
-    OnShow = function(self)
-        local box = EditBoxOf(self)
-        if box then
-            box:SetText("")
-            box:SetAutoFocus(false)
-            box:SetFocus()
-        end
-    end,
-    EditBoxOnEnterPressed = function(self)
-        local parent = self:GetParent()
-        if parent and parent.button1 then
-            parent.button1:Click()
-        end
-    end,
-    EditBoxOnEscapePressed = function(self)
-        self:GetParent():Hide()
-    end,
-    OnAccept = function(self)
-        local box = EditBoxOf(self)
-        local soundInput = (box and box:GetText() or ""):gsub("^%s+", ""):gsub("%s+$", "")
-        BLU:PrintDebug("[Options/Sounds] Add Custom Sound popup accepted with input '" .. tostring(soundInput) .. "'")
+-- Add Custom Sound: a framework-styled dialog (same construction as the framework's own
+-- name dialogs): themed frame, input box with focus, Enter to add, Escape to close.
+local addDialog, addInput, addFeedback
 
-        if soundInput == "" then
-            BLU:Print("Enter a file name like myfile or myfile.ogg.")
-            return
-        end
-
-        local userSounds = BLU.UserSounds
-        if not userSounds then
-            BLU:Print("User custom sounds are not available yet.")
-            return
-        end
-
-        local ok, result, resolvedPath = userSounds:Add(soundInput)
-        if ok then
-            if resolvedPath and soundInput:find("[/\\]") then
-                BLU:Print("Added custom sound: " .. tostring(result) .. " (" .. tostring(resolvedPath) .. ")")
-            else
-                BLU:Print("Added custom sound: " .. tostring(result))
-            end
-            BLU.RefreshSoundPackUI()
+local function SubmitCustomSound()
+    local text = (addInput:GetText() or ""):gsub("^%s+", ""):gsub("%s+$", "")
+    if text == "" then
+        addFeedback:SetText("Enter a file name like myfile or myfile.ogg.")
+        return
+    end
+    local userSounds = BLU.UserSounds
+    if not userSounds then
+        addFeedback:SetText("User custom sounds are not available yet.")
+        return
+    end
+    local ok, result, resolvedPath = userSounds:Add(text)
+    if ok then
+        if resolvedPath and text:find("[/\\]") then
+            BLU:Print("Added custom sound: " .. tostring(result) .. " (" .. tostring(resolvedPath) .. ")")
         else
-            BLU:Print("Failed to add custom sound: " .. tostring(result))
+            BLU:Print("Added custom sound: " .. tostring(result))
         end
-    end,
-    timeout = 0,
-    whileDead = true,
-    hideOnEscape = true,
-    preferredIndex = 3,
-}
+        addDialog:Hide()
+        BLU.RefreshSoundPackUI()
+    else
+        addFeedback:SetText(tostring(result))
+    end
+end
+
+local function OpenAddCustomSoundDialog()
+    local UI = BLU:GetFrameworkUI()
+    if not (UI and UI.CreateConfigDialog and UI.CreateButton and UI.CreateLabel) then
+        BLU:Print("RGX-Framework 2.11.0 or newer is required to add custom sounds.")
+        return
+    end
+
+    if not addDialog then
+        addDialog = UI:CreateConfigDialog(UIParent, { title = "Add Custom Sound", width = 340, height = 150 })
+        addDialog:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
+
+        addInput = CreateFrame("EditBox", nil, addDialog, "InputBoxTemplate")
+        addInput:SetSize(296, 26)
+        addInput:SetPoint("TOPLEFT", addDialog, "TOPLEFT", 16, -44)
+        addInput:SetAutoFocus(true)
+        addInput:SetMaxLetters(255)
+        addInput:SetScript("OnEscapePressed", function() addDialog:Hide() end)
+
+        addFeedback = UI:CreateLabel(addDialog, { text = "", width = 308, color = "muted" })
+        addFeedback:SetPoint("TOPLEFT", addInput, "BOTTOMLEFT", 0, -4)
+
+        local addButton = UI:CreateButton(addDialog, { text = "Add", width = 80, height = 22,
+            onClick = SubmitCustomSound })
+        addButton:SetPoint("BOTTOMLEFT", addDialog, "BOTTOMLEFT", 16, 14)
+        local cancelButton = UI:CreateButton(addDialog, { text = "Cancel", width = 80, height = 22,
+            onClick = function() addDialog:Hide() end })
+        cancelButton:SetPoint("LEFT", addButton, "RIGHT", 8, 0)
+        addInput:SetScript("OnEnterPressed", function() addButton:Click() end)
+        addDialog.addButton = addButton
+    end
+
+    addInput:SetText("")
+    addFeedback:SetText("Type a short file name like myfile or myfile.ogg, or paste a full Interface\\AddOns path.")
+    addDialog:Show()
+    addInput:SetFocus()
+end
+
+-- Exposed so the options tests can open the same dialog the Add Custom Sound button opens.
+BLU.OpenAddCustomSoundDialog = OpenAddCustomSoundDialog
 
 function BLU.CreateSoundsPanel(panel)
     BLU:PrintDebug("[Options/Sounds] Creating Sounds panel")
@@ -111,15 +122,15 @@ function BLU.CreateSoundsPanel(panel)
 
     local pageBg = content:CreateTexture(nil, "BACKGROUND")
     pageBg:SetAllPoints()
-    pageBg:SetColorTexture(0.04, 0.06, 0.08, 0.35)
+    pageBg:SetColorTexture(Design.Rgba("background", 0.35))
 
     local titleBar = CreateFrame("Frame", nil, content, "BackdropTemplate")
     titleBar:SetPoint("TOPLEFT", 0, 0)
     titleBar:SetPoint("TOPRIGHT", 0, 0)
     titleBar:SetHeight(44)
     titleBar:SetBackdrop(Design.Backdrops.Solid)
-    titleBar:SetBackdropColor(0.06, 0.10, 0.16, 0.95)
-    titleBar:SetBackdropBorderColor(0.10, 0.20, 0.28, 1)
+    titleBar:SetBackdropColor(Design.Rgba("surface", 0.95))
+    titleBar:SetBackdropBorderColor(Design.Rgba("border", 1))
 
     local titleIcon = titleBar:CreateTexture(nil, "ARTWORK")
     titleIcon:SetSize(24, 24)
@@ -135,7 +146,7 @@ function BLU.CreateSoundsPanel(panel)
     intro:SetPoint("TOPRIGHT", 0, -64)
     intro:SetJustifyH("LEFT")
     intro:SetWordWrap(true)
-    intro:SetTextColor(0.6, 0.66, 0.72)
+    intro:SetTextColor(Design.Rgb("subtext"))
     intro:SetText("Browse installed sound packs and manage sounds for the active profile.")
 
     local pageContent = content
@@ -145,8 +156,8 @@ function BLU.CreateSoundsPanel(panel)
     installedPanel:SetPoint("TOPRIGHT", pageContent, "TOP", -12, -102)
     installedPanel:SetPoint("BOTTOMLEFT", pageContent, "BOTTOMLEFT", 0, 5)
     installedPanel:SetBackdrop(Design.Backdrops.Dark)
-    installedPanel:SetBackdropColor(0.06, 0.06, 0.06, 0.95)
-    installedPanel:SetBackdropBorderColor(0.14, 0.20, 0.28, 1)
+    installedPanel:SetBackdropColor(Design.Rgba("background", 0.95))
+    installedPanel:SetBackdropBorderColor(Design.Rgba("border", 1))
 
     local scrollFrame = CreateFrame("ScrollFrame", nil, installedPanel, "UIPanelScrollFrameTemplate")
     scrollFrame:SetPoint("TOPLEFT", 8, -8)
@@ -183,7 +194,7 @@ function BLU.CreateSoundsPanel(panel)
     headerNote:SetPoint("TOPRIGHT", header, "BOTTOMRIGHT", -12, -6)
     headerNote:SetJustifyH("LEFT")
     headerNote:SetWordWrap(true)
-    headerNote:SetTextColor(0.78, 0.78, 0.78)
+    headerNote:SetTextColor(Design.Rgb("subtext"))
     headerNote:SetText("BLU lists its built-in libraries and your manually added custom sounds.")
 
     local startY = -72
@@ -273,8 +284,8 @@ function BLU.CreateSoundsPanel(panel)
     managerPanel:SetPoint("TOPRIGHT", pageContent, "TOPRIGHT", -10, -102)
     managerPanel:SetPoint("BOTTOMRIGHT", pageContent, "BOTTOMRIGHT", -10, 5)
     managerPanel:SetBackdrop(Design.Backdrops.Dark)
-    managerPanel:SetBackdropColor(0.06, 0.06, 0.06, 0.95)
-    managerPanel:SetBackdropBorderColor(0.14, 0.20, 0.28, 1)
+    managerPanel:SetBackdropColor(Design.Rgba("background", 0.95))
+    managerPanel:SetBackdropBorderColor(Design.Rgba("border", 1))
 
     local managerHeader = Design:CreateHeader(managerPanel, "User Custom Sounds", "Interface\\Icons\\INV_Misc_Coin_18")
     managerHeader:SetPoint("TOPLEFT", 8, -8)
@@ -285,7 +296,7 @@ function BLU.CreateSoundsPanel(panel)
     managerNote:SetPoint("TOPRIGHT", managerHeader, "BOTTOMRIGHT", -4, -8)
     managerNote:SetJustifyH("LEFT")
     managerNote:SetWordWrap(true)
-    managerNote:SetTextColor(0.78, 0.78, 0.78)
+    managerNote:SetTextColor(Design.Rgb("subtext"))
     managerNote:SetText("Add .ogg, .mp3, or .wav files from an AddOns sound folder. Enter a filename such as victory.ogg, or paste its full Interface\\AddOns path. These sounds belong to the active profile; select them on an event page after adding them here.")
 
     local addButton = Design:CreateActionButton(
@@ -299,12 +310,12 @@ function BLU.CreateSoundsPanel(panel)
     addButton:SetPoint("TOPLEFT", managerNote, "BOTTOMLEFT", 0, -10)
     addButton:SetScript("OnClick", function()
         BLU:PrintDebug("[Options/Sounds] Add Custom Sound button clicked")
-        StaticPopup_Show("BLU_CLASSIC_ADD_CUSTOM_SOUND")
+        OpenAddCustomSoundDialog()
     end)
 
     local countLabel = managerPanel:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
     countLabel:SetPoint("LEFT", addButton, "RIGHT", 10, 0)
-    countLabel:SetTextColor(0.7, 0.7, 0.7)
+    countLabel:SetTextColor(Design.Rgb("subtext"))
     countLabel:SetText("Loaded: " .. tostring(customSoundCount))
 
     local listFrame = CreateFrame("ScrollFrame", nil, managerPanel, "UIPanelScrollFrameTemplate")
@@ -338,7 +349,7 @@ function BLU.CreateSoundsPanel(panel)
         emptyText:SetPoint("TOPLEFT", 4, -4)
         emptyText:SetPoint("RIGHT", -4, 0)
         emptyText:SetJustifyH("LEFT")
-        emptyText:SetTextColor(0.65, 0.65, 0.65)
+        emptyText:SetTextColor(Design.Rgb("subtext"))
         emptyText:SetText("No user custom sounds are loaded.")
         listContent:SetHeight(40)
     else
@@ -349,8 +360,8 @@ function BLU.CreateSoundsPanel(panel)
             row:SetWidth(294)
             row:SetHeight(rowHeight)
             row:SetBackdrop(Design.Backdrops.Solid)
-            row:SetBackdropColor(0.08, 0.11, 0.15, 0.90)
-            row:SetBackdropBorderColor(0.14, 0.20, 0.28, 1)
+            row:SetBackdropColor(Design.Rgba("surface", 0.90))
+            row:SetBackdropBorderColor(Design.Rgba("border", 1))
 
             local soundName = row:CreateFontString(nil, "OVERLAY", "GameFontNormal")
             soundName:SetPoint("TOPLEFT", 8, -6)
@@ -362,7 +373,7 @@ function BLU.CreateSoundsPanel(panel)
             soundPath:SetPoint("TOPLEFT", soundName, "BOTTOMLEFT", 0, -2)
             soundPath:SetPoint("RIGHT", -88, 0)
             soundPath:SetJustifyH("LEFT")
-            soundPath:SetTextColor(0.65, 0.65, 0.65)
+            soundPath:SetTextColor(Design.Rgb("subtext"))
             soundPath:SetText(entry.file or "")
 
             local removeButton = Design:CreateButton(row, "Remove", 68, 22)
@@ -370,7 +381,7 @@ function BLU.CreateSoundsPanel(panel)
             removeButton:SetFrameStrata("HIGH")
             removeButton:Show()
             if removeButton.label then
-                removeButton.label:SetTextColor(1.0, 0.35, 0.35)
+                removeButton.label:SetTextColor(Design.Rgb("error"))
             end
             removeButton:SetScript("OnClick", function()
                 local ok, err = BLU.UserSounds:Remove(entry.file)

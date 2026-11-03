@@ -347,7 +347,7 @@ function BLU_Classic:OnInitialize()
 
     local RGX = _G.RGXFramework
     if RGX then
-        RGX:RegisterSlashCommand({"blu", "bluc"}, function(msg) self:HandleSlashCommands(msg) end, "BLU_Classic")
+        RGX:RegisterSlashCommand("blu", function(msg) self:HandleSlashCommands(msg) end, "BLU_Classic")
     end
     self:InitializeOptions()
 end

@@ -24,15 +24,15 @@ function BLU.CreateGeneralPanel(panel)
 
     local contentBg = content:CreateTexture(nil, "BACKGROUND")
     contentBg:SetAllPoints()
-    contentBg:SetColorTexture(0.04, 0.06, 0.08, 0.35)
+    contentBg:SetColorTexture(Design.Rgba("background", 0.35))
 
     local titleBar = CreateFrame("Frame", nil, content, "BackdropTemplate")
     titleBar:SetPoint("TOPLEFT", 0, 0)
     titleBar:SetPoint("TOPRIGHT", 0, 0)
     titleBar:SetHeight(44)
     titleBar:SetBackdrop(Design.Backdrops.Solid)
-    titleBar:SetBackdropColor(0.06, 0.10, 0.16, 0.95)
-    titleBar:SetBackdropBorderColor(0.10, 0.20, 0.28, 1)
+    titleBar:SetBackdropColor(Design.Rgba("surface", 0.95))
+    titleBar:SetBackdropBorderColor(Design.Rgba("border", 1))
 
     local titleIcon = titleBar:CreateTexture(nil, "ARTWORK")
     titleIcon:SetSize(24, 24)
@@ -48,7 +48,7 @@ function BLU.CreateGeneralPanel(panel)
     intro:SetPoint("TOPRIGHT", 0, -64)
     intro:SetJustifyH("LEFT")
     intro:SetWordWrap(true)
-    intro:SetTextColor(0.6, 0.66, 0.72)
+    intro:SetTextColor(Design.Rgb("subtext"))
     intro:SetText("Configure BLU Classic's core behavior.")
 
     if not BLU.db then
@@ -91,9 +91,9 @@ function BLU.CreateGeneralPanel(panel)
     aboutCommands:SetPoint("RIGHT", aboutSection.content, "RIGHT", -8, 0)
     aboutCommands:SetJustifyH("LEFT")
     aboutCommands:SetWordWrap(true)
-    aboutCommands:SetTextColor(0.72, 0.78, 0.86)
+    aboutCommands:SetTextColor(Design.Rgb("subtext"))
     aboutCommands:SetText(
-        "|cff05dffa/blu|r or |cff05dffa/bluc|r  Open these options|n" ..
+        "|cff05dffa/blu|r  Open these options|n" ..
         "|cff05dffa/blu icon on|off|r  Show or hide the minimap icon|n" ..
         "|cff05dffa/blu debug|r  Toggle debug mode|n" ..
         "|cff05dffa/blu welcome|r  Toggle the welcome message|n" ..

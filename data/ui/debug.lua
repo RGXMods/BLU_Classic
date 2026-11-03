@@ -57,7 +57,7 @@ local function CreateToggleState(parent, enabled)
     local toggleBg = toggle:CreateTexture(nil, "ARTWORK")
     toggleBg:SetAllPoints()
     toggleBg:SetTexture("Interface\\Buttons\\WHITE8x8")
-    toggleBg:SetVertexColor(1, 1, 1, 1)
+    toggleBg:SetVertexColor(Design.Rgba("text", 1))
 
     local function update(newState)
         toggle:ClearAllPoints()
@@ -66,7 +66,7 @@ local function CreateToggleState(parent, enabled)
             switchBg:SetVertexColor(unpack(Design.Colors.Primary))
         else
             toggle:SetPoint("LEFT", switchFrame, "LEFT", 1, 0)
-            switchBg:SetVertexColor(0.3, 0.3, 0.3, 1)
+            switchBg:SetVertexColor(Design.Rgba("track", 1))
         end
     end
 
@@ -124,7 +124,7 @@ local function CreateDebugControls(parent, options)
         detail:SetPoint("TOPLEFT", checkbox, "BOTTOMLEFT", 26, -1)
         detail:SetWidth(detailWidth)
         detail:SetJustifyH("LEFT")
-        detail:SetTextColor(0.72, 0.72, 0.72)
+        detail:SetTextColor(Design.Rgb("subtext"))
         detail:SetText(scopeInfo.description)
     end
 
@@ -140,15 +140,15 @@ function BLU.CreateDebugPanel(panel)
 
     local pageBg = content:CreateTexture(nil, "BACKGROUND")
     pageBg:SetAllPoints()
-    pageBg:SetColorTexture(0.04, 0.06, 0.08, 0.35)
+    pageBg:SetColorTexture(Design.Rgba("background", 0.35))
 
     local titleBar = CreateFrame("Frame", nil, content, "BackdropTemplate")
     titleBar:SetPoint("TOPLEFT", 0, 0)
     titleBar:SetPoint("TOPRIGHT", 0, 0)
     titleBar:SetHeight(44)
     titleBar:SetBackdrop(Design.Backdrops.Solid)
-    titleBar:SetBackdropColor(0.06, 0.10, 0.16, 0.95)
-    titleBar:SetBackdropBorderColor(0.10, 0.20, 0.28, 1)
+    titleBar:SetBackdropColor(Design.Rgba("surface", 0.95))
+    titleBar:SetBackdropBorderColor(Design.Rgba("border", 1))
 
     local icon = titleBar:CreateTexture(nil, "ARTWORK")
     icon:SetSize(24, 24)
@@ -164,7 +164,7 @@ function BLU.CreateDebugPanel(panel)
     intro:SetPoint("TOPRIGHT", 0, -64)
     intro:SetJustifyH("LEFT")
     intro:SetWordWrap(true)
-    intro:SetTextColor(0.6, 0.66, 0.72)
+    intro:SetTextColor(Design.Rgb("subtext"))
     intro:SetText("Choose which diagnostic messages BLU prints to chat.")
 
     local status = titleBar:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")

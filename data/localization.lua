@@ -59,7 +59,7 @@ BLU_L = {
 
     -- BLU:OnInitialize()
     INITIALIZING_FOR_VERSION = string.format("Initializing BLU_Classic for game version: %s%%s|r.", colors.info),
-    WELCOME_MESSAGE = string.format("Welcome! Use %s/blu|r or %s/bluc|r to open the options panel, or %s/blu help|r for more commands.", colors.prefix, colors.prefix, colors.prefix),
+    WELCOME_MESSAGE = string.format("Welcome! Use %s/blu|r to open the options panel, or %s/blu help|r for more commands.", colors.prefix, colors.prefix),
     VERSION = string.format("%sVersion:|r", "|cffffff00"),
 
     -- BLU:RegisterSharedEvents()
@@ -95,10 +95,10 @@ BLU_L = {
 
     -- BLU:DisplayBLUHelp()
     HELP_COMMAND = string.format("%sAvailable commands:", "|cffffff00"),
-    HELP_DEBUG = " " .. colors.prefix .. "/blu debug|r or " .. colors.prefix .. "/bluc debug|r - Toggle debug mode.",
+    HELP_DEBUG = " " .. colors.prefix .. "/blu debug|r - Toggle debug mode.",
     HELP_WELCOME = " " .. colors.prefix .. "/blu welcome|r - Toggles the welcome message on/off.",
     HELP_ICON = " " .. colors.prefix .. "/blu icon on|r or " .. colors.prefix .. "off|r - Show/hide minimap icon.",
-    HELP_PANEL = " " .. colors.prefix .. "/blu|r or " .. colors.prefix .. "/bluc|r - Open the options panel.",
+    HELP_PANEL = " " .. colors.prefix .. "/blu|r - Open the options panel.",
 
     MINIMAP_TOOLTIP_TITLE = "|cff05dffaBLU|r |cffffffffClassic|r",
     MINIMAP_TOOLTIP_ACTION = colors.info .. "Left-click|r to open BLU Classic options.|r",

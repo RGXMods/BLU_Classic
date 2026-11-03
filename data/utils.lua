@@ -161,11 +161,11 @@ function BLU_Classic:OpenOptionsPanel()
 end
 
 function BLU_Classic:DisplayBLUHelp()
-    local helpCommand = BLU_L["HELP_COMMAND"] or "/bluc help - Displays help information."
-    local helpDebug = BLU_L["HELP_DEBUG"] or "/blu debug or /bluc debug - Toggles debug mode."
+    local helpCommand = BLU_L["HELP_COMMAND"] or "/blu help - Displays help information."
+    local helpDebug = BLU_L["HELP_DEBUG"] or "/blu debug - Toggles debug mode."
     local helpWelcome = BLU_L["HELP_WELCOME"] or "/blu welcome - Toggles welcome messages."
     local helpIcon = BLU_L["HELP_ICON"] or "/blu icon on|off - Show or hide minimap icon."
-    local helpPanel = BLU_L["HELP_PANEL"] or "/blu or /bluc - Opens the options panel."
+    local helpPanel = BLU_L["HELP_PANEL"] or "/blu - Opens the options panel."
 
     print(BLU_Classic_PREFIX .. helpCommand)
     print(BLU_Classic_PREFIX .. helpDebug)

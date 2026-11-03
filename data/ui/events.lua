@@ -301,7 +301,7 @@ local function CreateSoundRow(parent, rowInfo, yOffset, compact)
     currentSound:SetPoint("TOPLEFT", rowLabel, "BOTTOMLEFT", 0, -2)
     currentSound:SetPoint("TOPRIGHT", rowLabel, "BOTTOMRIGHT", 0, -2)
     currentSound:SetJustifyH("LEFT")
-    currentSound:SetTextColor(Design.Rgb("primary"))
+    currentSound:SetTextColor(Design.Rgb("brand"))
     currentSound:SetWordWrap(false)
     if currentSound.SetMaxLines then
         currentSound:SetMaxLines(1)
@@ -618,6 +618,47 @@ function BLU.CreateEventSoundPanel(panel, eventType, eventName)
     local title = titleBar:CreateFontString(nil, "OVERLAY", "GameFontNormal")
     title:SetPoint("LEFT", icon, "RIGHT", 8, 0)
     title:SetText("|cff05dffa" .. eventName .. " Sounds|r")
+
+    -- ON/OFF switch: turns this page's sounds off without clearing the choices.
+    local moduleKey = eventType
+    local switchFrame = CreateFrame("Frame", nil, titleBar)
+    switchFrame:SetSize(44, 20)
+    switchFrame:SetPoint("RIGHT", -10, 0)
+
+    local switchBg = switchFrame:CreateTexture(nil, "BACKGROUND")
+    switchBg:SetAllPoints()
+    switchBg:SetTexture("Interface\\Buttons\\WHITE8x8")
+
+    local toggle = CreateFrame("Button", nil, switchFrame)
+    toggle:SetSize(18, 18)
+    toggle:EnableMouse(true)
+    local toggleBg = toggle:CreateTexture(nil, "ARTWORK")
+    toggleBg:SetAllPoints()
+    toggleBg:SetTexture("Interface\\Buttons\\WHITE8x8")
+    toggleBg:SetVertexColor(1, 1, 1, 1)
+
+    local status = titleBar:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
+    status:SetPoint("RIGHT", switchFrame, "LEFT", -6, 0)
+
+    local function RenderSwitch(enabled)
+        toggle:ClearAllPoints()
+        if enabled then
+            toggle:SetPoint("RIGHT", switchFrame, "RIGHT", -1, 0)
+            switchBg:SetVertexColor(Design.Rgb("brand"))
+            status:SetText("|cff00ff00ON|r")
+        else
+            toggle:SetPoint("LEFT", switchFrame, "LEFT", 1, 0)
+            switchBg:SetVertexColor(Design.Rgb("track"))
+            status:SetText("|cffff0000OFF|r")
+        end
+    end
+
+    toggle:SetScript("OnClick", function()
+        local enabled = not BLU:IsModuleEnabled(moduleKey)
+        BLU:SetModuleEnabled(moduleKey, enabled)
+        RenderSwitch(enabled)
+    end)
+    RenderSwitch(BLU:IsModuleEnabled(moduleKey))
 
     local intro = content:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
     intro:SetPoint("TOPLEFT", 0, -64)

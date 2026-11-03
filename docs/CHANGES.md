@@ -1,3 +1,10 @@
+## v1.4.0-beta.2 - 2026-11-02
+- Beta: options tabs now match BLU Forever's layout: General and Profiles on row 1, Debug and Sounds on row 2, then the divider and the event tabs.
+- New Debug tab with the debug switch and client details (addon, client, RGX-Framework, profile, and options page errors). The debug option moved here from General.
+- New Sounds tab: scrolling list of the bundled sounds with a Play button for each.
+- The number of tabs now follows the client: Achievement appears only where the client has achievements and Battle Pet only on Mists of Pandaria Classic, instead of showing greyed-out tabs.
+- Known gap: new options labels are English only until the locale files are updated.
+
 ## v1.4.0-beta.1 - 2026-11-02
 - Beta: new options panel that matches BLU and BLU Forever (header, tab strip, General, Profiles, Level Up, Quest, Reputation, Achievement, and Battle Pet pages). Achievement and Battle Pet tabs show greyed out on clients that lack them.
 - Sound rows now use the BLU layout: sound dropdown with grouped variants, a four-step volume track (Off, Low, Medium, High), and a Test button. Saved sounds and volumes carry over unchanged.

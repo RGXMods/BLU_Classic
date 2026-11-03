@@ -29,7 +29,10 @@ local FALLBACK = {
 
 -- Old palette names, kept so existing call sites (Design.Colors.Primary) keep working.
 -- Secondary is the gold used for tooltip hints. The framework "warning" token is amber in every style.
-local ROLE_BY_KEY = { Primary = "primary", Accent = "border", Secondary = "warning" }
+-- Highlights (active tabs, switch on-state, accents) use BLU's brand cyan, not the framework
+-- theme colour. Surfaces, borders and text still follow the framework.
+local BRAND = {0.02, 0.87, 0.98}  -- #05DFFA
+local ROLE_BY_KEY = { Primary = "brand", Accent = "border", Secondary = "warning" }
 
 local function FrameworkDesign()
     local RGX = _G.RGXFramework
@@ -41,6 +44,9 @@ local function FrameworkDesign()
 end
 
 function Design.Rgb(role)
+    if role == "brand" then
+        return BRAND[1], BRAND[2], BRAND[3]
+    end
     local D = FrameworkDesign()
     if D then
         local r, g, b = D:Unpack(role)

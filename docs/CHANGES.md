@@ -1,3 +1,10 @@
+## v1.4.0-beta.6 - 2026-11-03
+- Fixed the volume track not showing the saved level: it is now redrawn from the saved value whenever a page is shown or resized, so Off, Low, Medium, and High stay where you set them after switching tabs or reloading.
+- Fixed the BLU icon in the AddOns options list sitting above the title text. The icon now scales to the list font.
+- The Presets card on the Profiles tab now keeps its own height, so it can no longer collapse when the options window is short.
+- Check the version number in the options window header (top right) to confirm you are on this build.
+- Known gap: new options labels are English only until the locale files are updated.
+
 ## v1.4.0-beta.5 - 2026-11-02
 - New Combat tab with 11 triggers: Combat Start, Combat End, Low Health, Execute Window, Critical Hit, Critical Heal, Resource Capped, Resource Low, Target Lost, Encounter End, and Encounter Victory. Encounter triggers fire only on clients that report boss encounters.
 - New Loot tab with 5 triggers: Uncommon, Rare, Epic, and Legendary item looted, and Coin looted. Item quality is read from the item link color, so it works in every language.

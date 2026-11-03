@@ -29,7 +29,7 @@ local function GetAddOnMetadataSafe(addonName, key)
 end
 
 local OPTIONS_PANEL_NAME = "Better Level-Up! (Classic)"
-local OPTIONS_LIST_STYLED_NAME = "|T" .. ADDON_PATH .. "media\\icon:16:16:0:0|t |cff05dffaB|r|cffffffffetter |cff05dffaL|r|cffffffffevel-|cff05dffaU|r|cffffffffp|cff05dffa!|r |cffFFD700(Classic)|r"
+local OPTIONS_LIST_STYLED_NAME = "|T" .. ADDON_PATH .. "media\\icon:0|t |cff05dffaB|r|cffffffffetter |cff05dffaL|r|cffffffffevel-|cff05dffaU|r|cffffffffp|cff05dffa!|r |cffFFD700(Classic)|r"
 
 function Options:ResolveOptionsCategoryID()
     BLU:PrintDebug("[Options] ResolveOptionsCategoryID called")

@@ -68,7 +68,7 @@ configured independently and previewed from the options panel.
 
 1. Install BLU Classic from [CurseForge](https://www.curseforge.com/wow/addons/blu-classic), [Wago](https://addons.wago.io/addons/blu-classic), or [GitHub Releases](https://github.com/RGXMods/BLU_Classic/releases).
 2. Launch your supported Classic client.
-3. Type `/blu` or `/bluc` to open options.
+3. Type `/blu` to open options.
 4. Choose and preview a sound for each available event.
 
 Manual installs belong in the matching client folder, such as:
@@ -91,7 +91,7 @@ for installations that already provide it.
 
 ## <span style="color:#FFD700">Configuration</span>
 
-1. Open the options panel with `/blu` or `/bluc`.
+1. Open the options panel with `/blu`.
 2. Enable the event types you want to replace.
 3. Choose a game sound and volume variant for each event.
 4. Preview selections before closing the panel.
@@ -105,12 +105,12 @@ saved in the Classic-specific `BLUClassicDB`, separate from Retail BLU.
 
 | Command | Description |
 |---|---|
-| `/blu` or `/bluc` | Open options |
-| `/bluc help` | Show command help |
-| `/bluc debug` | Toggle diagnostics |
-| `/bluc welcome` | Toggle the welcome message |
-| `/bluc icon on` | Show the minimap button |
-| `/bluc icon off` | Hide the minimap button |
+| `/blu` | Open options |
+| `/blu help` | Show command help |
+| `/blu debug` | Toggle diagnostics |
+| `/blu welcome` | Toggle the welcome message |
+| `/blu icon on` | Show the minimap button |
+| `/blu icon off` | Hide the minimap button |
 
 ## <span style="color:#FFD700">Compatibility</span>
 
@@ -147,13 +147,13 @@ list falls back to English automatically.
 
 ## <span style="color:#FFD700">Troubleshooting</span>
 
-- Open `/bluc` and verify the event is enabled with a sound selected.
+- Open `/blu` and verify the event is enabled with a sound selected.
 - Confirm WoW's Master volume is enabled.
 - Install the addon in the folder for the client you are actually launching.
 - Some audio may pause briefly the first time WoW caches it.
 - If options do not open, confirm the current release is installed and run
   `/reload` before trying `/blu` again.
-- Use `/bluc debug` when collecting details for a reproducible report.
+- Use `/blu debug` when collecting details for a reproducible report.
 
 ## <span style="color:#FFD700">Support</span>
 

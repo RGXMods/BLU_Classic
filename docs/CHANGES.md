@@ -2,8 +2,11 @@
 - Profiles page now uses RGX-Framework's shared profile editor: the framework header, active-profile box, profile dropdown, and Create / Rename / Copy / Delete dialogs are themed by the framework.
 - Presets are on that page again, as a framework Presets card with donniedice's Preset and five reserved slots.
 - Reset asks for confirmation first, and applying a preset asks for confirmation first. Both explain what they change.
-- Add Custom Sound is now a framework-styled dialog instead of a Blizzard popup. Enter adds the sound and Escape closes it.
-- No Blizzard popups are used anymore; the Classic addon's remaining styling (colours) moves to the framework theme in a later beta.
+- Add Custom Sound is a framework-styled dialog instead of a Blizzard popup. Enter adds the sound and Escape closes it.
+- Options colours now come from the RGX-Framework theme. BLU's own palette is used only when the framework is not loaded.
+- The four settings tabs (General, Profiles, Debug, Sounds) sit inside a bordered settings box, as on BLU Retail.
+- The slash command is /blu only. /bluc is no longer registered; the internal BLUClassic names are unchanged.
+- README and CurseForge description: BLU Classic requires RGX-Framework 2.11.0 or newer, and the command list uses /blu.
 - Requires RGX-Framework 2.11.0 or newer.
 - Known gap: new options labels are English only until the locale files are updated.
 

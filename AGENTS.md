@@ -68,7 +68,7 @@ You can direct me with natural language commands to perform the tasks outlined a
 - Forbidden patterns that fail `rgx_audit_lua`: raw `C_Timer`, manual event frames, `SLASH_` globals, unguarded `SetAttribute`, raw aura plumbing, and raw hook reassignment. New code uses framework-managed equivalents.
 - Validation: Lua 5.1 (`luac5.1 -p`) and XML (`xmllint`) must pass through the shared CI include before every MR, and the root README stays nonempty and substantive.
 - Dependencies: keep `## RequiredDeps: RGX-Framework` and any `## X-RGX-Framework-MinVersion` accurate against the framework version line if the fork adopts the framework, and match the TOC SavedVariables name (`BLUClassicDB`) with the declarative `dbName` at that point.
-- Repo facts: the current layout is a single `BLU_Classic.toc` serving Classic Era (`11509`), Burning Crusade Classic (`20506`), and Mists of Pandaria Classic (`50504`) as a comma-separated list; the multi-TOC and earlier-version references in the introduction above are historical. Commands are `/blu` or `/bluc` for options. The TOC owns the `vX.Y.Z` version and load order. Recheck facts in the TOC and README when they change.
+- Repo facts: the current layout is a single `BLU_Classic.toc` serving Classic Era (`11509`), Burning Crusade Classic (`20506`), and Mists of Pandaria Classic (`50504`) as a comma-separated list; the multi-TOC and earlier-version references in the introduction above are historical. Commands are `/blu` only (`/bluc` is not a user command; it names the backend namespace). The TOC owns the `vX.Y.Z` version and load order. Recheck facts in the TOC and README when they change.
 
 ## Keeping Interface Versions Current
 

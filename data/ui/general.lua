@@ -93,7 +93,7 @@ function BLU.CreateGeneralPanel(panel)
     aboutCommands:SetWordWrap(true)
     aboutCommands:SetTextColor(Design.Rgb("subtext"))
     aboutCommands:SetText(
-        "|cff05dffa/blu|r or |cff05dffa/bluc|r  Open these options|n" ..
+        "|cff05dffa/blu|r  Open these options|n" ..
         "|cff05dffa/blu icon on|off|r  Show or hide the minimap icon|n" ..
         "|cff05dffa/blu debug|r  Toggle debug mode|n" ..
         "|cff05dffa/blu welcome|r  Toggle the welcome message|n" ..

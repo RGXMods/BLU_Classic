@@ -1,5 +1,5 @@
 --=====================================================================================
--- BLU_Classic - data/ui/events.lua
+ -- BLU_Classic - data/ui/events.lua
 -- Event sound pages (Level Up, Quest, Reputation, Achievement, Battle Pet).
 -- Row layout, colors, and controls mirror BLU / BLU Forever sound_panel.lua:
 -- titled card, intro line, then one 68px row per sound with label, current
@@ -330,31 +330,28 @@ local function CreateSoundRow(parent, rowInfo, yOffset)
         return NormalizeVolume(BLU.db and BLU.db[volumeKey])
     end
 
-    local function applyVolume(level)
-        level = NormalizeVolume(level)
-        if BLU.db then
-            BLU.db[volumeKey] = level
-        end
-
-        local function updateVisuals()
-            local trackWidth = volTrack:GetWidth()
-            if trackWidth < 1 then return false end
-            local fillW = math.max(4, trackWidth * (level / 3))
-            volFill:SetWidth(fillW)
-            volThumb:ClearAllPoints()
-            volThumb:SetPoint("CENTER", volTrack, "LEFT", fillW, 0)
-            volLabel:SetText(VOLUME_LABELS[level])
-            return true
-        end
-
-        if not updateVisuals() then
-            volumeControl:SetScript("OnUpdate", function()
-                if updateVisuals() then
-                    volumeControl:SetScript("OnUpdate", nil)
-                end
-            end)
-        end
+    -- Draw the track from the SAVED value. The track has no width until the page has
+    -- been laid out, so this also runs whenever the control is shown or resized.
+    local function renderVolume()
+        local level = getVolume()
+        local trackWidth = volTrack:GetWidth()
+        if not trackWidth or trackWidth < 1 then return end
+        local fillW = math.max(4, trackWidth * (level / 3))
+        volFill:SetWidth(fillW)
+        volThumb:ClearAllPoints()
+        volThumb:SetPoint("CENTER", volTrack, "LEFT", fillW, 0)
+        volLabel:SetText(VOLUME_LABELS[level])
     end
+
+    local function applyVolume(level)
+        if BLU.db then
+            BLU.db[volumeKey] = NormalizeVolume(level)
+        end
+        renderVolume()
+    end
+
+    volumeControl:SetScript("OnShow", renderVolume)
+    volumeControl:SetScript("OnSizeChanged", renderVolume)
 
     volButton:SetScript("OnMouseDown", function(self)
         local cursorX = GetCursorPosition()
@@ -562,7 +559,7 @@ local function CreateSoundRow(parent, rowInfo, yOffset)
         ForceListFrameWidth(level, minWidthFor(level), leftInsetFor(level))
     end)
 
-    applyVolume(getVolume())
+    renderVolume()
     refreshLabels()
 
     return container

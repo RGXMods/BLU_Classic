@@ -342,16 +342,13 @@ function Tabs:Init()
         {text = "Level Up",    eventType = "levelup",     row = 1, col = 3, feature = "Level",       icon = "Interface\\Icons\\Achievement_Level_100"},
         {text = "Quest",       eventType = "quest",       row = 1, col = 4, feature = "Quest",       icon = "Interface\\Icons\\INV_Misc_Note_01"},
         {text = "Combat",      eventType = "combat",      row = 1, col = 5, feature = "Combat",      icon = "Interface\\Icons\\Ability_Warrior_Charge"},
-        {text = "Achievement", eventType = "achievement", row = 1, col = 6, feature = "Achievement", icon = "Interface\\Icons\\Achievement_Quests_Completed_08"},
         -- Row 2
         {text = "Debug",       create = debugPanel, row = 2, col = 1, icon = "Interface\\Icons\\INV_Misc_Gear_03"},
         {text = "Sounds",      create = sounds,     row = 2, col = 2, icon = "Interface\\Icons\\INV_Misc_Bell_01"},
         {text = "Reputation",  eventType = "reputation",  row = 2, col = 3, feature = "Reputation",  icon = "Interface\\Icons\\Achievement_Reputation_01"},
         {text = "Loot",        eventType = "loot",        row = 2, col = 4, feature = "Loot",        icon = "Interface\\Icons\\INV_Misc_Coin_02"},
         {text = "Hardcore",    eventType = "hardcore",    row = 2, col = 5, feature = "Hardcore",    icon = "Interface\\Icons\\Spell_Shadow_AnimateDead"},
-        {text = "Battle Pet",  eventType = "battlepet",   row = 2, col = 6, feature = "BattlePet",   icon = "Interface\\Icons\\INV_Pet_BattlePetTraining"},
-        -- Column 6 of rows 1 and 2. Achievement and Battle Pet use these slots on Mists, so
-        -- Honor and Collectibles are skipped there rather than placed on a third row.
+        -- Column 6 of rows 1 and 2, one per row. The strip stays two rows.
         {text = "Honor",       eventType = "honor",       row = 1, col = 6, feature = "Honor",       icon = "Interface\\Icons\\Achievement_PVP_A_A"},
         {text = "Collectibles", eventType = "collectibles", row = 2, col = 6, feature = "Collectibles", icon = "Interface\\Icons\\INV_Pet_BattlePetTraining"},
     }

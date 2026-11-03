@@ -31,7 +31,7 @@ BLU Classic is the **Classic** edition. Retail players should install [<span sty
 | | Feature | What it provides |
 |---|---|---|
 | | **50+ game sound libraries** | Favorites from Final Fantasy, Zelda, Mario, Skyrim, Pokemon, Warcraft, and many more |
-| | **Classic event coverage** | Level-up, quest, reputation, achievement, PvP rank, collection, and supported battle-pet cues |
+| | **Classic event coverage** | Level-up, quest, reputation, combat, loot, deaths, PvP rank, and collection cues |
 | | **Volume variants** | Low, Medium, and High choices for bundled sounds |
 | | **Smart sound handling** | Replaces matching WoW cues without leaving default sounds muted after shutdown |
 | | **Organized options** | Nested game menus, previews, persistent profiles, and a movable minimap button |
@@ -47,10 +47,8 @@ supported Classic family.
 | **Character level-up** | All supported clients |
 | **Quest accepted and turned in** | All supported clients |
 | **Reputation rank increase** | All supported clients |
-| **Achievement earned** | Clients with the achievement system |
-| **Battle-pet level-up** | Mists of Pandaria Classic |
 | **PvP rank up** (Honor tab) | Clients that report PvP rank changes |
-| **Mount, pet, and toy learned** (Collectibles tab) | Each event appears only if the client knows it |
+| **Mount and toy learned** (Collectibles tab) | Each event appears only if the client knows it |
 
 Honor and Collectibles rows are hidden when the game client does not know the
 event they use, so the tab set matches what your client can actually fire.
@@ -124,8 +122,8 @@ saved in the Classic-specific `BLUClassicDB`, separate from Retail BLU.
 
 ## <span style="color:#FFD700">Compatibility</span>
 
-The current unified `BLU_Classic.toc` supports Classic Era, Burning Crusade
-Anniversary, and Mists of Pandaria Classic. Interface values are maintained in
+The current unified `BLU_Classic.toc` supports Classic Era and Burning Crusade
+Anniversary. Interface values are maintained in
 the TOC rather than duplicated here, keeping this page accurate as clients
 update.
 

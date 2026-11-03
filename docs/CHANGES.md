@@ -1,3 +1,13 @@
+## v1.4.0-beta.11 - 2026-11-03
+- Mists of Pandaria Classic is no longer supported. BLU Classic targets Classic Era (11509) and Burning Crusade Classic (20506).
+- The Achievement and Battle Pet tabs were Mists-only, so they are gone. The Pet Collected battle-pet trigger goes with them.
+- Honor and Collectibles fill column 6 on both supported clients. The strip stays two rows, with 12 tabs.
+- The CurseForge and README descriptions name only the supported clients.
+- Requires RGX-Framework 2.11.0 or newer.
+- Known gap: these events are not yet confirmed to fire on every Classic client.
+- Known gap: the Loot tab icon is still being investigated.
+- Known gap: new options labels are English only until the locale files are updated.
+
 ## v1.4.0-beta.10 - 2026-11-03
 - Chat messages now say BLU instead of BLU_Classic. The internal BLU_Classic names are unchanged.
 - The Honor and Collectibles tabs moved from a third row to column 6, one in each of the two rows. Era and TBC Anniversary now show 12 tabs in the two-row strip.

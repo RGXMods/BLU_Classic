@@ -1,3 +1,11 @@
+## v1.4.0-beta.10 - 2026-11-03
+- Chat messages now say BLU instead of BLU_Classic. The internal BLU_Classic names are unchanged.
+- The Honor and Collectibles tabs moved from a third row to column 6, one in each of the two rows. Era and TBC Anniversary now show 12 tabs in the two-row strip.
+- On Mists of Pandaria Classic, Achievement and Battle Pet already use column 6, so Honor and Collectibles are not shown there in this build. A layout decision is pending.
+- Known gap: these events are not yet confirmed to fire on every Classic client.
+- Known gap: the Loot tab icon is still being investigated.
+- Known gap: new options labels are English only until the locale files are updated.
+
 ## v1.4.0-beta.9 - 2026-11-03
 - New Honor tab with PvP Rank Up. This is Classic's counterpart to Retail's honor-level trigger. It fires only for your own rank going up, not for other units or rank drops, when the client reports your rank.
 - New Collectibles tab with Mount Learned, Pet Collected (Mists of Pandaria Classic only, because it is a battle-pet event), and Toy Learned. Each trigger appears only if your game client knows its event.

@@ -395,14 +395,31 @@ local function CreateSoundRow(parent, rowInfo, yOffset)
     volumeControl:SetPoint("LEFT", dropdownButton, "RIGHT", 12, 0)
     volumeControl:SetPoint("RIGHT", testBtn, "LEFT", -12, 0)
 
+    local function isCustomSelection(value)
+        return BLU.UserSounds and BLU.UserSounds:IsCustomId(value)
+    end
+
+    -- Numeric index into the shipped library, or the "custom:<path>" id of a user sound.
     local function selectedIndex()
-        return (BLU.db and tonumber(BLU.db[soundKey])) or 1
+        local value = BLU.db and BLU.db[soundKey]
+        if isCustomSelection(value) then
+            return value
+        end
+        return tonumber(value) or 1
     end
 
     local function refreshLabels()
-        local name = GetSoundDisplayName(selectedIndex())
+        local value = selectedIndex()
+        local name
+        if isCustomSelection(value) then
+            name = BLU.UserSounds:GetName(value)
+        else
+            name = GetSoundDisplayName(value)
+        end
         currentSound:SetText(name)
         dropdownButtonLabel:SetText(name)
+        -- Custom sounds have one file, so the low/medium/high track does not apply
+        volumeControl:SetShown(not isCustomSelection(value))
     end
 
     local function chooseSound(index)
@@ -453,6 +470,31 @@ local function CreateSoundRow(parent, rowInfo, yOffset)
                     AttachInlineCountLabel(level, "(" .. #group.indices .. ")")
                 end
             end
+
+            local customEntries = BLU.UserSounds and BLU.UserSounds:GetEntries() or {}
+            if #customEntries > 0 then
+                local info = UIDropDownMenu_CreateInfo()
+                info.text = "User Custom Sounds"
+                info.value = "custom"
+                info.hasArrow = true
+                info.menuList = "custom"
+                info.notCheckable = true
+                UIDropDownMenu_AddButton(info, level)
+                AttachInlineCountLabel(level, "(" .. #customEntries .. ")")
+            end
+        elseif level == 2 and menuList == "custom" then
+            for _, entry in ipairs(BLU.UserSounds and BLU.UserSounds:GetEntries() or {}) do
+                local info = UIDropDownMenu_CreateInfo()
+                local displayText, truncated = ShortenLabel(entry.name, 60)
+                info.text = displayText
+                info.value = entry.id
+                info.checked = function() return selectedIndex() == entry.id end
+                info.func = function() chooseSound(entry.id) end
+                if truncated then
+                    info.tooltipTitle = entry.name
+                end
+                UIDropDownMenu_AddButton(info, level)
+            end
         elseif level == 2 and menuList then
             local group = groups[menuList]
             if not group then return end
@@ -475,9 +517,8 @@ local function CreateSoundRow(parent, rowInfo, yOffset)
         ForceListFrameWidth(level, minWidthFor(level), leftInsetFor(level))
     end)
 
-    refreshLabels()
     applyVolume(getVolume())
-    volumeControl:Show()
+    refreshLabels()
 
     return container
 end

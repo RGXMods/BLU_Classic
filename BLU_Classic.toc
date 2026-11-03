@@ -1,5 +1,5 @@
 ## Interface: 11509,20506,50504
-## Version: v1.4.0-beta.2
+## Version: v1.4.0-beta.3
 ## Title: |cff05dffaB|r|cffffffffetter|r |cff05dffaL|r|cffffffffevel-|r|cff05dffaU|r|cffffffffp|cff05dffa!|r |cffFFD700(Classic)|r
 ## Notes: |cff05dffaClassic-only sound replacement addon.|r |n|r |cff05dffa/blu|r or |cff05dffa/bluc|r opens options. Includes a movable minimap button.
 ## Author: DonnieDice
@@ -47,6 +47,7 @@ data\initialization.lua
 data\sounds.lua
 data\core.lua
 data\utils.lua
+data\usersounds.lua
 data\options.lua
 data\ui\shim.lua
 data\ui\design.lua

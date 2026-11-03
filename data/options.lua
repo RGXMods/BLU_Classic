@@ -21,3 +21,9 @@ BLU_Classic.defaults = {
         RepVolume = 2.0,
     },
 }
+
+-- Combat and Loot triggers (data/triggers.lua): sound 0 = none, volume 2 = medium.
+for _, trigger in ipairs(BLU_Classic.TriggerList or {}) do
+    BLU_Classic.defaults.profile[trigger.sound] = 0
+    BLU_Classic.defaults.profile[trigger.volume] = 2
+end

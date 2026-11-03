@@ -340,12 +340,14 @@ function Tabs:Init()
         {text = "Profiles",    create = profiles, row = 1, col = 2, icon = "Interface\\Icons\\Ability_Marksmanship"},
         {text = "Level Up",    eventType = "levelup",     row = 1, col = 3, feature = "Level",       icon = "Interface\\Icons\\Achievement_Level_100"},
         {text = "Quest",       eventType = "quest",       row = 1, col = 4, feature = "Quest",       icon = "Interface\\Icons\\INV_Misc_Note_01"},
-        {text = "Reputation",  eventType = "reputation",  row = 1, col = 5, feature = "Reputation",  icon = "Interface\\Icons\\Achievement_Reputation_01"},
+        {text = "Combat",      eventType = "combat",      row = 1, col = 5, feature = "Combat",      icon = "Interface\\Icons\\Ability_Warrior_Charge"},
         {text = "Achievement", eventType = "achievement", row = 1, col = 6, feature = "Achievement", icon = "Interface\\Icons\\Achievement_Quests_Completed_08"},
         -- Row 2
         {text = "Debug",       create = debugPanel, row = 2, col = 1, icon = "Interface\\Icons\\INV_Misc_Gear_03"},
         {text = "Sounds",      create = sounds,     row = 2, col = 2, icon = "Interface\\Icons\\INV_Misc_Bell_01"},
-        {text = "Battle Pet",  eventType = "battlepet",   row = 2, col = 3, feature = "BattlePet",   icon = "Interface\\Icons\\INV_Pet_BattlePetTraining"},
+        {text = "Reputation",  eventType = "reputation",  row = 2, col = 3, feature = "Reputation",  icon = "Interface\\Icons\\Achievement_Reputation_01"},
+        {text = "Loot",        eventType = "loot",        row = 2, col = 4, feature = "Loot",        icon = "Interface\\Icons\\INV_Misc_Coin_02"},
+        {text = "Battle Pet",  eventType = "battlepet",   row = 2, col = 5, feature = "BattlePet",   icon = "Interface\\Icons\\INV_Pet_BattlePetTraining"},
     }
 
     BLU.OptionsTabs = {}

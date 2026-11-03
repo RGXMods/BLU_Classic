@@ -89,13 +89,12 @@ was used per the feed-reachability rule in `AGENTS.md`):
 |---|---|---|---|
 | Classic Era | 1.15.9 | `11509` | wago.tools build feed, product `wow_classic_era` (build 2026-09-29) |
 | Burning Crusade Anniversary | 2.5.6 | `20506` | wago.tools build feed, product `wow_anniversary` (build 2026-09-12) |
-| Mists of Pandaria Classic | 5.5.4 | `50504` | wago.tools build feed, product `wow_classic` (build 2026-10-09) |
 
 Derive each value as `major * 10000 + minor * 100 + patch` — the formula
 recorded in `AGENTS.md`. The shipped TOC line is:
 
 ```text
-## Interface: 11509,20506,50504
+## Interface: 11509,20506
 ```
 
 Ground truth is always the game client's own `.build.info`; the live

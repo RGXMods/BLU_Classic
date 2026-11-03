@@ -39,63 +39,74 @@ local function CountDefaultSets()
     return count
 end
 
-StaticPopupDialogs["BLU_CLASSIC_ADD_CUSTOM_SOUND"] = {
-    text = "Add a custom sound file for BLU.|n|nEnter a short file name like myfile or myfile.ogg. You can also paste a full path like Interface\\AddOns\\myfile.ogg. BLU will try common AddOns folders automatically.",
-    button1 = ADD or ACCEPT,
-    button2 = CANCEL,
-    hasEditBox = true,
-    maxLetters = 255,
-    editBoxWidth = 320,
-    OnShow = function(self)
-        local box = EditBoxOf(self)
-        if box then
-            box:SetText("")
-            box:SetAutoFocus(false)
-            box:SetFocus()
-        end
-    end,
-    EditBoxOnEnterPressed = function(self)
-        local parent = self:GetParent()
-        if parent and parent.button1 then
-            parent.button1:Click()
-        end
-    end,
-    EditBoxOnEscapePressed = function(self)
-        self:GetParent():Hide()
-    end,
-    OnAccept = function(self)
-        local box = EditBoxOf(self)
-        local soundInput = (box and box:GetText() or ""):gsub("^%s+", ""):gsub("%s+$", "")
-        BLU:PrintDebug("[Options/Sounds] Add Custom Sound popup accepted with input '" .. tostring(soundInput) .. "'")
+-- Add Custom Sound: a framework-styled dialog (same construction as the framework's own
+-- name dialogs): themed frame, input box with focus, Enter to add, Escape to close.
+local addDialog, addInput, addFeedback
 
-        if soundInput == "" then
-            BLU:Print("Enter a file name like myfile or myfile.ogg.")
-            return
-        end
-
-        local userSounds = BLU.UserSounds
-        if not userSounds then
-            BLU:Print("User custom sounds are not available yet.")
-            return
-        end
-
-        local ok, result, resolvedPath = userSounds:Add(soundInput)
-        if ok then
-            if resolvedPath and soundInput:find("[/\\]") then
-                BLU:Print("Added custom sound: " .. tostring(result) .. " (" .. tostring(resolvedPath) .. ")")
-            else
-                BLU:Print("Added custom sound: " .. tostring(result))
-            end
-            BLU.RefreshSoundPackUI()
+local function SubmitCustomSound()
+    local text = (addInput:GetText() or ""):gsub("^%s+", ""):gsub("%s+$", "")
+    if text == "" then
+        addFeedback:SetText("Enter a file name like myfile or myfile.ogg.")
+        return
+    end
+    local userSounds = BLU.UserSounds
+    if not userSounds then
+        addFeedback:SetText("User custom sounds are not available yet.")
+        return
+    end
+    local ok, result, resolvedPath = userSounds:Add(text)
+    if ok then
+        if resolvedPath and text:find("[/\\]") then
+            BLU:Print("Added custom sound: " .. tostring(result) .. " (" .. tostring(resolvedPath) .. ")")
         else
-            BLU:Print("Failed to add custom sound: " .. tostring(result))
+            BLU:Print("Added custom sound: " .. tostring(result))
         end
-    end,
-    timeout = 0,
-    whileDead = true,
-    hideOnEscape = true,
-    preferredIndex = 3,
-}
+        addDialog:Hide()
+        BLU.RefreshSoundPackUI()
+    else
+        addFeedback:SetText(tostring(result))
+    end
+end
+
+local function OpenAddCustomSoundDialog()
+    local UI = BLU:GetFrameworkUI()
+    if not (UI and UI.CreateConfigDialog and UI.CreateButton and UI.CreateLabel) then
+        BLU:Print("RGX-Framework 2.11.0 or newer is required to add custom sounds.")
+        return
+    end
+
+    if not addDialog then
+        addDialog = UI:CreateConfigDialog(UIParent, { title = "Add Custom Sound", width = 340, height = 150 })
+        addDialog:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
+
+        addInput = CreateFrame("EditBox", nil, addDialog, "InputBoxTemplate")
+        addInput:SetSize(296, 26)
+        addInput:SetPoint("TOPLEFT", addDialog, "TOPLEFT", 16, -44)
+        addInput:SetAutoFocus(true)
+        addInput:SetMaxLetters(255)
+        addInput:SetScript("OnEscapePressed", function() addDialog:Hide() end)
+
+        addFeedback = UI:CreateLabel(addDialog, { text = "", width = 308, color = "muted" })
+        addFeedback:SetPoint("TOPLEFT", addInput, "BOTTOMLEFT", 0, -4)
+
+        local addButton = UI:CreateButton(addDialog, { text = "Add", width = 80, height = 22,
+            onClick = SubmitCustomSound })
+        addButton:SetPoint("BOTTOMLEFT", addDialog, "BOTTOMLEFT", 16, 14)
+        local cancelButton = UI:CreateButton(addDialog, { text = "Cancel", width = 80, height = 22,
+            onClick = function() addDialog:Hide() end })
+        cancelButton:SetPoint("LEFT", addButton, "RIGHT", 8, 0)
+        addInput:SetScript("OnEnterPressed", function() addButton:Click() end)
+        addDialog.addButton = addButton
+    end
+
+    addInput:SetText("")
+    addFeedback:SetText("Type a short file name like myfile or myfile.ogg, or paste a full Interface\\AddOns path.")
+    addDialog:Show()
+    addInput:SetFocus()
+end
+
+-- Exposed so the options tests can open the same dialog the Add Custom Sound button opens.
+BLU.OpenAddCustomSoundDialog = OpenAddCustomSoundDialog
 
 function BLU.CreateSoundsPanel(panel)
     BLU:PrintDebug("[Options/Sounds] Creating Sounds panel")
@@ -299,7 +310,7 @@ function BLU.CreateSoundsPanel(panel)
     addButton:SetPoint("TOPLEFT", managerNote, "BOTTOMLEFT", 0, -10)
     addButton:SetScript("OnClick", function()
         BLU:PrintDebug("[Options/Sounds] Add Custom Sound button clicked")
-        StaticPopup_Show("BLU_CLASSIC_ADD_CUSTOM_SOUND")
+        OpenAddCustomSoundDialog()
     end)
 
     local countLabel = managerPanel:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")

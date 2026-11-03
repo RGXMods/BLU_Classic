@@ -282,7 +282,7 @@ local function CreateSoundRow(parent, rowInfo, yOffset, compact)
     rowLabel:SetPoint("TOPLEFT", 10, -6)
     rowLabel:SetPoint("TOPRIGHT", container, "TOPRIGHT", -10, -6)
     rowLabel:SetJustifyH("LEFT")
-    rowLabel:SetTextColor(Design.Rgb("label"))
+    rowLabel:SetTextColor(Design.Rgb("warning"))
     rowLabel:SetText(BLU:GetText(rowInfo.labelKey, rowInfo.label))
 
     local currentSound = container:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")

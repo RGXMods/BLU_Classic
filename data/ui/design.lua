@@ -22,12 +22,14 @@ BLU.Design = Design
 local FALLBACK = {
     primary = {0.02, 0.87, 0.98}, surface = {0.08, 0.11, 0.15}, background = {0.05, 0.05, 0.05},
     border = {0.14, 0.20, 0.28}, hover = {0.11, 0.18, 0.24}, track = {0.30, 0.30, 0.30},
-    text = {0.80, 0.80, 0.80}, subtext = {0.60, 0.66, 0.72}, label = {1.00, 0.82, 0.18},
-    success = {0.36, 0.88, 0.52}, error = {1.00, 0.35, 0.35},
+    text = {0.80, 0.80, 0.80}, subtext = {0.60, 0.66, 0.72},
+    success = {0.36, 0.88, 0.52}, error = {1.00, 0.35, 0.35}, warning = {1.00, 0.82, 0.18},
+    label = {0.36, 0.36, 0.40},
 }
 
 -- Old palette names, kept so existing call sites (Design.Colors.Primary) keep working.
-local ROLE_BY_KEY = { Primary = "primary", Accent = "border", Secondary = "label" }
+-- Secondary is the gold used for tooltip hints. The framework "warning" token is amber in every style.
+local ROLE_BY_KEY = { Primary = "primary", Accent = "border", Secondary = "warning" }
 
 local function FrameworkDesign()
     local RGX = _G.RGXFramework

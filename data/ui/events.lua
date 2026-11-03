@@ -222,6 +222,7 @@ for pageKey, triggers in pairs(BLU.TriggerPages or {}) do
 end
 
 local EVENT_ICONS = {
+    hardcore = "Interface\\Icons\\Spell_Shadow_AnimateDead",
     combat = "Interface\\Icons\\Ability_Warrior_Charge",
     loot = "Interface\\Icons\\INV_Misc_Coin_02",
     levelup = "Interface\\Icons\\Achievement_Level_100",
@@ -232,6 +233,7 @@ local EVENT_ICONS = {
 }
 
 local EVENT_DESCRIPTIONS = {
+    hardcore = "Pick a sound for each death trigger. Made for hardcore and self-found runs, where every death is a story.",
     combat = "Pick a sound for each combat moment. Triggers start off; choose [None] to silence one.",
     loot = "Pick a sound for items and coin you loot, by item quality. Triggers start off.",
     levelup = "Pick a sound for each level-up.",
@@ -605,7 +607,7 @@ function BLU.CreateEventSoundPanel(panel, eventType, eventName)
     local rows = EVENT_ROWS[eventType] or {}
     local rowParent, rowStart = content, dropY
 
-    if #rows > 3 then
+    if #rows > 4 then
         -- Long pages (Combat, Loot) scroll with the mouse wheel; the bar stays hidden
         -- like the Sounds page.
         local scrollFrame = CreateFrame("ScrollFrame", nil, content, "UIPanelScrollFrameTemplate")

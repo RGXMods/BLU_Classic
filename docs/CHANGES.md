@@ -1,8 +1,10 @@
-## v1.4.0-beta.4 - 2026-11-02
+## v1.4.0-beta.5 - 2026-11-02
 - New Combat tab with 11 triggers: Combat Start, Combat End, Low Health, Execute Window, Critical Hit, Critical Heal, Resource Capped, Resource Low, Target Lost, Encounter End, and Encounter Victory. Encounter triggers fire only on clients that report boss encounters.
 - New Loot tab with 5 triggers: Uncommon, Rare, Epic, and Legendary item looted, and Coin looted. Item quality is read from the item link color, so it works in every language.
-- Every new trigger starts set to [None], so nothing changes until you pick a sound. Triggers use your own sounds too, including User Custom Sounds. Hover a row for what fires it.
-- Long trigger pages scroll with the mouse wheel.
+- New Hardcore tab with 4 death triggers: your death, party member death, raid member death, and other player death.
+- Every new trigger starts set to [None], so nothing changes until you pick a sound. Triggers use your own sounds too, including User Custom Sounds. Hover a row for what fires it. Long trigger pages scroll with the mouse wheel.
+- Profiles tab now has the Presets section from BLU Forever with donniedice's Preset and five reserved slots. Applying a preset resets the active profile to defaults and then sets the preset sounds; your custom sounds and minimap position are kept.
+- Honor and Collectibles are not included: both depend on Retail-only game systems.
 - Known gap: new options labels are English only until the locale files are updated.
 
 ## v1.4.0-beta.3 - 2026-11-02

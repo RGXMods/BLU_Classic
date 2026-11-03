@@ -347,7 +347,8 @@ function Tabs:Init()
         {text = "Sounds",      create = sounds,     row = 2, col = 2, icon = "Interface\\Icons\\INV_Misc_Bell_01"},
         {text = "Reputation",  eventType = "reputation",  row = 2, col = 3, feature = "Reputation",  icon = "Interface\\Icons\\Achievement_Reputation_01"},
         {text = "Loot",        eventType = "loot",        row = 2, col = 4, feature = "Loot",        icon = "Interface\\Icons\\INV_Misc_Coin_02"},
-        {text = "Battle Pet",  eventType = "battlepet",   row = 2, col = 5, feature = "BattlePet",   icon = "Interface\\Icons\\INV_Pet_BattlePetTraining"},
+        {text = "Hardcore",    eventType = "hardcore",    row = 2, col = 5, feature = "Hardcore",    icon = "Interface\\Icons\\Spell_Shadow_AnimateDead"},
+        {text = "Battle Pet",  eventType = "battlepet",   row = 2, col = 6, feature = "BattlePet",   icon = "Interface\\Icons\\INV_Pet_BattlePetTraining"},
     }
 
     BLU.OptionsTabs = {}

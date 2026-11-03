@@ -85,6 +85,66 @@ local function AcceptFromEnter(editBox)
 end
 
 --=====================================================================================
+-- Presets
+--=====================================================================================
+-- Sound ids are indexes into soundOptions (data/sounds.lua). These are the BLU Forever
+-- "donniedice's Preset" selections mapped to BLU Classic's library; Forever events that
+-- Classic does not have (Honor, Renown, Delves, Housing, Trading Post) are left out.
+local PROFILE_PRESETS = {
+    {
+        name = "donniedice's Preset",
+        description = "donniedice's favorite sound selections and options for BLU.",
+        settings = {
+            showWelcomeMessage = true,
+            debugMode = false,
+            LevelSoundSelect = 24,              LevelVolume = 2,            -- Kingdom Hearts 3
+            QuestAcceptSoundSelect = 26,        QuestAcceptVolume = 2,      -- Kirby (2)
+            QuestSoundSelect = 25,              QuestVolume = 2,            -- Kirby (1)
+            RepSoundSelect = 29,                RepVolume = 2,              -- Maplestory
+            AchievementSoundSelect = 15,        AchievementVolume = 2,      -- EverQuest
+            BattlePetLevelSoundSelect = 37,     BattlePetLevelVolume = 2,   -- Pokemon
+        },
+    },
+    { name = "Future Preset 1", description = "Reserved for a future profile preset.", disabled = true },
+    { name = "Future Preset 2", description = "Reserved for a future profile preset.", disabled = true },
+    { name = "Future Preset 3", description = "Reserved for a future profile preset.", disabled = true },
+    { name = "Future Preset 4", description = "Reserved for a future profile preset.", disabled = true },
+    { name = "Future Preset 5", description = "Reserved for a future profile preset.", disabled = true },
+}
+
+BLU.ProfilePresets = PROFILE_PRESETS
+
+-- Settings that belong to the player rather than to a sound layout survive a preset.
+local PRESERVED_KEYS = { "userCustomSounds", "classicMinimapIconEnabled", "classicMinimapAngle" }
+
+local function ApplyPreset(profileName, preset)
+    local db = BLU.db
+    if not (db and db.ResetProfile and preset and preset.settings) then
+        return false, "Presets are not available."
+    end
+    if profileName ~= GetActiveProfileName() then
+        return false, "Switch to the profile first."
+    end
+
+    local kept = {}
+    for _, key in ipairs(PRESERVED_KEYS) do
+        kept[key] = db[key]
+    end
+
+    db:ResetProfile(profileName)
+    for key, value in pairs(preset.settings) do
+        db[key] = value
+    end
+    for key, value in pairs(kept) do
+        db[key] = value
+    end
+
+    BLU.debugMode = db.debugMode == true
+    BLU.showWelcomeMessage = db.showWelcomeMessage ~= false
+    return true
+end
+
+--=====================================================================================
 -- Popups
 --=====================================================================================
 StaticPopupDialogs["BLU_CLASSIC_PROFILE_CREATE"] = {
@@ -155,6 +215,26 @@ StaticPopupDialogs["BLU_CLASSIC_PROFILE_RESET"] = {
     OnAccept = function(_, data)
         BLU.db:ResetProfile(data)
         RefreshAll()
+    end,
+}
+
+StaticPopupDialogs["BLU_CLASSIC_PROFILE_APPLY_PRESET"] = {
+    text = "Apply preset to \"%s\"?|n|nThis resets the profile's settings, then applies the preset. Your custom sounds and minimap position are kept.",
+    button1 = "Apply",
+    button2 = CANCEL,
+    timeout = 0,
+    whileDead = true,
+    hideOnEscape = true,
+    preferredIndex = 3,
+    OnAccept = function(_, data)
+        if not (data and data.profileName and data.preset) then return end
+        local ok, err = ApplyPreset(data.profileName, data.preset)
+        if ok then
+            BLU:Print("Applied preset '" .. tostring(data.preset.name) .. "' to profile '" .. tostring(data.profileName) .. "'.")
+            RefreshAll()
+        else
+            BLU:Print("Preset apply failed: " .. tostring(err))
+        end
     end,
 }
 
@@ -341,6 +421,33 @@ function BLU.CreateProfilesPanel(panel)
             RefreshAll()
         end
     end)
+
+    -- Presets section: full width bottom section (same layout as BLU Forever)
+    local presetsSection = Design:CreateSection(content, "Presets", "Interface\\Icons\\INV_Inscription_Scroll")
+    presetsSection:SetPoint("TOPLEFT", mainSection, "BOTTOMLEFT", 0, -4)
+    presetsSection:SetPoint("TOPRIGHT", mainSection, "BOTTOMRIGHT", 0, -4)
+    presetsSection:SetPoint("BOTTOMLEFT", content, "BOTTOMLEFT", 0, 4)
+    presetsSection:SetPoint("BOTTOMRIGHT", content, "BOTTOMRIGHT", -10, 4)
+
+    local presetColWidth = 180
+    for presetIndex, preset in ipairs(PROFILE_PRESETS) do
+        local col = (presetIndex - 1) % 3
+        local row = math.floor((presetIndex - 1) / 3)
+        local presetButton = Design:CreateActionButton(
+            presetsSection.content, preset.name, presetColWidth, 22,
+            preset.name, preset.description)
+        presetButton:SetPoint("TOPLEFT", 12 + (col * (presetColWidth + 12)), -12 - (row * 30))
+        if preset.disabled then
+            -- Reserved slot: visible like in BLU Forever, but it does nothing.
+            presetButton:SetAlpha(0.5)
+            presetButton:SetScript("OnClick", nil)
+        else
+            presetButton:SetScript("OnClick", function()
+                local activeProfileName = GetActiveProfileName()
+                StaticPopup_Show("BLU_CLASSIC_PROFILE_APPLY_PRESET", activeProfileName, nil, { profileName = activeProfileName, preset = preset })
+            end)
+        end
+    end
 
     -- Dropdown contents: click to switch, inline "x" deletes non-Default profiles.
     local function HideDeleteButtons(level)

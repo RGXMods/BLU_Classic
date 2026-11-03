@@ -426,8 +426,7 @@ function BLU.CreateProfilesPanel(panel)
     local presetsSection = Design:CreateSection(content, "Presets", "Interface\\Icons\\INV_Inscription_Scroll")
     presetsSection:SetPoint("TOPLEFT", mainSection, "BOTTOMLEFT", 0, -4)
     presetsSection:SetPoint("TOPRIGHT", mainSection, "BOTTOMRIGHT", 0, -4)
-    presetsSection:SetPoint("BOTTOMLEFT", content, "BOTTOMLEFT", 0, 4)
-    presetsSection:SetPoint("BOTTOMRIGHT", content, "BOTTOMRIGHT", -10, 4)
+    presetsSection:SetHeight(112)
 
     local presetColWidth = 180
     for presetIndex, preset in ipairs(PROFILE_PRESETS) do

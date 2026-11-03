@@ -7,7 +7,7 @@
 local BLU = _G.BLU_Classic
 BLU.Modules = BLU.Modules or {}
 
-local PREFIX = "|cff05dffaBLU_Classic:|r "
+local PREFIX = "|cff05dffaBLU:|r "
 
 function BLU:Print(message)
     print(PREFIX .. tostring(message))

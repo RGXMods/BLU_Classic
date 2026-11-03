@@ -30,7 +30,7 @@ local colors = {
     warning = "|cffffcc00"      -- Warning Color
 }
 
-BLU_Classic_PREFIX = string.format("|Tinterface/addons/BLU_Classic/media/icon:16:16|t - [%sBLU_Classic|r] ", colors.prefix)
+BLU_Classic_PREFIX = string.format("|Tinterface/addons/BLU_Classic/media/icon:16:16|t - [%sBLU|r] ", colors.prefix)
 DEBUG_PREFIX = string.format("[%sDEBUG|r] ", colors.debug)
 
 -- =====================================================================================
@@ -58,7 +58,7 @@ BLU_L = {
     ERROR_UNKNOWN_GAME_VERSION = string.format("%sUnknown game version detected.|r", colors.error),
 
     -- BLU:OnInitialize()
-    INITIALIZING_FOR_VERSION = string.format("Initializing BLU_Classic for game version: %s%%s|r.", colors.info),
+    INITIALIZING_FOR_VERSION = string.format("Initializing BLU for game version: %s%%s|r.", colors.info),
     WELCOME_MESSAGE = string.format("Welcome! Use %s/blu|r to open the options panel, or %s/blu help|r for more commands.", colors.prefix, colors.prefix),
     VERSION = string.format("%sVersion:|r", "|cffffff00"),
 

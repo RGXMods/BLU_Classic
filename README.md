@@ -31,7 +31,7 @@ BLU Classic is the **Classic** edition. Retail players should install [<span sty
 | | Feature | What it provides |
 |---|---|---|
 | | **50+ game sound libraries** | Favorites from Final Fantasy, Zelda, Mario, Skyrim, Pokemon, Warcraft, and many more |
-| | **Classic event coverage** | Level-up, quest, reputation, achievement, and supported battle-pet cues |
+| | **Classic event coverage** | Level-up, quest, reputation, achievement, PvP rank, collection, and supported battle-pet cues |
 | | **Volume variants** | Low, Medium, and High choices for bundled sounds |
 | | **Smart sound handling** | Replaces matching WoW cues without leaving default sounds muted after shutdown |
 | | **Organized options** | Nested game menus, previews, persistent profiles, and a movable minimap button |
@@ -49,9 +49,14 @@ supported Classic family.
 | **Reputation rank increase** | All supported clients |
 | **Achievement earned** | Clients with the achievement system |
 | **Battle-pet level-up** | Mists of Pandaria Classic |
+| **PvP rank up** (Honor tab) | Clients that report PvP rank changes |
+| **Mount, pet, and toy learned** (Collectibles tab) | Each event appears only if the client knows it |
 
-Retail-only systems such as Delves, Honor Ranks, Renown, Housing, and the
-Trading Post are intentionally not included. Install
+Honor and Collectibles rows are hidden when the game client does not know the
+event they use, so the tab set matches what your client can actually fire.
+
+Retail-only systems such as Delves, Honor Levels (Retail's honor system),
+Renown, Housing, and the Trading Post are intentionally not included. Install
 [BLU](https://github.com/RGXMods/BLU) for Retail event coverage.
 
 ## <span style="color:#FFD700">Sound Library</span>

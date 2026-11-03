@@ -210,15 +210,23 @@ local EVENT_ROWS = {
     },
 }
 
--- Combat and Loot pages: one row per trigger (see data/triggers.lua)
-for pageKey, triggers in pairs(BLU.TriggerPages or {}) do
-    EVENT_ROWS[pageKey] = {}
-    for _, trigger in ipairs(triggers) do
-        EVENT_ROWS[pageKey][#EVENT_ROWS[pageKey] + 1] = {
-            label = trigger.label, sound = trigger.sound, volume = trigger.volume,
-            trigger = trigger.id, description = trigger.description, none = true,
-        }
+-- Trigger pages (Combat, Loot, Hardcore, Honor, Collectibles): one row per trigger from
+-- data/triggers.lua, built when the page opens so triggers this client cannot fire are left out.
+local function RowsFor(eventType)
+    local pageTriggers = BLU.TriggerPages and BLU.TriggerPages[eventType]
+    if not pageTriggers then
+        return EVENT_ROWS[eventType] or {}
     end
+    local rows = {}
+    for _, trigger in ipairs(pageTriggers) do
+        if trigger.available ~= false then
+            rows[#rows + 1] = {
+                label = trigger.label, sound = trigger.sound, volume = trigger.volume,
+                trigger = trigger.id, description = trigger.description, none = true,
+            }
+        end
+    end
+    return rows
 end
 
 local EVENT_ICONS = {
@@ -230,6 +238,8 @@ local EVENT_ICONS = {
     reputation = "Interface\\Icons\\Achievement_Reputation_01",
     achievement = "Interface\\Icons\\Achievement_Quests_Completed_08",
     battlepet = "Interface\\Icons\\INV_Pet_BattlePetTraining",
+    honor = "Interface\\Icons\\Achievement_PVP_A_A",
+    collectibles = "Interface\\Icons\\INV_Pet_BattlePetTraining",
 }
 
 local EVENT_DESCRIPTIONS = {
@@ -241,6 +251,8 @@ local EVENT_DESCRIPTIONS = {
     reputation = "Pick a sound for reputation rank-ups.",
     achievement = "Pick a sound for earned achievements.",
     battlepet = "Pick a sound for battle pet level-ups.",
+    honor = "Pick a sound for each PvP rank you reach. Triggers start off.",
+    collectibles = "Pick a sound for each new mount, pet, or toy. Triggers start off; events this client does not have are not listed.",
 }
 
 -- Volume is stored as 0-3 (0 = off). The track snaps to four detents.
@@ -616,7 +628,13 @@ function BLU.CreateEventSoundPanel(panel, eventType, eventName)
     intro:SetText(EVENT_DESCRIPTIONS[eventType] or ("Pick a sound for " .. eventName .. "."))
 
     local dropY = -102
-    local rows = EVENT_ROWS[eventType] or {}
+    local rows = RowsFor(eventType)
+    if #rows == 0 then
+        local unavailable = content:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
+        unavailable:SetPoint("TOPLEFT", 0, -102)
+        unavailable:SetText("|cff9fb3c8None of these events are available on this game client.|r")
+        return content
+    end
     local RGX = _G.RGXFramework
     local UI = RGX and RGX.GetUI and RGX:GetUI() or _G.RGXUI
     local usePager = #rows > 4 and UI and UI.CreatePager and UI.CreateColumns

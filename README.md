@@ -85,9 +85,14 @@ then enable the addon at character select.
 
 ### Requirements
 
-BLU Classic packages its required Ace3 components in `Libs/`; no separate
-framework download is required. The TOC lists Ace3 as an optional dependency
-for installations that already provide it.
+BLU Classic requires [RGX-Framework](https://www.curseforge.com/wow/addons/rgx-framework)
+(`## RequiredDeps: RGX-Framework` in the TOC). Install it alongside BLU Classic;
+addon managers that read the TOC dependency line install it automatically.
+Version 1.4.0-beta.7 and later need RGX-Framework 2.11.0 or newer.
+
+BLU Classic still loads its embedded Ace3 libraries from `Libs/` for the
+parts that have not moved to the framework yet. The TOC lists Ace3 as an
+optional dependency, so an installation that already provides Ace3 is fine.
 
 ## <span style="color:#FFD700">Configuration</span>
 

@@ -14,6 +14,8 @@ function BLU_Classic:HandleEvent(eventName, soundSelectKey, volumeKey, defaultSo
         self:PrintDebugMessage("FUNCTIONS_HALTED")
         return 
     end
+    local moduleKey = self.ModuleBySoundKey and self.ModuleBySoundKey[soundSelectKey]
+    if moduleKey and not self:IsModuleEnabled(moduleKey) then return end
 
     -- Mute default sounds for this event
     local version = self:GetGameVersion()

@@ -1,7 +1,7 @@
 --=====================================================================================
 -- BLU_Classic - data/ui/general.lua
 -- General page. Layout mirrors BLU / BLU Forever general.lua: title bar, intro,
--- left column (Core, Troubleshooting) and right column (About). Only options that
+-- left column (Core) and right column (About). Only options that
 -- exist in BLU_Classic are shown.
 --=====================================================================================
 
@@ -60,7 +60,7 @@ function BLU.CreateGeneralPanel(panel)
 
     local profile = BLU.db
 
-    -- Left column: Core on top, Troubleshooting below
+    -- Left column: Core
     local coreSection = Design:CreateSection(content, "Core", "Interface\\Icons\\Achievement_General")
     coreSection:SetPoint("TOPLEFT", content, "TOPLEFT", 0, -102)
     coreSection:SetPoint("TOPRIGHT", content, "TOP", -12, -102)
@@ -75,17 +75,6 @@ function BLU.CreateGeneralPanel(panel)
     CreateCheckbox(coreSection.content, "Show minimap icon", 4, -32, profile.classicMinimapIconEnabled ~= false, function(self)
         BLU:ToggleMinimapIcon(self:GetChecked() and true or false)
     end, "Shows a BLU button on the minimap. Left-click opens the options panel; drag to reposition; Ctrl+Right-click hides it (/blu icon on restores it).")
-
-    local troubleSection = Design:CreateSection(content, "Troubleshooting", "Interface\\Icons\\INV_Misc_Gear_03")
-    troubleSection:SetPoint("TOPLEFT", coreSection, "BOTTOMLEFT", 0, -12)
-    troubleSection:SetPoint("TOPRIGHT", coreSection, "BOTTOMRIGHT", 0, -12)
-    troubleSection:SetHeight(80)
-
-    CreateCheckbox(troubleSection.content, "Debug mode", 4, -6, profile.debugMode == true, function(self)
-        local checked = self:GetChecked() and true or false
-        profile.debugMode = checked
-        BLU.debugMode = checked
-    end, "Prints diagnostic messages to chat. Same as /blu debug.")
 
     -- Right column: About
     local aboutSection = Design:CreateSection(content, "About", "Interface\\Icons\\INV_Misc_Book_09")

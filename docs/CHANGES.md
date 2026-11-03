@@ -1,3 +1,11 @@
+## v1.4.0-beta.1 - 2026-11-02
+- Beta: new options panel that matches BLU and BLU Forever (header, tab strip, General, Profiles, Level Up, Quest, Reputation, Achievement, and Battle Pet pages). Achievement and Battle Pet tabs show greyed out on clients that lack them.
+- Sound rows now use the BLU layout: sound dropdown with grouped variants, a four-step volume track (Off, Low, Medium, High), and a Test button. Saved sounds and volumes carry over unchanged.
+- Profiles tab: create, rename, reset, copy, switch, and delete profiles, backed by the RGX-Framework database.
+- Removed the AceConfig, AceConfigDialog, AceGUI, and AceDBOptions libraries from the TOC load order and deleted the AceGUI sound-select widget (issue #7, part of the Ace3 removal in #1). Other Ace libraries still load until #9.
+- Known gap: new options labels are English only until the locale files are updated.
+- Testing build: please report any panel layout problems, missing tabs, or Lua errors on Classic Era, TBC Anniversary, and Mists of Pandaria Classic.
+
 ## v1.3.8 - 2026-10-23
 - Fixed CurseForge and Wago publishing: the release publisher now sends the upload `metadata` as a plain form value instead of a Blob file part, which CurseForge rejected with `1001 Missing field 'metadata'` and Wago with `422 The metadata must be a string`. Synced the publisher with the framework's corrected release tooling.
 

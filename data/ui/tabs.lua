@@ -320,60 +320,41 @@ function BLU.CreateTabButton(parent, text, index, row, col, panel, icon)
 end
 
 --=====================================================================================
--- Classic tab spec and client-version gating
+-- Classic tab spec
 --=====================================================================================
-
-local VERSION_LABELS = {
-    vanilla = "Classic Era",
-    tbc = "TBC Anniversary",
-    wrath = "Wrath of the Lich King Classic",
-    cata = "Cataclysm Classic",
-    mists = "Mists of Pandaria Classic",
-}
-
-local FEATURE_SOURCE_LABEL = {
-    Achievement = "Mists of Pandaria Classic and BLU (Retail)",
-    BattlePet = "Mists of Pandaria Classic and BLU (Retail)",
-}
-
---- Unsupported features keep their grid slot but render greyed-out with a pointer
---- to the build that supports them (same behaviour as BLU Forever).
-function Tabs:ApplyToTabSpec(tabs)
-    local version = BLU:GetGameVersion()
-    for _, tabInfo in ipairs(tabs) do
-        if tabInfo.feature and not BLU:IsFeatureAvailable(tabInfo.feature) then
-            tabInfo.greyed = true
-            tabInfo.placeholder = true
-            tabInfo.greyedMessage = string.format(
-                "|cff778899This feature doesn't exist on %s.|r|n|cff778899It is available in |cff05dffa%s|r.",
-                VERSION_LABELS[version] or tostring(version),
-                FEATURE_SOURCE_LABEL[tabInfo.feature] or "another BLU build"
-            )
-        end
-    end
-    return tabs
-end
+-- Same geometry as BLU / BLU Forever: a fixed two-row grid with General, Profiles,
+-- Debug, and Sounds in columns 1-2, the pipe divider, then the event tabs from
+-- column 3. Event tabs for features the running client does not have are left out,
+-- so the number of tab buttons matches the client.
 
 function Tabs:Init()
     -- Panel builders are resolved lazily: they load after this file.
     local function general(p) return BLU.CreateGeneralPanel(p) end
     local function profiles(p) return BLU.CreateProfilesPanel(p) end
+    local function debugPanel(p) return BLU.CreateDebugPanel(p) end
+    local function sounds(p) return BLU.CreateSoundsPanel(p) end
 
-    -- Fixed grid, two rows: General/Profiles in columns 1-2, divider, then the
-    -- event tabs in columns 3+. Same geometry as BLU / BLU Forever.
-    BLU.OptionsTabs = {
+    local spec = {
         -- Row 1
-        {text = "General",    create = general,  row = 1, col = 1, icon = "Interface\\Icons\\INV_Misc_Gear_08"},
-        {text = "Profiles",   create = profiles, row = 1, col = 2, icon = "Interface\\Icons\\Ability_Marksmanship"},
-        {text = "Level Up",   eventType = "levelup",    row = 1, col = 3, feature = "Level",       icon = "Interface\\Icons\\Achievement_Level_100"},
-        {text = "Quest",      eventType = "quest",      row = 1, col = 4, feature = "Quest",       icon = "Interface\\Icons\\INV_Misc_Note_01"},
-        {text = "Reputation", eventType = "reputation", row = 1, col = 5, feature = "Reputation",  icon = "Interface\\Icons\\Achievement_Reputation_01"},
+        {text = "General",     create = general,  row = 1, col = 1, icon = "Interface\\Icons\\INV_Misc_Gear_08"},
+        {text = "Profiles",    create = profiles, row = 1, col = 2, icon = "Interface\\Icons\\Ability_Marksmanship"},
+        {text = "Level Up",    eventType = "levelup",     row = 1, col = 3, feature = "Level",       icon = "Interface\\Icons\\Achievement_Level_100"},
+        {text = "Quest",       eventType = "quest",       row = 1, col = 4, feature = "Quest",       icon = "Interface\\Icons\\INV_Misc_Note_01"},
+        {text = "Reputation",  eventType = "reputation",  row = 1, col = 5, feature = "Reputation",  icon = "Interface\\Icons\\Achievement_Reputation_01"},
+        {text = "Achievement", eventType = "achievement", row = 1, col = 6, feature = "Achievement", icon = "Interface\\Icons\\Achievement_Quests_Completed_08"},
         -- Row 2
-        {text = "Achievement", eventType = "achievement", row = 2, col = 3, feature = "Achievement", icon = "Interface\\Icons\\Achievement_Quests_Completed_08"},
-        {text = "Battle Pet",  eventType = "battlepet",   row = 2, col = 4, feature = "BattlePet",   icon = "Interface\\Icons\\INV_Pet_BattlePetTraining"},
+        {text = "Debug",       create = debugPanel, row = 2, col = 1, icon = "Interface\\Icons\\INV_Misc_Gear_03"},
+        {text = "Sounds",      create = sounds,     row = 2, col = 2, icon = "Interface\\Icons\\INV_Misc_Bell_01"},
+        {text = "Battle Pet",  eventType = "battlepet",   row = 2, col = 3, feature = "BattlePet",   icon = "Interface\\Icons\\INV_Pet_BattlePetTraining"},
     }
 
-    self:ApplyToTabSpec(BLU.OptionsTabs)
+    BLU.OptionsTabs = {}
+    for _, tabInfo in ipairs(spec) do
+        if not tabInfo.feature or BLU:IsFeatureAvailable(tabInfo.feature) then
+            BLU.OptionsTabs[#BLU.OptionsTabs + 1] = tabInfo
+        end
+    end
+
     BLU:PrintDebug("[Tabs] Registered " .. #BLU.OptionsTabs .. " tabs")
 end
 

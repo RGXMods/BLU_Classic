@@ -1,3 +1,10 @@
+## v1.4.0-beta.13 - 2026-11-03
+- Every sound in the nested sound menus has a Play button, as on BLU Retail. Click Play to hear that sound at the row's volume without choosing it.
+- The sound menus are sized by RGX-Framework, so long sound names no longer run under the Play button.
+- Requires RGX-Framework 2.11.0 or newer.
+- Known gap: these events are not yet confirmed to fire on every Classic client.
+- Known gap: new options labels, including the ON and OFF switch text, are English only until the locale files are updated.
+
 ## v1.4.0-beta.12 - 2026-11-03
 - The four settings tabs (General, Profiles, Debug, Sounds) sit in a bordered box that lines up with the tab buttons, with an even margin around them.
 - Highlights (the active tab, a switch that is on, and the current sound name) use BLU's brand cyan instead of the RGX-Framework theme colour. Surfaces, borders, and text still follow the framework.

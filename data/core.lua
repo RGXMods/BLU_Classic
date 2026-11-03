@@ -58,6 +58,7 @@ local FEATURE_AVAILABILITY = {
     Reputation = { mists = true, cata = true, wrath = true, tbc = true, vanilla = true },
     Combat = { mists = true, cata = true, wrath = true, tbc = true, vanilla = true },
     Loot = { mists = true, cata = true, wrath = true, tbc = true, vanilla = true },
+    Hardcore = { mists = true, cata = true, wrath = true, tbc = true, vanilla = true },
 }
 
 function BLU_Classic:IsFeatureAvailable(feature)

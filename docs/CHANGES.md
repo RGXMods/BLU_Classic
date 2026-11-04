@@ -1,3 +1,17 @@
+## v1.4.0 - 2026-11-03
+- Supports Classic Era (11509) and Burning Crusade Classic (20506). Mists of Pandaria Classic is not supported.
+- Sound pages for Level Up, Quest, Reputation, Combat, Loot, Hardcore, Honor and Collectibles. Each page has an ON/OFF switch in its header.
+- Combat: 11 triggers, including combat start and end, low health, execute window, critical hits and heals, resource capped and low, target lost, and encounter end and victory on clients that report encounters.
+- Loot: uncommon, rare, epic and legendary items, and coin. Only your own loot counts.
+- Hardcore: your death, and party, raid and other player deaths. Honor: PvP rank up. Collectibles: mount learned and toy learned.
+- Every sound menu has a Play button next to each sound. Play previews the sound at the row's volume without choosing it.
+- Profiles page with presets and the shared profile editor. Add your own sound files as User Custom Sounds.
+- Settings box for General, Profiles, Debug and Sounds, with BLU's brand colour for highlights.
+- The AddOns list icon is aligned with the addon name.
+- Slash command: /blu only. Chat messages say BLU.
+- Requires RGX-Framework 2.12.0 or newer.
+- Known limits: the Honor and Collectibles events and the Loot tab icon are not yet confirmed on every Classic client. New option labels, including the ON and OFF text, are English only.
+
 ## v1.4.0-beta.14 - 2026-11-03
 - The sound menus are built by RGX-Framework's nested dropdown. Every sound has a Play button in its menu, as on BLU Retail. Click Play to hear that sound at the row's volume without choosing it.
 - Variant counts, for example "Windows (3)", now sit in the group name. The separate count label is gone.

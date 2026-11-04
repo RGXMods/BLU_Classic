@@ -9,10 +9,7 @@
 local BLU = _G.BLU_Classic
 local Design = BLU.Modules["design"]
 
--- Nested menu helpers. Sizing and inline buttons come from the RGX-Framework dropdown module.
-local function GetListFrame(level)
-    return _G["DropDownList" .. level] or _G["LibDropDownMenu_List" .. level]
-end
+-- Menu helpers. The RGX-Framework dropdown module builds, sizes and adds Play buttons to the sound menus.
 
 local function GetDrops()
     local RGX = _G.RGXFramework
@@ -55,44 +52,6 @@ local function TrimVariantLabel(soundName, parentLabel)
     end
 
     return soundName
-end
-
-local function HideInlineCountLabels(level)
-    local listFrame = GetListFrame(level)
-    if not listFrame then
-        return
-    end
-
-    local maxButtons = UIDROPDOWNMENU_MAXBUTTONS or 32
-    for i = 1, maxButtons do
-        local button = _G[listFrame:GetName() .. "Button" .. i]
-        if button and button.bluClassicCountLabel then
-            button.bluClassicCountLabel:Hide()
-        end
-    end
-end
-
-local function AttachInlineCountLabel(level, text)
-    local listFrame = GetListFrame(level)
-    if not listFrame or not listFrame.numButtons then
-        return
-    end
-
-    local button = _G[listFrame:GetName() .. "Button" .. listFrame.numButtons]
-    if not button then
-        return
-    end
-
-    local countLabel = button.bluClassicCountLabel
-    if not countLabel then
-        countLabel = button:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
-        countLabel:SetJustifyH("RIGHT")
-        countLabel:SetTextColor(Design.Rgb("subtext"))
-        button.bluClassicCountLabel = countLabel
-    end
-
-    countLabel:SetText(text or "")
-    countLabel:Show()
 end
 
 -- Resolve a numeric sound index to a display name using the group data
@@ -324,61 +283,10 @@ local function CreateSoundRow(parent, rowInfo, yOffset, compact)
         end
     end)
 
-    -- Sound dropdown (native menu owns selection; the visible trigger matches BLU) ------
-    local dropdown = CreateFrame("Frame", "BLUClassicDropdown_" .. soundKey, container, "UIDropDownMenuTemplate")
-    dropdown:SetPoint("TOPLEFT", currentSound, "BOTTOMLEFT", -16, -5)
-    UIDropDownMenu_SetWidth(dropdown, 220)
-    dropdown:SetAlpha(0)
-    dropdown:SetScale(0.01)
-
-    local dropdownButton = CreateFrame("Button", nil, container, "BackdropTemplate")
-    dropdownButton:SetHeight(22)
-    if not compact then
-        dropdownButton:SetWidth(220)
-    end
-    dropdownButton:SetBackdrop(Design.Backdrops.Button)
-    dropdownButton:SetBackdropColor(Design.Rgba("surface", 0.96))
-    dropdownButton:SetBackdropBorderColor(Design.Rgba("border", 1))
-    dropdownButton:RegisterForClicks("LeftButtonUp")
-
-    local dropdownButtonLabel = dropdownButton:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
-    dropdownButtonLabel:SetPoint("LEFT", 8, 0)
-    dropdownButtonLabel:SetPoint("RIGHT", -18, 0)
-    dropdownButtonLabel:SetJustifyH("LEFT")
-    dropdownButtonLabel:SetTextColor(Design.Rgba("text", 1))
-
-    local dropdownArrow = dropdownButton:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
-    dropdownArrow:SetPoint("RIGHT", -6, 0)
-    dropdownArrow:SetText("v")
-    dropdownArrow:SetTextColor(Design.Rgba("subtext", 1))
-
-    dropdownButton:SetScript("OnClick", function(self)
-        ToggleDropDownMenu(1, nil, dropdown, self, 0, 0)
-    end)
-    dropdownButton:SetScript("OnEnter", function(self)
-        self:SetBackdropBorderColor(unpack(Design.Colors.Primary))
-    end)
-    dropdownButton:SetScript("OnLeave", function(self)
-        self:SetBackdropBorderColor(Design.Rgba("border", 1))
-    end)
-
-    if compact then
-        -- The current sound is already the dropdown text, so the extra line is dropped.
-        currentSound:Hide()
-        testBtn:SetPoint("TOPRIGHT", container, "TOPRIGHT", -10, -24)
-        dropdownButton:SetPoint("TOPLEFT", container, "TOPLEFT", 10, -24)
-        dropdownButton:SetPoint("TOPRIGHT", testBtn, "TOPLEFT", -8, 0)
-        volumeControl:SetPoint("TOPLEFT", container, "TOPLEFT", 10, -54)
-        volumeControl:SetPoint("TOPRIGHT", container, "TOPRIGHT", -10, -54)
-    else
-        dropdownButton:SetPoint("LEFT", container, "LEFT", 10, 0)
-        dropdownButton:SetPoint("TOP", currentSound, "BOTTOM", 0, -5)
-        testBtn:SetPoint("RIGHT", container, "RIGHT", -10, 0)
-        testBtn:SetPoint("TOP", currentSound, "BOTTOM", 0, -5)
-        volumeControl:SetPoint("CENTER", dropdownButton, "CENTER", 0, 0)
-        volumeControl:SetPoint("LEFT", dropdownButton, "RIGHT", 12, 0)
-        volumeControl:SetPoint("RIGHT", testBtn, "LEFT", -12, 0)
-    end
+    -- Sound menu: the RGX-Framework nested dropdown (2.12.0+) builds the menu, sizes it, and adds
+    -- a Play button to each sound. BLU keeps its own trigger look (triggerStyle = "retail").
+    local Drops = GetDrops()
+    assert(Drops and type(Drops.CreateNestedDropdown) == "function", "RGX-Framework 2.12.0 or newer is required")
 
     local function isCustomSelection(value)
         return BLU.UserSounds and BLU.UserSounds:IsCustomId(value)
@@ -393,18 +301,23 @@ local function CreateSoundRow(parent, rowInfo, yOffset, compact)
         return tonumber(value) or (rowInfo.none and 0 or 1)
     end
 
+    local function nameFor(value)
+        if isCustomSelection(value) then
+            return BLU.UserSounds:GetName(value) or "[Missing sound]"
+        elseif value == 0 then
+            return "[None]"
+        end
+        return GetSoundDisplayName(value)
+    end
+
+    local soundMenu -- the framework dropdown holder, created below
+
     local function refreshLabels()
         local value = selectedIndex()
-        local name
-        if isCustomSelection(value) then
-            name = BLU.UserSounds:GetName(value)
-        elseif value == 0 then
-            name = "[None]"
-        else
-            name = GetSoundDisplayName(value)
+        currentSound:SetText(nameFor(value))
+        if soundMenu then
+            soundMenu:SetValue(value)
         end
-        currentSound:SetText(name)
-        dropdownButtonLabel:SetText(name)
         -- Custom sounds have one file, so the low/medium/high track does not apply
         volumeControl:SetShown(not isCustomSelection(value) and value ~= 0)
         if compact then currentSound:Hide() end
@@ -415,162 +328,111 @@ local function CreateSoundRow(parent, rowInfo, yOffset, compact)
             BLU.db[soundKey] = index
         end
         refreshLabels()
-        CloseDropDownMenus()
     end
 
-    -- Play one sound at this row's volume. Used by the inline Play button in the menu.
+    -- Play one sound at this row's volume. This is the menu's Play button.
     local function previewSound(value)
         if value == nil or value == 0 then return end
-        local sound = BLU:SelectSound(value)
-        if not sound then return end
+        local sample = BLU:SelectSound(value)
+        if not sample then return end
         local volumeLevel = BLU.db and BLU.db[rowInfo.volume]
         if not volumeLevel or volumeLevel < 0 or volumeLevel > 3 then volumeLevel = 2 end
         local defaultTable = rowInfo.defaultIndex and defaultSounds and defaultSounds[rowInfo.defaultIndex] or nil
-        BLU:PlaySelectedSound(sound, volumeLevel, defaultTable)
+        BLU:PlaySelectedSound(sample, volumeLevel, defaultTable)
     end
 
-    -- Attach a Play button to the menu row just added on this level, as BLU Retail does.
-    local function attachInlinePreview(level, value)
-        local listFrame = GetListFrame(level)
-        if not listFrame or not listFrame.numButtons then return end
-        local button = _G[listFrame:GetName() .. "Button" .. listFrame.numButtons]
-        if not button then return end
-
-        local previewButton = button.bluPreviewButton
-        if not previewButton then
-            previewButton = CreateFrame("Button", nil, button, "BackdropTemplate")
-            previewButton:SetSize(34, 16)
-            previewButton:SetBackdrop(Design.Backdrops.Button)
-            previewButton:SetBackdropColor(0.08, 0.10, 0.13, 0.95)
-            previewButton:SetBackdropBorderColor(Design.Rgba("border", 1))
-            previewButton:RegisterForClicks("LeftButtonUp")
-            previewButton:SetScript("OnClick", function(btn) previewSound(btn.soundValue) end)
-            previewButton:SetScript("OnEnter", function(btn) btn:SetBackdropBorderColor(Design.Rgb("brand")) end)
-            previewButton:SetScript("OnLeave", function(btn) btn:SetBackdropBorderColor(Design.Rgba("border", 1)) end)
-
-            local label = previewButton:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
-            label:SetPoint("CENTER", 0, 0)
-            label:SetText("Play")
-            label:SetTextColor(Design.Rgb("brand"))
-            previewButton.label = label
-            button.bluPreviewButton = previewButton
+    -- Menu items: [None] (event rows only offer it on triggers), one row per shipped sound
+    -- group, a submenu per multi-variant group, and a submenu of the user's own sounds.
+    local function menuItems()
+        local items = {}
+        local groups = BLU_Classic_SoundGroups or {}
+        if rowInfo.none then
+            items[#items + 1] = { text = "[None]", value = 0, preview = false }
         end
-
-        previewButton.soundValue = value
-        previewButton:Show()
-    end
-
-    UIDropDownMenu_Initialize(dropdown, function(_, level, menuList)
-        level = level or 1
-        local groups = BLU_Classic_SoundGroups
-        if not groups then return end
-        local baseWidth = 220
-        local function minWidthFor(levelToUse)
-            if (levelToUse or 1) <= 1 then return baseWidth end
-            return math.max(160, math.floor(baseWidth * 0.72))
-        end
-        local function leftInsetFor(levelToUse)
-            if (levelToUse or 1) <= 1 then return 24 end
-            return 10
-        end
-
-        HideInlineCountLabels(level)
-        local drops = GetDrops()
-        if drops then
-            drops:HideInlineButtons(level, "bluPreviewButton")
-        end
-
-        if level == 1 then
-            if rowInfo.none then
-                local noneInfo = UIDropDownMenu_CreateInfo()
-                noneInfo.text = "[None]"
-                noneInfo.value = 0
-                noneInfo.checked = function() return selectedIndex() == 0 end
-                noneInfo.func = function() chooseSound(0) end
-                UIDropDownMenu_AddButton(noneInfo, level)
-            end
-            for groupIndex, group in ipairs(groups) do
-              -- Triggers have no shipped default file, so [Default] is not offered there
-              if not (rowInfo.none and #group.indices == 1 and group.indices[1] == 1) then
-                local info = UIDropDownMenu_CreateInfo()
+        for _, group in ipairs(groups) do
+            -- Triggers have no shipped default file, so [Default] is not offered there
+            if not (rowInfo.none and #group.indices == 1 and group.indices[1] == 1) then
                 local displayText, truncated = ShortenLabel(group.name, 46)
-                info.text = displayText
                 if #group.indices == 1 then
-                    local index = group.indices[1]
-                    info.value = index
-                    info.checked = function() return selectedIndex() == index end
-                    info.func = function() chooseSound(index) end
+                    items[#items + 1] = {
+                        text = displayText,
+                        value = group.indices[1],
+                        tooltipTitle = truncated and group.name or nil,
+                    }
                 else
-                    info.value = groupIndex
-                    info.hasArrow = true
-                    info.menuList = groupIndex
-                    info.notCheckable = true
+                    local children = {}
+                    for variantIndex, index in ipairs(group.indices) do
+                        local rawText = group.labels and group.labels[variantIndex] or GetSoundDisplayName(index)
+                        local trimmed = TrimVariantLabel(rawText, group.name)
+                        local childText, childTruncated = ShortenLabel(trimmed, 60)
+                        children[#children + 1] = {
+                            text = childText,
+                            value = index,
+                            tooltipTitle = (childTruncated or trimmed ~= rawText) and rawText or nil,
+                        }
+                    end
+                    items[#items + 1] = {
+                        text = displayText .. " (" .. #group.indices .. ")",
+                        children = children,
+                        notCheckable = true,
+                        tooltipTitle = truncated and group.name or nil,
+                    }
                 end
-                if truncated then
-                    info.tooltipTitle = group.name
-                end
-                UIDropDownMenu_AddButton(info, level)
-                if #group.indices == 1 then
-                    attachInlinePreview(level, group.indices[1])
-                end
-                if #group.indices > 1 then
-                    AttachInlineCountLabel(level, "(" .. #group.indices .. ")")
-                end
-              end
             end
-
-            local customEntries = BLU.UserSounds and BLU.UserSounds:GetEntries() or {}
-            if #customEntries > 0 then
-                local info = UIDropDownMenu_CreateInfo()
-                info.text = "User Custom Sounds"
-                info.value = "custom"
-                info.hasArrow = true
-                info.menuList = "custom"
-                info.notCheckable = true
-                UIDropDownMenu_AddButton(info, level)
-                AttachInlineCountLabel(level, "(" .. #customEntries .. ")")
-            end
-        elseif level == 2 and menuList == "custom" then
-            for _, entry in ipairs(BLU.UserSounds and BLU.UserSounds:GetEntries() or {}) do
-                local info = UIDropDownMenu_CreateInfo()
+        end
+        local customEntries = BLU.UserSounds and BLU.UserSounds:GetEntries() or {}
+        if #customEntries > 0 then
+            local children = {}
+            for _, entry in ipairs(customEntries) do
                 local displayText, truncated = ShortenLabel(entry.name, 60)
-                info.text = displayText
-                info.value = entry.id
-                info.checked = function() return selectedIndex() == entry.id end
-                info.func = function() chooseSound(entry.id) end
-                if truncated then
-                    info.tooltipTitle = entry.name
-                end
-                UIDropDownMenu_AddButton(info, level)
-                attachInlinePreview(level, entry.id)
+                children[#children + 1] = {
+                    text = displayText,
+                    value = entry.id,
+                    tooltipTitle = truncated and entry.name or nil,
+                }
             end
-        elseif level == 2 and menuList then
-            local group = groups[menuList]
-            if not group then return end
-            for variantIndex, index in ipairs(group.indices) do
-                local info = UIDropDownMenu_CreateInfo()
-                local rawText = group.labels and group.labels[variantIndex] or GetSoundDisplayName(index)
-                local trimmed = TrimVariantLabel(rawText, group.name)
-                local displayText, truncated = ShortenLabel(trimmed, 60)
-                info.text = displayText
-                info.value = index
-                info.checked = function() return selectedIndex() == index end
-                info.func = function() chooseSound(index) end
-                if truncated or trimmed ~= rawText then
-                    info.tooltipTitle = rawText
-                end
-                UIDropDownMenu_AddButton(info, level)
-                attachInlinePreview(level, index)
-            end
+            items[#items + 1] = {
+                text = "User Custom Sounds (" .. #customEntries .. ")",
+                children = children,
+                notCheckable = true,
+            }
         end
+        return items
+    end
 
-        if drops then
-            drops:ForceWidth(level, minWidthFor(level), leftInsetFor(level), {
-                countKey = "bluClassicCountLabel",
-                inlineKeys = { "bluPreviewButton" },
-            })
-        end
-    end)
+    soundMenu = Drops:CreateNestedDropdown(container, {
+        label = "",
+        width = 220,
+        buttonWidth = 220,
+        value = selectedIndex(),
+        items = menuItems,
+        triggerStyle = "retail",
+        justifyH = "LEFT",
+        getValueText = function(value) return nameFor(value) end,
+        onChange = function(value) chooseSound(value) end,
+        onPreview = function(value) previewSound(value) end,
+        previewLabel = "Play",
+    })
+    assert(soundMenu, "the sound menu could not be created")
+    local trigger = soundMenu.retailTrigger
+
+    if compact then
+        -- The current sound is already the dropdown text, so the extra line is dropped.
+        currentSound:Hide()
+        testBtn:SetPoint("TOPRIGHT", container, "TOPRIGHT", -10, -24)
+        soundMenu:SetPoint("TOPLEFT", container, "TOPLEFT", 10, -22)
+        soundMenu:SetPoint("TOPRIGHT", testBtn, "TOPLEFT", -8, -2)
+        volumeControl:SetPoint("TOPLEFT", container, "TOPLEFT", 10, -54)
+        volumeControl:SetPoint("TOPRIGHT", container, "TOPRIGHT", -10, -54)
+    else
+        soundMenu:SetPoint("LEFT", container, "LEFT", 10, 0)
+        soundMenu:SetPoint("TOP", currentSound, "BOTTOM", 0, -5)
+        testBtn:SetPoint("RIGHT", container, "RIGHT", -10, 0)
+        testBtn:SetPoint("TOP", currentSound, "BOTTOM", 0, -5)
+        volumeControl:SetPoint("CENTER", trigger, "CENTER", 0, 0)
+        volumeControl:SetPoint("LEFT", trigger, "RIGHT", 12, 0)
+        volumeControl:SetPoint("RIGHT", testBtn, "LEFT", -12, 0)
+    end
 
     renderVolume()
     refreshLabels()

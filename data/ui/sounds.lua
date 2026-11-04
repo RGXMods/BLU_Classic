@@ -71,7 +71,7 @@ end
 local function OpenAddCustomSoundDialog()
     local UI = BLU:GetFrameworkUI()
     if not (UI and UI.CreateConfigDialog and UI.CreateButton and UI.CreateLabel) then
-        BLU:Print("RGX-Framework 2.11.0 or newer is required to add custom sounds.")
+        BLU:Print("RGX-Framework 2.12.0 or newer is required to add custom sounds.")
         return
     end
 

@@ -99,7 +99,7 @@ function BLU.CreateProfilesPanel(panel)
     if not (UI and UI.CreateProfilesPanel and UI.Confirm) then
         local missing = panel:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
         missing:SetPoint("TOPLEFT", 18, -18)
-        missing:SetText("|cffff6666RGX-Framework 2.11.0 or newer is required for profile management.|r")
+        missing:SetText("|cffff6666RGX-Framework 2.12.0 or newer is required for profile management.|r")
         return panel
     end
 

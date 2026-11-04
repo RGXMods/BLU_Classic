@@ -1,3 +1,11 @@
+## v1.4.0-beta.14 - 2026-11-03
+- The sound menus are built by RGX-Framework's nested dropdown. Every sound has a Play button in its menu, as on BLU Retail. Click Play to hear that sound at the row's volume without choosing it.
+- Variant counts, for example "Windows (3)", now sit in the group name. The separate count label is gone.
+- Requires RGX-Framework 2.12.0 or newer.
+- Known gap: these events are not yet confirmed to fire on every Classic client.
+- Known gap: the Loot tab icon is still being investigated.
+- Known gap: new options labels, including the ON and OFF switch text, are English only until the locale files are updated.
+
 ## v1.4.0-beta.13 - 2026-11-03
 - Every sound in the nested sound menus has a Play button, as on BLU Retail. Click Play to hear that sound at the row's volume without choosing it.
 - The sound menus are sized by RGX-Framework, so long sound names no longer run under the Play button.

@@ -111,7 +111,6 @@ function Options:CreateOptionsPanel()
 
     local logo = header:CreateTexture(nil, "ARTWORK")
     logo:SetSize(28, 28)
-    logo:SetPoint("LEFT", 10, 0)
     logo:SetTexture(ADDON_PATH .. "media\\icon.tga")
 
     local leftX = 50
@@ -119,6 +118,9 @@ function Options:CreateOptionsPanel()
     local rowOneY = -14
     local rowTwoY = -26
     local rowThreeY = -38
+    -- Centre the logo on the addon-name row. Anchoring it to the whole three-line block
+    -- left it above the name.
+    logo:SetPoint("LEFT", header, "TOPLEFT", 10, rowOneY)
 
     local title = header:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
     title:SetPoint("LEFT", header, "TOPLEFT", leftX, rowOneY)

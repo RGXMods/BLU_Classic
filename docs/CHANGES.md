@@ -7,9 +7,11 @@
 - Every sound menu has a Play button next to each sound. Play previews the sound at the row's volume without choosing it.
 - Profiles page with presets and the shared profile editor. Add your own sound files as User Custom Sounds.
 - Settings box for General, Profiles, Debug and Sounds, with BLU's brand colour for highlights.
+- Profile page buttons use BLU's brand colour on hover, not the RGX-Framework theme colour.
 - The AddOns list icon is aligned with the addon name.
 - Slash command: /blu only. Chat messages say BLU.
 - Requires RGX-Framework 2.12.0 or newer.
+- Profile dropdown hover and the name dialogs still follow the RGX-Framework theme colour.
 - Known limits: the Honor and Collectibles events and the Loot tab icon are not yet confirmed on every Classic client. New option labels, including the ON and OFF text, are English only.
 
 ## v1.4.0-beta.14 - 2026-11-03

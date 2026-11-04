@@ -10,6 +10,46 @@
 local BLU = _G.BLU_Classic
 local DEFAULT_PROFILE = "Default"
 
+-- The framework's profile editor follows the framework theme, but BLU's highlights are brand
+-- cyan. BuildBrandedProfileCard builds the card inside a brand-primary theme scope, which covers
+-- colours the framework reads while it builds the card (such as the Active value). Its button
+-- hover reads the framework primary when the mouse enters, so BrandProfileButtonHover runs after
+-- it and re-tints each button. Dropdown hover and the name dialogs still follow the framework
+-- theme; that is a framework follow-up.
+local function BrandProfileButtonHover(card)
+    local Design = BLU.Modules and BLU.Modules["design"]
+    if not (Design and card) then return end
+    local function brandButton(btn)
+        if not (btn and btn.HookScript) then return end
+        btn:HookScript("OnEnter", function(self)
+            local enabled = self:IsEnabled()
+            if self.border and self.border.SetBackdropBorderColor then
+                self.border:SetBackdropBorderColor(Design.Rgb(enabled and "brand" or "border"))
+            end
+            if self.label and self.label.SetTextColor then
+                self.label:SetTextColor(Design.Rgb(enabled and "brand" or "subtext"))
+            end
+        end)
+    end
+    for _, btn in pairs(card.buttons or {}) do brandButton(btn) end
+    for _, btn in ipairs(card.presetButtons or {}) do brandButton(btn) end
+end
+BLU.BrandProfileButtonHover = BrandProfileButtonHover
+
+local function BuildBrandedProfileCard(build)
+    local Design = BLU.Modules and BLU.Modules["design"]
+    local RGX = _G.RGXFramework
+    local D = RGX and RGX.GetDesign and RGX:GetDesign()
+    local card
+    if Design and D and type(D.WithTheme) == "function" then
+        D:WithTheme({ primary = { Design.Rgb("brand") } }, function() card = build() end)
+    else
+        card = build()
+    end
+    BrandProfileButtonHover(card)
+    return card
+end
+
 local function GetActiveProfileName()
     local db = BLU.db
     if db and db.GetActiveProfile then
@@ -99,7 +139,7 @@ function BLU.CreateProfilesPanel(panel)
     if not (UI and UI.CreateProfilesPanel and UI.Confirm) then
         local missing = panel:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
         missing:SetPoint("TOPLEFT", 18, -18)
-        missing:SetText("|cffff6666RGX-Framework 2.11.0 or newer is required for profile management.|r")
+        missing:SetText("|cffff6666RGX-Framework 2.12.0 or newer is required for profile management.|r")
         return panel
     end
 
@@ -110,7 +150,7 @@ function BLU.CreateProfilesPanel(panel)
         return panel
     end
 
-    local card = UI:CreateProfilesPanel(panel, {
+    local card = BuildBrandedProfileCard(function() return UI:CreateProfilesPanel(panel, {
         db = BLU.db,
         title = "Profiles",
         icon = "Interface\\Icons\\Ability_Marksmanship",
@@ -136,7 +176,7 @@ function BLU.CreateProfilesPanel(panel)
                 end,
             })
         end,
-    })
+    }) end)
 
     -- Reset replaces every setting in the profile, so it asks first. The framework's
     -- button handler is kept (it is pcall-isolated) and called from the confirmation.

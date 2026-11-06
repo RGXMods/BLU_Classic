@@ -116,8 +116,65 @@ function UserSounds:Find(value)
     return nil
 end
 
+-- ── Searching other addons' sound folders ────────────────────────────────────────
+-- A WoW addon cannot list a folder, only test a path it already knows. When a name is not in
+-- BLU's documented folders, ask the game which addons are installed and test the conventional
+-- sound folders inside each one (sound packs and media addons first). Bounded so it cannot stall
+-- the game.
+local PACK_SUBFOLDERS = { "", "sounds", "sound", "media", "media\\sounds", "audio", "assets", "assets\\sounds", "resources\\sounds" }
+local PACK_LIKELY_PATTERNS = { "sound", "audio", "media", "voice", "music", "sfx", "pack" }
+local MAX_ADDON_SEARCH_PROBES = 6000
+
+local function InstalledAddonFolders()
+    local folders = {}
+    local getNum = (C_AddOns and C_AddOns.GetNumAddOns) or GetNumAddOns
+    local getInfo = (C_AddOns and C_AddOns.GetAddOnInfo) or GetAddOnInfo
+    if type(getNum) ~= "function" or type(getInfo) ~= "function" then return folders end
+    local okCount, count = pcall(getNum)
+    if not okCount or type(count) ~= "number" then return folders end
+
+    local own = string.lower(ADDON_NAME)
+    for index = 1, count do
+        local okInfo, info = pcall(getInfo, index)
+        local name = okInfo and (type(info) == "table" and info.name or info) or nil
+        if type(name) == "string" and name ~= "" then
+            local lower = string.lower(name)
+            if lower ~= own and not lower:find("^blizzard_") then
+                folders[#folders + 1] = name
+            end
+        end
+    end
+
+    local likely, others = {}, {}
+    for _, name in ipairs(folders) do
+        local lower, isLikely = string.lower(name), false
+        for _, pattern in ipairs(PACK_LIKELY_PATTERNS) do
+            if lower:find(pattern, 1, true) then isLikely = true break end
+        end
+        table.insert(isLikely and likely or others, name)
+    end
+    for _, name in ipairs(others) do likely[#likely + 1] = name end
+    return likely
+end
+
+local function FindInInstalledAddons(names)
+    local probes = 0
+    for _, folder in ipairs(InstalledAddonFolders()) do
+        for _, sub in ipairs(PACK_SUBFOLDERS) do
+            for _, fileName in ipairs(names) do
+                if probes >= MAX_ADDON_SEARCH_PROBES then return nil end
+                probes = probes + 1
+                local path = "Interface\\AddOns\\" .. folder .. "\\" .. (sub ~= "" and (sub .. "\\") or "") .. fileName
+                if CanPlay(path) then return path end
+            end
+        end
+    end
+    return nil
+end
+
 --- Resolve what the player typed: a full Interface\AddOns path, a file name with an
---- extension, or a bare name (tried with .ogg/.mp3/.wav in common AddOns folders).
+--- extension, or a bare name (tried with .ogg/.mp3/.wav in BLU's own folders, then the sound
+--- folders of every installed addon).
 function UserSounds:Resolve(input)
     local text = Normalize(input)
     if not text then return nil, "Enter a file name like myfile or myfile.ogg." end
@@ -153,6 +210,12 @@ function UserSounds:Resolve(input)
         if CanPlay(candidate) then
             return candidate
         end
+    end
+
+    -- Not in BLU's documented folders: look through the installed addons' sound folders.
+    if not explicitPath then
+        local found = FindInInstalledAddons(names)
+        if found then return found end
     end
 
     if explicitExtension and not explicitPath then

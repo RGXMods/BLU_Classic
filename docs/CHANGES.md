@@ -1,3 +1,6 @@
+## v1.4.1 - 2026-11-06
+- Adding a sound by name now also searches the sound folders of every other installed addon (sound packs and media addons first), after BLU's own folders. The search is bounded so it cannot stall the game, and a full Interface\AddOns path still works for sounds in unusual folders.
+
 ## v1.4.0 - 2026-11-03
 - Supports Classic Era (11509) and Burning Crusade Classic (20506). Mists of Pandaria Classic is not supported.
 - Sound pages for Level Up, Quest, Reputation, Combat, Loot, Hardcore, Honor and Collectibles. Each page has an ON/OFF switch in its header.

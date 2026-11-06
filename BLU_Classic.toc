@@ -1,5 +1,5 @@
 ## Interface: 11509,20506
-## Version: v1.4.0
+## Version: v1.4.1
 ## X-WoWI-ID: 26945
 ## Title: |cff05dffaB|r|cffffffffetter|r |cff05dffaL|r|cffffffffevel-|r|cff05dffaU|r|cffffffffp|cff05dffa!|r |cffFFD700(Classic)|r
 ## Notes: |cff05dffaClassic-only sound replacement addon.|r |n|r |cff05dffa/blu|r opens options. Includes a movable minimap button.

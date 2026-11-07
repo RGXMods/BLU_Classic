@@ -1,4 +1,4 @@
--- BLU_Classic must find a named sound in other addons' sound folders, with BLU's own folders first.
+-- BLU_Classic resolves a bare name only in its documented folders, never in other addons.
 local function check(cond, msg) if not cond then error("CHECK FAILED: " .. msg, 2) end end
 
 local files, probes = {}, 0
@@ -12,24 +12,17 @@ local US = BLU_Classic.UserSounds
 local function has(p) files[p:lower()] = true end
 
 has("Interface\\AddOns\\MyVoicePack\\media\\sounds\\roar.ogg")
-check(US:Resolve("roar") == "Interface\\AddOns\\MyVoicePack\\media\\sounds\\roar.ogg", "finds a name inside another addon's media\\sounds")
+check(US:Resolve("roar") == nil, "a bare name is not guessed from another addon's folder")
 
 has("Interface\\AddOns\\BLU_Classic\\user\\sounds\\boom.ogg")
-has("Interface\\AddOns\\MyVoicePack\\sounds\\boom.ogg")
-check(US:Resolve("boom") == "Interface\\AddOns\\BLU_Classic\\user\\sounds\\boom.ogg", "BLU's own folders win")
-
-has("Interface\\AddOns\\Details\\media\\ding.ogg")
-has("Interface\\AddOns\\SoundsOfWar\\media\\ding.ogg")
-check(US:Resolve("ding"):find("SoundsOfWar", 1, true), "sound-pack-looking folders are searched first")
+check(US:Resolve("boom") == "Interface\\AddOns\\BLU_Classic\\user\\sounds\\boom.ogg", "BLU's own folders resolve a bare name")
 
 probes = 0
-local miss = US:Resolve("definitely-not-there")
-check(miss == nil and probes > 0 and probes <= 6200, "a miss stays bounded (" .. probes .. " probes)")
+local miss, err = US:Resolve("definitely-not-there")
+check(miss == nil and probes > 0 and probes <= 60, "a miss only probes BLU's folders (" .. probes .. " probes)")
+check(err:find("user\\sounds", 1, true) and err:lower():find("restart", 1, true), "failure explains the folder and the restart")
 
 probes = 0
 check(US:Resolve("Interface\\AddOns\\Elsewhere\\x.ogg") == "Interface\\AddOns\\Elsewhere\\x.ogg", "explicit path kept")
 check(probes == 0, "no search for an explicit path")
-
-_G.C_AddOns = nil
-check(US:Resolve("roar") == nil, "without the add-on listing API other addons are not searched")
 print("user-sounds-search-test OK")

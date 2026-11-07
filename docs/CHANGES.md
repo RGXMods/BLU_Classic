@@ -1,3 +1,6 @@
+## v1.4.2 - 2026-11-06
+- Adding a sound by name no longer searches other addons' folders. BLU looks in its own documented folders (user\sounds and friends); anything else needs its full Interface\AddOns path. When a name cannot be found, BLU says where to put the file and that new files need a full game restart.
+
 ## v1.4.1 - 2026-11-06
 - Adding a sound by name now also searches the sound folders of every other installed addon (sound packs and media addons first), after BLU's own folders. The search is bounded so it cannot stall the game, and a full Interface\AddOns path still works for sounds in unusual folders.
 

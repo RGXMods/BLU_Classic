@@ -1,3 +1,7 @@
+## v1.4.3 - 2026-11-09
+- Declared Mists of Pandaria Classic in the TOC (`## Interface: 11509,20506,50504`). The build already ran on the Mists client, but the TOC only listed Classic Era and TBC Anniversary, so CurseForge and the client treated it as those flavors only.
+- No runtime changes.
+
 ## v1.4.2 - 2026-11-06
 - Adding a sound by name no longer searches other addons' folders. BLU looks in its own documented folders (user\sounds and friends); anything else needs its full Interface\AddOns path. When a name cannot be found, BLU says where to put the file and that new files need a full game restart.
 

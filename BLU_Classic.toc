@@ -1,4 +1,4 @@
-## Interface: 11509,20506
+## Interface: 11509,20506,50504
 ## Version: v1.4.2
 ## X-WoWI-ID: 26945
 ## Title: |cff05dffaB|r|cffffffffetter|r |cff05dffaL|r|cffffffffevel-|r|cff05dffaU|r|cffffffffp|cff05dffa!|r |cffFFD700(Classic)|r

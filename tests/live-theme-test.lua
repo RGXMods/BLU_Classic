@@ -25,4 +25,11 @@ listener()
 check(rebuilt == 1, "a theme change rebuilds the options body")
 override = false
 check(BLU.Hex() == "|cff05dffa", "override off again: BLU cyan")
+
+-- Tabs take the framework's tab look while the override is on.
+do
+  local fh = assert(io.open("data/ui/tabs.lua")); local tabsSrc = fh:read("*a"); fh:close()
+  check(tabsSrc:find("D:IsThemeOverride() and UIfw and UIfw.SkinTab", 1, true) and tabsSrc:find("UIfw:SkinTab(button)", 1, true), "under the override the tabs use the framework's tab skin")
+  check(tabsSrc:find('UIfw:PaintTab(self, active and "active" or "idle", Primary())', 1, true), "the tab states are painted by the framework")
+end
 io.write("live-theme OK\n")

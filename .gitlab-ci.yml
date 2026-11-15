@@ -5,3 +5,21 @@ include:
   - project: rgxmods/warcraft/RGX-Framework
     ref: main
     file: /.gitlab/ci/addon.yml
+
+stages:
+  - validate
+  - test
+  - contract
+  - mirror
+
+# Every BLU Classic test, under Lua 5.1 from the repository root.
+test:blu-classic:
+  stage: test
+  image: alpine:3.20
+  script:
+    - apk add --no-cache lua5.1
+    - |
+      for t in tests/*-test.lua; do
+        echo "test $t"
+        lua5.1 "$t" || exit 1
+      done

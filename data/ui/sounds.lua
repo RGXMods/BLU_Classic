@@ -139,7 +139,7 @@ function BLU.CreateSoundsPanel(panel)
 
     local titleLabel = titleBar:CreateFontString(nil, "OVERLAY", "GameFontNormal")
     titleLabel:SetPoint("LEFT", titleIcon, "RIGHT", 8, 0)
-    titleLabel:SetText("|cff05dffaSounds|r")
+    titleLabel:SetText(BLU.Hex() .. "Sounds|r")
 
     local intro = content:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
     intro:SetPoint("TOPLEFT", 0, -64)
@@ -252,14 +252,14 @@ function BLU.CreateSoundsPanel(panel)
             id = "wow_default_blu",
             name = "wow default-blu",
             icon = ADDON_PATH .. "media\\icon.tga",
-            status = "|cff05dffaBLU defaults|r",
+            status = BLU.Hex() .. "BLU defaults|r",
             soundCount = CountDefaultSets(),
         },
         {
             id = "other_games_blu",
             name = "other games-blu",
             icon = ADDON_PATH .. "media\\icon.tga",
-            status = "|cff05dffaBLU game library|r",
+            status = BLU.Hex() .. "BLU game library|r",
             soundCount = CountBundledSounds(),
         },
         {

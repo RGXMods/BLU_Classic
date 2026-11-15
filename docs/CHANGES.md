@@ -1,3 +1,6 @@
+## v1.4.4 - 2026-11-14
+- BLU Classic follows the RGX-Framework theme override (beta, off by default): while it is on, the brand cyan in the options becomes the framework's main colour, and the options change as soon as the theme changes, without a reload. With it off BLU Classic looks exactly as before. Requires RGX-Framework 2.19.0.
+
 ## v1.4.3 - 2026-11-09
 - Declared Mists of Pandaria Classic in the TOC (`## Interface: 11509,20506,50504`). The build already ran on the Mists client, but the TOC only listed Classic Era and TBC Anniversary, so CurseForge and the client treated it as those flavors only.
 - No runtime changes.

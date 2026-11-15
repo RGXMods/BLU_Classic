@@ -157,7 +157,7 @@ function BLU.CreateDebugPanel(panel)
 
     local title = titleBar:CreateFontString(nil, "OVERLAY", "GameFontNormal")
     title:SetPoint("LEFT", icon, "RIGHT", 8, 0)
-    title:SetText("|cff05dffaDebug Options|r")
+    title:SetText(BLU.Hex() .. "Debug Options|r")
 
     local intro = content:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
     intro:SetPoint("TOPLEFT", 0, -64)

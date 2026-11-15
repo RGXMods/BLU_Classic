@@ -176,7 +176,7 @@ list falls back to English automatically.
 Bug reports, translations, feature ideas, and sound suggestions are welcome. Include the client flavor and reproduction steps with bug reports.
 
 Development is maintained in the
-[RGXMods GitLab repository](https://gitlab.dicematrix.cloud/rgxmods/warcraft/BLU_Classic),
+[RGXMods GitHub repository](https://github.com/RGXMods/BLU_Classic),
 the source of truth for code and CI/CD. Public packages and release notes are
 published through [RGXMods GitHub Releases](https://github.com/RGXMods/BLU_Classic/releases).
 

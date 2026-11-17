@@ -94,9 +94,8 @@ addon managers that read the TOC dependency line install it automatically.
 Version 1.4.0 and later need RGX-Framework 2.12.0 or newer. The betas
 1.4.0-beta.7 to beta.13 need 2.11.0 or newer.
 
-BLU Classic still loads its embedded Ace3 libraries from `Libs/` for the
-parts that have not moved to the framework yet. The TOC lists Ace3 as an
-optional dependency, so an installation that already provides Ace3 is fine.
+BLU Classic embeds no libraries: events, timers, settings, the slash command
+and the options all run on RGX-Framework.
 
 ## <span style="color:#FFD700">Configuration</span>
 

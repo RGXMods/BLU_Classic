@@ -1,3 +1,7 @@
+## Unreleased
+
+- BLU Classic no longer bundles any libraries. The addon lifecycle, events and timers run on RGX-Framework (the addon object, its event handlers and its timers are framework-managed), and the TOC lists no optional dependencies. No gameplay changes.
+
 ## v1.4.4 - 2026-11-14
 - BLU Classic follows the RGX-Framework theme override (beta, off by default): while it is on, the brand cyan in the options becomes the framework's main colour, and the options change as soon as the theme changes, without a reload. With it off BLU Classic looks exactly as before. Requires RGX-Framework 2.19.0.
 

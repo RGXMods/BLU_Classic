@@ -3,20 +3,31 @@
 -- Consolidated addon core with version-aware functionality
 --=====================================================================================
 
--- Safely create or get the BLU_Classic addon (prevents "already exists" error)
 local addonName = "BLU_Classic"
-BLU_Classic = LibStub("AceAddon-3.0"):GetAddon(addonName, true) or LibStub("AceAddon-3.0"):NewAddon(addonName, "AceEvent-3.0", "AceTimer-3.0")
+local RGX = assert(_G.RGXFramework, "BLU_Classic requires RGX-Framework")
+BLU_Classic = BLU_Classic or {}
 BLU_L = BLU_L or {}
 
--- Register PLAYER_LOGOUT at file-load time so unmute fires even if init/enable failed.
--- Must not be guarded by profile.enabled or any DB check.
-do
-    local logoutFrame = CreateFrame("Frame")
-    logoutFrame:RegisterEvent("PLAYER_LOGOUT")
-    logoutFrame:SetScript("OnEvent", function()
-        BLU_Classic:UnmuteSounds()
-    end)
-end
+-- Lifecycle: OnInitialize when this addon's saved variables are loaded, OnEnable at login
+-- (or on the next frame when the addon loads after login).
+RGX:RegisterEvent("ADDON_LOADED", function(_, loaded)
+    if loaded ~= addonName then return end
+    RGX:UnregisterEvent("ADDON_LOADED", "BLU_Classic:lifecycle")
+    BLU_Classic:OnInitialize()
+    if IsLoggedIn and IsLoggedIn() then
+        RGX:After(0, function() BLU_Classic:OnEnable() end, "BLU_Classic:enable")
+    else
+        RGX:RegisterEvent("PLAYER_LOGIN", function()
+            RGX:UnregisterEvent("PLAYER_LOGIN", "BLU_Classic:enable")
+            BLU_Classic:OnEnable()
+        end, "BLU_Classic:enable")
+    end
+end, "BLU_Classic:lifecycle")
+
+-- Unmute on logout even if init/enable failed. Must not be guarded by profile.enabled or any DB check.
+RGX:RegisterEvent("PLAYER_LOGOUT", function()
+    BLU_Classic:UnmuteSounds()
+end, "BLU_Classic:logout")
 
 --=====================================================================================
 -- Game Version Detection (cached for performance)
@@ -94,7 +105,7 @@ function BLU_Classic:RegisterSharedEvents()
 
     for event, handler in pairs(events) do
         if type(self[handler]) == "function" then
-            self:RegisterEvent(event, handler)
+            RGX:RegisterEvent(event, handler, "BLU_Classic:" .. event, self)
         end
     end
 end
@@ -224,9 +235,12 @@ end
 
 function BLU_Classic:ScheduleReputationScan()
     if self.reputationScanTimer then
-        self:CancelTimer(self.reputationScanTimer)
+        RGX:CancelTimer(self.reputationScanTimer)
     end
-    self.reputationScanTimer = self:ScheduleTimer("ScanForReputationChanges", 1)
+    self.reputationScanTimer = RGX:After(1, function()
+        self.reputationScanTimer = nil
+        self:ScanForReputationChanges()
+    end, "BLU_Classic:reputationScan")
 end
 
 -- Saved Variables Cleanup for Version Compatibility (from be75efd, adapted)
@@ -299,7 +313,7 @@ end
 -- Addon Lifecycle
 --=====================================================================================
 function BLU_Classic:OnInitialize()
-    -- RGX-Framework database (issue #5): replaces the AceDB-3.0 layer.
+    -- RGX-Framework database.
     -- Flat proxy: self.db.<key> reads/writes the active profile; self.db.char
     -- is per-character storage. SavedVariables name stays BLUClassicDB.
     local RGXDB = _G.RGXFramework
@@ -319,9 +333,6 @@ function BLU_Classic:OnInitialize()
             if self.RefreshOptions then self:RefreshOptions() end
         end,
     })
-
-    -- Explicitly embed AceTimer-3.0 to ensure ScheduleTimer is available
-    LibStub("AceTimer-3.0"):Embed(self)
 
     -- Get version number (API differs between versions)
     if C_AddOns and C_AddOns.GetAddOnMetadata then

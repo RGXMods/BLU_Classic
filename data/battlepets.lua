@@ -12,19 +12,10 @@
 -- 6. Comprehensive item/spell ID list for all training stones
 -- 7. Properly ignores login/reload events
 
--- Wait for BLU_Classic to be available (it's created in core.lua which loads before this)
-local BLU_Classic = BLU_Classic
-if not BLU_Classic then
-    local waitFrame = CreateFrame("Frame")
-    waitFrame:RegisterEvent("ADDON_LOADED")
-    waitFrame:SetScript("OnEvent", function(self, event, addonName)
-        if addonName == "BLU_Classic" then
-            BLU_Classic = _G.BLU_Classic
-            self:UnregisterAllEvents()
-        end
-    end)
-    return
-end
+-- BLU_Classic is created by data/initialization.lua, which the TOC loads before this file.
+local BLU_Classic = _G.BLU_Classic
+local RGX = _G.RGXFramework
+if not BLU_Classic or not RGX then return end
 
 BLU_L = BLU_L or {}
 
@@ -272,9 +263,7 @@ end
 -- =====================================================================================
 -- Event Frame for Pet-Specific Events
 -- =====================================================================================
-local eventFrame = CreateFrame("Frame")
-
-eventFrame:SetScript("OnEvent", function(self, event, ...)
+local function OnPetEvent(event, ...)
     if not BLU_Classic then return end
     
     if event == "PLAYER_LOGIN" then
@@ -284,7 +273,7 @@ eventFrame:SetScript("OnEvent", function(self, event, ...)
             initialized = true
             
             -- Delay to let the journal populate and avoid false triggers
-            C_Timer.After(INIT_DELAY, function()
+            RGX:After(INIT_DELAY, function()
                 UpdateSummonedPetTracking()
                 initialLoadComplete = true
                 BLU_Classic:PrintDebugMessage("INIT_LOAD_COMPLETE")
@@ -307,7 +296,7 @@ eventFrame:SetScript("OnEvent", function(self, event, ...)
         
         -- Schedule a check after the spell effect applies
         pendingCheck = true
-        C_Timer.After(CHECK_DELAY, function()
+        RGX:After(CHECK_DELAY, function()
             if pendingCheck then
                 CheckForLevelUp()
             end
@@ -332,27 +321,25 @@ eventFrame:SetScript("OnEvent", function(self, event, ...)
         -- Pet summoned or dismissed - update tracking
         local companionType = ...
         if companionType == "CRITTER" or companionType == nil then
-            C_Timer.After(0.1, UpdateSummonedPetTracking)
+            RGX:After(0.1, UpdateSummonedPetTracking)
         end
         
     elseif event == "PET_JOURNAL_LIST_UPDATE" then
         -- Only check if we're expecting a change from an item use
         if pendingCheck then
-            C_Timer.After(0.1, function()
+            RGX:After(0.1, function()
                 if pendingCheck then
                     CheckForLevelUp()
                 end
             end)
         end
     end
-end)
+end
 
 -- Register events (version check happens in PLAYER_LOGIN)
-eventFrame:RegisterEvent("PLAYER_LOGIN")
-eventFrame:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED")
-eventFrame:RegisterEvent("PET_BATTLE_LEVEL_CHANGED")
-eventFrame:RegisterEvent("COMPANION_UPDATE")
-eventFrame:RegisterEvent("PET_JOURNAL_LIST_UPDATE")
+for _, event in ipairs({ "PLAYER_LOGIN", "UNIT_SPELLCAST_SUCCEEDED", "PET_BATTLE_LEVEL_CHANGED", "COMPANION_UPDATE", "PET_JOURNAL_LIST_UPDATE" }) do
+    RGX:RegisterEvent(event, OnPetEvent, "BLU_Classic:pets:" .. event)
+end
 
 -- =====================================================================================
 -- Public Functions (can be called from core.lua if needed)
@@ -365,7 +352,7 @@ function BLU_Classic:InitializePetLevelCache()
     end
     
     initialized = true
-    C_Timer.After(INIT_DELAY, function()
+    RGX:After(INIT_DELAY, function()
         UpdateSummonedPetTracking()
         initialLoadComplete = true
         self:PrintDebugMessage("INIT_LOAD_COMPLETE")

@@ -59,7 +59,7 @@ function BLU_Classic:ProcessEventQueue()
     local sound = self:SelectSound(self.db[event.soundSelectKey])
     if not sound then
         self:PrintDebugMessage("ERROR_SOUND_NOT_FOUND", tostring(event.soundSelectKey))
-        C_Timer.After(1, function() self:ProcessEventQueue() end)
+        _G.RGXFramework:After(1, function() self:ProcessEventQueue() end, "BLU_Classic:queue")
         return
     end
 
@@ -69,7 +69,7 @@ function BLU_Classic:ProcessEventQueue()
     end
 
     self:PlaySelectedSound(sound, volumeLevel, event.defaultSound)
-    C_Timer.After(1, function() self:ProcessEventQueue() end)
+    _G.RGXFramework:After(1, function() self:ProcessEventQueue() end, "BLU_Classic:queue")
 end
 
 --=====================================================================================
@@ -90,17 +90,15 @@ function BLU_Classic:HaltOperations()
     end
 
     if self.haltTimer then
-        self.haltTimer:Cancel()
+        _G.RGXFramework:CancelTimer(self.haltTimer)
         self.haltTimer = nil
     end
 
-    local countdownTime = 5
-    self.haltTimer = C_Timer.NewTicker(1, function()
-        countdownTime = countdownTime - 1
-        if countdownTime <= 0 then
-            self:ResumeOperations()
-        end
-    end, countdownTime)
+    -- Resume five seconds after entering the world.
+    self.haltTimer = _G.RGXFramework:After(5, function()
+        self.haltTimer = nil
+        self:ResumeOperations()
+    end, "BLU_Classic:resume")
 end
 
 --=====================================================================================
@@ -116,7 +114,7 @@ function BLU_Classic:ResumeOperations()
     self.countdownRunning = false
 
     if self.haltTimer then
-        self.haltTimer:Cancel()
+        _G.RGXFramework:CancelTimer(self.haltTimer)
         self.haltTimer = nil
     end
 end

@@ -23,9 +23,14 @@ local EXTENSIONS = {"ogg", "mp3", "wav"}
 -- started (a /reload is not enough for new ones).
 local SOUND_FOLDER = "Interface\\AddOns\\BLU_Sounds\\"
 UserSounds.FOLDER = SOUND_FOLDER
+-- The user custom sounds folder that ships (empty) inside BLU Classic: sounds\user\, beside sounds\wow_default\ and
+-- sounds\game\. Easy to find, but an update replaces it, so BLU_Sounds above stays the one that survives updates.
+local ADDON_USER_FOLDER = "Interface\\AddOns\\" .. ADDON_NAME .. "\\sounds\\user\\"
+UserSounds.ADDON_USER_FOLDER = ADDON_USER_FOLDER
 local SEARCH_PATHS = {
     SOUND_FOLDER .. "%s",
     "Interface\\AddOns\\%s",
+    ADDON_USER_FOLDER .. "%s",
     "Interface\\AddOns\\sounds\\%s",
     "Interface\\AddOns\\" .. ADDON_NAME .. "\\%s",
     "Interface\\AddOns\\" .. ADDON_NAME .. "\\sounds\\%s",

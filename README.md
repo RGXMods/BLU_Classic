@@ -155,6 +155,8 @@ list falls back to English automatically.
 
 ## <span style="color:#FFD700">Your Own Sounds</span>
 
+BLU_Classic also ships an empty `sounds\user` folder inside its own folder, beside its built-in `sounds\wow_default` (the game's own sounds) and `sounds\game` (sounds from other games). Files you put in `sounds\user` work the same way, but a BLU_Classic update replaces that folder, so keep a copy or use `BLU_Sounds`.
+
 Create a folder named `BLU_Sounds` in `Interface\AddOns\`, beside the BLU_Classic folder and not inside it, and put your sound files (`.ogg`, `.mp3`, `.wav`) there. BLU_Classic updates replace everything inside their own folder, but never touch `BLU_Sounds`. Add a file from the Sounds page with the Add Custom Sound button, using just its name (`myfile` or `myfile.ogg`), then pick it on any event. Type the name however you remember it: the extension can be left off or wrong (a file that Windows shows as `boop.ogg` but is really `boop.ogg.ogg` is found too), spaces, underscores and hyphens count as the same, and a sound in a subfolder of `BLU_Sounds` (such as `sounds`, `media\sounds`, or `BLU_Sounds` unzipped inside itself) is found by its name alone. You can also paste the full path.
 
 WoW only sees files that existed when the game started, so fully restart after adding files (a `/reload` is not enough). `/blu folder` shows the folder and how many custom sounds are in your profile. When a name is not found, BLU_Classic says where to put the file.

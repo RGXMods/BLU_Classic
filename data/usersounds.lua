@@ -137,7 +137,7 @@ function UserSounds:Resolve(input)
     if Sound and type(Sound.ResolveFile) == "function" then
         local folders = {}
         for _, pattern in ipairs(SEARCH_PATHS) do folders[#folders + 1] = (pattern:gsub("%%s$", "")) end
-        local found = Sound:ResolveFile(text, { folders = folders })
+        local found = Sound:ResolveFile(text, { folders = folders, deep = true })
         if found then return found end
         if not text:find("\\", 1, true) then
             return nil, NotFoundMessage(text)

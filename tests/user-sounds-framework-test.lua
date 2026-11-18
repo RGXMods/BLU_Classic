@@ -34,6 +34,21 @@ if chunk then
     local got = US:Resolve(typed)
     check(got and got:lower() == (FOLDER .. "sonar_boop_med.ogg"):lower(), "'" .. typed .. "' finds the file (got " .. tostring(got) .. ")")
   end
+  -- The smart lookup end to end: where players really put files and how they really type names.
+  local cases = {
+    { "Interface\\AddOns\\BLU_Sounds\\BLU_Sounds\\unzipped.ogg", "unzipped" },
+    { "Interface\\AddOns\\BLU_Sounds\\sounds\\nested.ogg", "nested.ogg" },
+    { "Interface\\AddOns\\BLU_Sounds\\hidden.ogg.ogg", "hidden.ogg" },
+    { "Interface\\AddOns\\BLU_Sounds\\real-dash.mp3", "real dash.ogg" },
+    { "Interface\\AddOns\\BLU_Sounds\\pack\\inpack.ogg", "BLU_Sounds/pack/inpack" },
+    { "Interface\\AddOns\\BLU_Sounds\\pasted.ogg", "C:\\Program Files (x86)\\World of Warcraft\\_forever_\\Interface\\AddOns\\BLU_Sounds\\pasted.ogg" },
+  }
+  for _, c in ipairs(cases) do
+    files[c[1]:lower()] = true
+    local t = c[2]
+    local got = US:Resolve(t)
+    check(got and got:lower() == c[1]:lower(), "'" .. t .. "' finds " .. c[1] .. " (got " .. tostring(got) .. ")")
+  end
   print("user-sounds-framework-test OK (real framework resolver)")
 else
   print("user-sounds-framework-test OK (framework source not reachable; real resolver not exercised)")

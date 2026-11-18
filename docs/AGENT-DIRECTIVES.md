@@ -57,21 +57,12 @@ breaking them.
 
 ## Dependency posture
 
-This fork predates framework integration in its current runtime. Its
-dependency posture is deliberate and must be stated accurately:
+BLU_Classic runs on RGX-Framework and embeds no third-party libraries:
 
-- **RGX-Framework is an optional dependency, not a hard requirement.**
-  The TOC declares `## OptionalDeps: Ace3, RGX-Framework`, and all
-  framework usage is guarded at runtime (`if RGX then` in
-  `data/core.lua` and `data/initialization.lua`). The addon fully works
-  without the framework installed; where the framework is present it
-  takes over slash-command registration (`RGX:RegisterSlashCommand`).
-- **Embedded Ace3 is the current runtime.** The addon packages its
-  required Ace3 components in `Libs/` and builds on
-  `LibStub("AceAddon-3.0")`. Ace3 stays until the Ace3-free migration
-  lands elsewhere in the parent family (issues #1 and #9); adopt
-  framework subsystems deliberately instead of duplicating what the
-  embedded libraries already provide.
+- **RGX-Framework is a required dependency** (`## RequiredDeps: RGX-Framework`).
+  Lifecycle, events, timers, the saved-settings database and the slash command
+  all go through framework APIs; do not add raw `C_Timer`, event frames or
+  `SLASH_` globals.
 - **Saved variables are Classic-specific.** The TOC declares
   `## SavedVariables: BLUClassicDB`, separate from Retail BLU. Any
   future declarative adoption must match the declarative `dbName` to

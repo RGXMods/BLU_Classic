@@ -59,7 +59,7 @@ function BLU_Classic:ProcessEventQueue()
     local sound = self:SelectSound(self.db[event.soundSelectKey])
     if not sound then
         self:PrintDebugMessage("ERROR_SOUND_NOT_FOUND", tostring(event.soundSelectKey))
-        C_Timer.After(1, function() self:ProcessEventQueue() end)
+        _G.RGXFramework:After(1, function() self:ProcessEventQueue() end, "BLU_Classic:queue")
         return
     end
 
@@ -69,7 +69,7 @@ function BLU_Classic:ProcessEventQueue()
     end
 
     self:PlaySelectedSound(sound, volumeLevel, event.defaultSound)
-    C_Timer.After(1, function() self:ProcessEventQueue() end)
+    _G.RGXFramework:After(1, function() self:ProcessEventQueue() end, "BLU_Classic:queue")
 end
 
 --=====================================================================================
@@ -90,17 +90,15 @@ function BLU_Classic:HaltOperations()
     end
 
     if self.haltTimer then
-        self.haltTimer:Cancel()
+        _G.RGXFramework:CancelTimer(self.haltTimer)
         self.haltTimer = nil
     end
 
-    local countdownTime = 5
-    self.haltTimer = C_Timer.NewTicker(1, function()
-        countdownTime = countdownTime - 1
-        if countdownTime <= 0 then
-            self:ResumeOperations()
-        end
-    end, countdownTime)
+    -- Resume five seconds after entering the world.
+    self.haltTimer = _G.RGXFramework:After(5, function()
+        self.haltTimer = nil
+        self:ResumeOperations()
+    end, "BLU_Classic:resume")
 end
 
 --=====================================================================================
@@ -116,7 +114,7 @@ function BLU_Classic:ResumeOperations()
     self.countdownRunning = false
 
     if self.haltTimer then
-        self.haltTimer:Cancel()
+        _G.RGXFramework:CancelTimer(self.haltTimer)
         self.haltTimer = nil
     end
 end
@@ -135,6 +133,15 @@ function BLU_Classic:HandleSlashCommands(input)
         self:ToggleMinimapIcon(true)
     elseif input == "icon off" then
         self:ToggleMinimapIcon(false)
+    elseif input == "folder" or input == "soundfolder" then
+        local users = self.UserSounds
+        local folder = users and users.FOLDER or "Interface\\AddOns\\BLU_Sounds\\"
+        self:Print("|cff05dffaBLU custom sounds:|r put .ogg, .mp3 or .wav files in |cffffffff" .. folder .. "|r (create the BLU_Sounds folder next to BLU Classic, so updates never touch it).")
+        self:Print("  Add one with the Add Custom Sound button on the Sounds page, using just the file name.")
+        self:Print("  WoW only sees files that existed when the game started: fully restart after adding files.")
+        if users and users.GetEntries then
+            self:Print("  Custom sounds in your profile: " .. tostring(#users:GetEntries()))
+        end
     elseif input == "debug" then
         self:ToggleDebugMode()
     elseif input == "welcome" then

@@ -1,3 +1,11 @@
+## v1.4.4 - 2026-11-18
+
+- BLU Classic no longer bundles any libraries. The addon lifecycle, events and timers run on RGX-Framework (the addon object, its event handlers and its timers are framework-managed), and the TOC lists no optional dependencies. No gameplay changes.
+- Custom sounds have a folder updates never touch: create `Interface\AddOns\BLU_Sounds\` beside the addon folder and put your .ogg, .mp3 or .wav files there. Updates never touch it, and a name you add is looked for there first. `/blu folder` shows the folder and what was found. The not-found message and the Add Custom Sound dialog say where to put files and that a full game restart is needed. Older folders keep working.
+- BLU Classic's sounds are in folders: `sounds\wow_default` (the game's own sounds), `sounds\game` (sounds from other games) and an empty `sounds\user` for your own files. `BLU_Sounds` beside the addon stays the folder updates never touch; BLU Classic looks in both.
+- Typing a custom sound's name is forgiving: the extension can be left off, wrong or doubled (Windows hides extensions), spaces, underscores and hyphens count as the same, files in subfolders of `BLU_Sounds` are found by name, and a pasted full path works.
+- BLU Classic follows the RGX-Framework theme override (beta, off by default): while it is on, the brand cyan in the options becomes the framework's main colour, and the options change as soon as the theme changes, without a reload. With it off BLU Classic looks exactly as before. Requires RGX-Framework 2.19.0.
+
 ## v1.4.3 - 2026-11-09
 - Declared Mists of Pandaria Classic in the TOC (`## Interface: 11509,20506,50504`). The build already ran on the Mists client, but the TOC only listed Classic Era and TBC Anniversary, so CurseForge and the client treated it as those flavors only.
 - No runtime changes.

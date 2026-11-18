@@ -18,8 +18,19 @@ BLU.Modules["usersounds"] = UserSounds
 
 local ID_PREFIX = "custom:"
 local EXTENSIONS = {"ogg", "mp3", "wav"}
+-- The designated folder for personal sounds: a plain folder next to BLU Classic, not inside it, so an update never
+-- touches the files. WoW only plays files under Interface\AddOns, and only sees files that existed when the game
+-- started (a /reload is not enough for new ones).
+local SOUND_FOLDER = "Interface\\AddOns\\BLU_Sounds\\"
+UserSounds.FOLDER = SOUND_FOLDER
+-- The user custom sounds folder that ships (empty) inside BLU Classic: sounds\user\, beside sounds\wow_default\ and
+-- sounds\game\. Easy to find, but an update replaces it, so BLU_Sounds above stays the one that survives updates.
+local ADDON_USER_FOLDER = "Interface\\AddOns\\" .. ADDON_NAME .. "\\sounds\\user\\"
+UserSounds.ADDON_USER_FOLDER = ADDON_USER_FOLDER
 local SEARCH_PATHS = {
+    SOUND_FOLDER .. "%s",
     "Interface\\AddOns\\%s",
+    ADDON_USER_FOLDER .. "%s",
     "Interface\\AddOns\\sounds\\%s",
     "Interface\\AddOns\\" .. ADDON_NAME .. "\\%s",
     "Interface\\AddOns\\" .. ADDON_NAME .. "\\sounds\\%s",
@@ -116,11 +127,27 @@ function UserSounds:Find(value)
     return nil
 end
 
+local function NotFoundMessage(text)
+    return "Could not find '" .. text .. "'. Put the .ogg, .mp3 or .wav in Interface\\AddOns\\BLU_Sounds\\ (create that folder next to BLU Classic: it survives updates) or in Interface\\AddOns\\" .. ADDON_NAME .. "\\user\\sounds\\ (then fully restart the game, a /reload is not enough for new files), or give the full path starting with Interface\\AddOns\\."
+end
+
 --- Resolve what the player typed: a full Interface\AddOns path, a file name with an
 --- extension, or a bare name (tried with .ogg/.mp3/.wav in BLU's own documented folders only).
 function UserSounds:Resolve(input)
     local text = Normalize(input)
     if not text then return nil, "Enter a file name like myfile or myfile.ogg." end
+
+    -- The framework's resolver: extension optional, spaces and underscores interchangeable, folders in order.
+    local Sound = _G.RGXSound
+    if Sound and type(Sound.ResolveFile) == "function" then
+        local folders = {}
+        for _, pattern in ipairs(SEARCH_PATHS) do folders[#folders + 1] = (pattern:gsub("%%s$", "")) end
+        local found = Sound:ResolveFile(text, { folders = folders, deep = true })
+        if found then return found end
+        if not text:find("\\", 1, true) then
+            return nil, NotFoundMessage(text)
+        end
+    end
 
     local explicitPath = text:find("\\") ~= nil
     local explicitExtension = HasSupportedExtension(text)
@@ -155,7 +182,7 @@ function UserSounds:Resolve(input)
         end
     end
 
-    return nil, "Could not find '" .. text .. "'. Put the .ogg, .mp3 or .wav in Interface\\AddOns\\" .. ADDON_NAME .. "\\user\\sounds\\ (then fully restart the game, a /reload is not enough for new files), or give the full path starting with Interface\\AddOns\\."
+    return nil, NotFoundMessage(text)
 end
 
 --- Returns ok, nameOrError, resolvedPath.

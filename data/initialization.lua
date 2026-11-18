@@ -1,7 +1,7 @@
 --=====================================================================================
 -- BLU_Classic | Better Level-Up! - initialization.lua
 --=====================================================================================
-BLU_Classic = LibStub("AceAddon-3.0"):NewAddon("BLU_Classic", "AceEvent-3.0")
+BLU_Classic = BLU_Classic or {}
 
 --=====================================================================================
 -- Version Number (API differs between Retail and Classic)

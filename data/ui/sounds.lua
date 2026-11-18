@@ -100,7 +100,7 @@ local function OpenAddCustomSoundDialog()
     end
 
     addInput:SetText("")
-    addFeedback:SetText("Type a short file name like myfile or myfile.ogg, or paste a full Interface\\AddOns path.")
+    addFeedback:SetText("Put your files in Interface\\AddOns\\BLU_Sounds\\ and restart the game once, then type the file name, like myfile or myfile.ogg.")
     addDialog:Show()
     addInput:SetFocus()
 end
@@ -139,7 +139,7 @@ function BLU.CreateSoundsPanel(panel)
 
     local titleLabel = titleBar:CreateFontString(nil, "OVERLAY", "GameFontNormal")
     titleLabel:SetPoint("LEFT", titleIcon, "RIGHT", 8, 0)
-    titleLabel:SetText("|cff05dffaSounds|r")
+    titleLabel:SetText(BLU.Hex() .. "Sounds|r")
 
     local intro = content:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
     intro:SetPoint("TOPLEFT", 0, -64)
@@ -252,14 +252,14 @@ function BLU.CreateSoundsPanel(panel)
             id = "wow_default_blu",
             name = "wow default-blu",
             icon = ADDON_PATH .. "media\\icon.tga",
-            status = "|cff05dffaBLU defaults|r",
+            status = BLU.Hex() .. "BLU defaults|r",
             soundCount = CountDefaultSets(),
         },
         {
             id = "other_games_blu",
             name = "other games-blu",
             icon = ADDON_PATH .. "media\\icon.tga",
-            status = "|cff05dffaBLU game library|r",
+            status = BLU.Hex() .. "BLU game library|r",
             soundCount = CountBundledSounds(),
         },
         {

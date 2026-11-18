@@ -33,7 +33,6 @@ My primary goal is to assist with the development and maintenance of the BLU_Cla
     *   `changelog.txt`: The complete history of changes.
     *   `CHANGES.md`: A list of changes for the next upcoming release.
 *   **`images/`**: Contains addon assets like icons.
-*   **`Libs/`**: Contains third-party libraries, primarily the Ace3 framework.
 *   **`sounds/`**: Contains all `.ogg` sound files.
 *   **`.toc` Files**: (`BLU_Classic.toc`) Table of Contents files that tell WoW how to load the addon for different game versions.
 *   **`README.md`**: The main project overview.

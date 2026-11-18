@@ -94,9 +94,8 @@ addon managers that read the TOC dependency line install it automatically.
 Version 1.4.0 and later need RGX-Framework 2.12.0 or newer. The betas
 1.4.0-beta.7 to beta.13 need 2.11.0 or newer.
 
-BLU Classic still loads its embedded Ace3 libraries from `Libs/` for the
-parts that have not moved to the framework yet. The TOC lists Ace3 as an
-optional dependency, so an installation that already provides Ace3 is fine.
+BLU Classic embeds no libraries: events, timers, settings, the slash command
+and the options all run on RGX-Framework.
 
 ## <span style="color:#FFD700">Configuration</span>
 
@@ -154,6 +153,14 @@ enUS, deDE, esES, esMX, frFR, itIT, koKR, ptBR, ptPT, ruRU, zhCN, zhTW.
 The English strings always load first, and any client locale outside this
 list falls back to English automatically.
 
+## <span style="color:#FFD700">Your Own Sounds</span>
+
+BLU_Classic also ships an empty `sounds\user` folder inside its own folder, beside its built-in `sounds\wow_default` (the game's own sounds) and `sounds\game` (sounds from other games). Files you put in `sounds\user` work the same way, but a BLU_Classic update replaces that folder, so keep a copy or use `BLU_Sounds`.
+
+Create a folder named `BLU_Sounds` in `Interface\AddOns\`, beside the BLU_Classic folder and not inside it, and put your sound files (`.ogg`, `.mp3`, `.wav`) there. BLU_Classic updates replace everything inside their own folder, but never touch `BLU_Sounds`. Add a file from the Sounds page with the Add Custom Sound button, using just its name (`myfile` or `myfile.ogg`), then pick it on any event. Type the name however you remember it: the extension can be left off or wrong (a file that Windows shows as `boop.ogg` but is really `boop.ogg.ogg` is found too), spaces, underscores and hyphens count as the same, and a sound in a subfolder of `BLU_Sounds` (such as `sounds`, `media\sounds`, or `BLU_Sounds` unzipped inside itself) is found by its name alone. You can also paste the full path.
+
+WoW only sees files that existed when the game started, so fully restart after adding files (a `/reload` is not enough). `/blu folder` shows the folder and how many custom sounds are in your profile. When a name is not found, BLU_Classic says where to put the file.
+
 ## <span style="color:#FFD700">Troubleshooting</span>
 
 - Open `/blu` and verify the event is enabled with a sound selected.
@@ -176,7 +183,7 @@ list falls back to English automatically.
 Bug reports, translations, feature ideas, and sound suggestions are welcome. Include the client flavor and reproduction steps with bug reports.
 
 Development is maintained in the
-[RGXMods GitLab repository](https://gitlab.dicematrix.cloud/rgxmods/warcraft/BLU_Classic),
+[RGXMods GitHub repository](https://github.com/RGXMods/BLU_Classic),
 the source of truth for code and CI/CD. Public packages and release notes are
 published through [RGXMods GitHub Releases](https://github.com/RGXMods/BLU_Classic/releases).
 

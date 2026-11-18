@@ -1,5 +1,5 @@
 ## Interface: 11509,20506,50504
-## Version: v1.4.3
+## Version: v1.4.4
 ## X-WoWI-ID: 26945
 ## Title: |cff05dffaB|r|cffffffffetter|r |cff05dffaL|r|cffffffffevel-|r|cff05dffaU|r|cffffffffp|cff05dffa!|r |cffFFD700(Classic)|r
 ## Notes: |cff05dffaClassic-only sound replacement addon.|r |n|r |cff05dffa/blu|r opens options. Includes a movable minimap button.
@@ -8,8 +8,7 @@
 ## Group: RGX
 ## SavedVariables: BLUClassicDB
 ## RequiredDeps: RGX-Framework
-## OptionalDeps: Ace3
-## X-RGX-Framework-MinVersion: 2.12.0
+## X-RGX-Framework-MinVersion: 2.19.0
 ## IconTexture: Interface\AddOns\BLU_Classic\media\icon.tga
 
 ## X-Category: UI Media, Questing & Leveling, Audio & Video, Miscellaneous
@@ -17,15 +16,6 @@
 ## X-Curse-Project-ID: 1114093
 ## X-Wago-ID: qGYM2MGg
 ## X-Localizations: enUS, deDE, esES, esMX, frFR, itIT, koKR, ptBR, ptPT, ruRU, zhCN, zhTW
-
-# Libraries
-Libs\LibStub\LibStub.lua
-Libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
-Libs\AceAddon-3.0\AceAddon-3.0.xml
-Libs\AceEvent-3.0\AceEvent-3.0.xml
-Libs\AceTimer-3.0\AceTimer-3.0.xml
-Libs\AceDB-3.0\AceDB-3.0.xml
-Libs\AceLocale-3.0\AceLocale-3.0.xml
 
 # Data files - LOAD ORDER CRITICAL
 data\localization.lua

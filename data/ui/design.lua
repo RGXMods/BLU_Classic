@@ -43,9 +43,43 @@ local function FrameworkDesign()
     return nil
 end
 
+-- BLU Classic's brand, registered with the framework (2.19+): its cyan and gold, or the framework's main colour
+-- while the beta global theme override is on. The options body is rebuilt when the theme changes.
+local GOLD = {1.0, 0.84, 0.0}
+function Design:GetBrand()
+    local RGX = _G.RGXFramework
+    local D = RGX and RGX.GetDesign and RGX:GetDesign()
+    if not self._brand and D and type(D.RegisterBrand) == "function" then
+        self._brand = D:RegisterBrand("BLU_Classic", { primary = BRAND, accent = GOLD }, "framework")
+        self._brand:OnChange(function()
+            if BLU.RebuildOptionsBody then BLU:RebuildOptionsBody() end
+        end)
+    end
+    return self._brand
+end
+
+-- Build UI in the brand (its colours and style, restored afterwards).
+function Design:Build(fn)
+    local brand = self:GetBrand()
+    if brand then return brand:Build(fn) end
+    return fn()
+end
+
+-- "|cffRRGGBB" for the live brand colour.
+function BLU.Hex()
+    local brand = Design:GetBrand()
+    local theme = brand and brand:Resolve()
+    if not theme or theme.primary == BRAND then return "|cff05dffa" end  -- BLU's own cyan, exactly as before
+    local r, g, b = Design.Rgb("brand")
+    return string.format("|cff%02x%02x%02x", math.floor(r * 255 + 0.5), math.floor(g * 255 + 0.5), math.floor(b * 255 + 0.5))
+end
+
 function Design.Rgb(role)
     if role == "brand" then
-        return BRAND[1], BRAND[2], BRAND[3]
+        local brand = Design:GetBrand()
+        local theme = brand and brand:Resolve()
+        local p = theme and theme.primary or BRAND
+        return p[1], p[2], p[3]
     end
     local D = FrameworkDesign()
     if D then

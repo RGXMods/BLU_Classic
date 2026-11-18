@@ -25,4 +25,14 @@ check(err:find("user\\sounds", 1, true) and err:lower():find("restart", 1, true)
 probes = 0
 check(US:Resolve("Interface\\AddOns\\Elsewhere\\x.ogg") == "Interface\\AddOns\\Elsewhere\\x.ogg", "explicit path kept")
 check(probes == 0, "no search for an explicit path")
+-- The designated BLU_Sounds folder: a plain folder next to BLU Classic, so an update never touches the files.
+local FOLDER = "Interface\\AddOns\\BLU_Sounds\\"
+check(US.FOLDER == FOLDER, "the designated folder is exposed")
+has(FOLDER .. "thunder.ogg")
+has("Interface\\AddOns\\BLU_Classic\\user\\sounds\\thunder.ogg")
+check(US:Resolve("thunder") == FOLDER .. "thunder.ogg", "a bare name resolves in BLU_Sounds before BLU Classic's own folders")
+local _, missErr = US:Resolve("nothere-either")
+check(missErr:find("BLU_Sounds", 1, true) and missErr:find("survives", 1, true) and missErr:lower():find("restart", 1, true),
+  "the failure message names the designated folder, that it survives updates, and the restart")
+
 print("user-sounds-search-test OK")

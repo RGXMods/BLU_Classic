@@ -41,7 +41,7 @@ function BLU.CreateGeneralPanel(panel)
 
     local titleLabel = titleBar:CreateFontString(nil, "OVERLAY", "GameFontNormal")
     titleLabel:SetPoint("LEFT", titleIcon, "RIGHT", 8, 0)
-    titleLabel:SetText("|cff05dffaGeneral|r")
+    titleLabel:SetText(BLU.Hex() .. "General|r")
 
     local intro = content:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
     intro:SetPoint("TOPLEFT", 0, -64)
@@ -84,7 +84,7 @@ function BLU.CreateGeneralPanel(panel)
 
     local aboutVersion = aboutSection.content:CreateFontString(nil, "OVERLAY", "GameFontNormal")
     aboutVersion:SetPoint("TOPLEFT", 8, -8)
-    aboutVersion:SetText("Version |cff05dffa" .. tostring(BLU.VersionNumber or "?") .. "|r")
+    aboutVersion:SetText("Version " .. BLU.Hex() .. tostring(BLU.VersionNumber or "?") .. "|r")
 
     local aboutCommands = aboutSection.content:CreateFontString(nil, "OVERLAY", "GameFontHighlightSmall")
     aboutCommands:SetPoint("TOPLEFT", aboutVersion, "BOTTOMLEFT", 0, -10)
@@ -93,11 +93,11 @@ function BLU.CreateGeneralPanel(panel)
     aboutCommands:SetWordWrap(true)
     aboutCommands:SetTextColor(Design.Rgb("subtext"))
     aboutCommands:SetText(
-        "|cff05dffa/blu|r  Open these options|n" ..
-        "|cff05dffa/blu icon on|off|r  Show or hide the minimap icon|n" ..
-        "|cff05dffa/blu debug|r  Toggle debug mode|n" ..
-        "|cff05dffa/blu welcome|r  Toggle the welcome message|n" ..
-        "|cff05dffa/blu help|r  List commands"
+        BLU.Hex() .. "/blu|r  Open these options|n" ..
+        BLU.Hex() .. "/blu icon on|off|r  Show or hide the minimap icon|n" ..
+        BLU.Hex() .. "/blu debug|r  Toggle debug mode|n" ..
+        BLU.Hex() .. "/blu welcome|r  Toggle the welcome message|n" ..
+        BLU.Hex() .. "/blu help|r  List commands"
     )
 
     return content

@@ -465,7 +465,7 @@ function BLU.CreateEventSoundPanel(panel, eventType, eventName)
 
     local title = titleBar:CreateFontString(nil, "OVERLAY", "GameFontNormal")
     title:SetPoint("LEFT", icon, "RIGHT", 8, 0)
-    title:SetText("|cff05dffa" .. eventName .. " Sounds|r")
+    title:SetText(BLU.Hex() .. eventName .. " Sounds|r")
 
     -- ON/OFF switch: turns this page's sounds off without clearing the choices.
     local moduleKey = eventType

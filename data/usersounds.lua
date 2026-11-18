@@ -122,11 +122,27 @@ function UserSounds:Find(value)
     return nil
 end
 
+local function NotFoundMessage(text)
+    return "Could not find '" .. text .. "'. Put the .ogg, .mp3 or .wav in Interface\\AddOns\\BLU_Sounds\\ (create that folder next to BLU Classic: it survives updates) or in Interface\\AddOns\\" .. ADDON_NAME .. "\\user\\sounds\\ (then fully restart the game, a /reload is not enough for new files), or give the full path starting with Interface\\AddOns\\."
+end
+
 --- Resolve what the player typed: a full Interface\AddOns path, a file name with an
 --- extension, or a bare name (tried with .ogg/.mp3/.wav in BLU's own documented folders only).
 function UserSounds:Resolve(input)
     local text = Normalize(input)
     if not text then return nil, "Enter a file name like myfile or myfile.ogg." end
+
+    -- The framework's resolver: extension optional, spaces and underscores interchangeable, folders in order.
+    local Sound = _G.RGXSound
+    if Sound and type(Sound.ResolveFile) == "function" then
+        local folders = {}
+        for _, pattern in ipairs(SEARCH_PATHS) do folders[#folders + 1] = (pattern:gsub("%%s$", "")) end
+        local found = Sound:ResolveFile(text, { folders = folders })
+        if found then return found end
+        if not text:find("\\", 1, true) then
+            return nil, NotFoundMessage(text)
+        end
+    end
 
     local explicitPath = text:find("\\") ~= nil
     local explicitExtension = HasSupportedExtension(text)
@@ -161,7 +177,7 @@ function UserSounds:Resolve(input)
         end
     end
 
-    return nil, "Could not find '" .. text .. "'. Put the .ogg, .mp3 or .wav in Interface\\AddOns\\BLU_Sounds\\ (create that folder next to BLU Classic: it survives updates) or in Interface\\AddOns\\" .. ADDON_NAME .. "\\user\\sounds\\ (then fully restart the game, a /reload is not enough for new files), or give the full path starting with Interface\\AddOns\\."
+    return nil, NotFoundMessage(text)
 end
 
 --- Returns ok, nameOrError, resolvedPath.

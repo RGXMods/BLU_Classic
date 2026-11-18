@@ -18,7 +18,13 @@ BLU.Modules["usersounds"] = UserSounds
 
 local ID_PREFIX = "custom:"
 local EXTENSIONS = {"ogg", "mp3", "wav"}
+-- The designated folder for personal sounds: a plain folder next to BLU Classic, not inside it, so an update never
+-- touches the files. WoW only plays files under Interface\AddOns, and only sees files that existed when the game
+-- started (a /reload is not enough for new ones).
+local SOUND_FOLDER = "Interface\\AddOns\\BLU_Sounds\\"
+UserSounds.FOLDER = SOUND_FOLDER
 local SEARCH_PATHS = {
+    SOUND_FOLDER .. "%s",
     "Interface\\AddOns\\%s",
     "Interface\\AddOns\\sounds\\%s",
     "Interface\\AddOns\\" .. ADDON_NAME .. "\\%s",
@@ -155,7 +161,7 @@ function UserSounds:Resolve(input)
         end
     end
 
-    return nil, "Could not find '" .. text .. "'. Put the .ogg, .mp3 or .wav in Interface\\AddOns\\" .. ADDON_NAME .. "\\user\\sounds\\ (then fully restart the game, a /reload is not enough for new files), or give the full path starting with Interface\\AddOns\\."
+    return nil, "Could not find '" .. text .. "'. Put the .ogg, .mp3 or .wav in Interface\\AddOns\\BLU_Sounds\\ (create that folder next to BLU Classic: it survives updates) or in Interface\\AddOns\\" .. ADDON_NAME .. "\\user\\sounds\\ (then fully restart the game, a /reload is not enough for new files), or give the full path starting with Interface\\AddOns\\."
 end
 
 --- Returns ok, nameOrError, resolvedPath.

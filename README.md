@@ -153,6 +153,12 @@ enUS, deDE, esES, esMX, frFR, itIT, koKR, ptBR, ptPT, ruRU, zhCN, zhTW.
 The English strings always load first, and any client locale outside this
 list falls back to English automatically.
 
+## <span style="color:#FFD700">Your Own Sounds</span>
+
+Create a folder named `BLU_Sounds` in `Interface\AddOns\`, beside the BLU_Classic folder and not inside it, and put your sound files (`.ogg`, `.mp3`, `.wav`) there. BLU_Classic updates replace everything inside their own folder, but never touch `BLU_Sounds`. Add a file from the Sounds page with the Add Custom Sound button, using just its name (`myfile` or `myfile.ogg`), then pick it on any event.
+
+WoW only sees files that existed when the game started, so fully restart after adding files (a `/reload` is not enough). `/blu folder` shows the folder and how many custom sounds are in your profile. When a name is not found, BLU_Classic says where to put the file.
+
 ## <span style="color:#FFD700">Troubleshooting</span>
 
 - Open `/blu` and verify the event is enabled with a sound selected.

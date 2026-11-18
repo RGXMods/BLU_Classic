@@ -100,7 +100,7 @@ local function OpenAddCustomSoundDialog()
     end
 
     addInput:SetText("")
-    addFeedback:SetText("Type a short file name like myfile or myfile.ogg, or paste a full Interface\\AddOns path.")
+    addFeedback:SetText("Put your files in Interface\\AddOns\\BLU_Sounds\\ and restart the game once, then type the file name, like myfile or myfile.ogg.")
     addDialog:Show()
     addInput:SetFocus()
 end

@@ -1,6 +1,7 @@
 ## Unreleased
 
 - BLU Classic no longer bundles any libraries. The addon lifecycle, events and timers run on RGX-Framework (the addon object, its event handlers and its timers are framework-managed), and the TOC lists no optional dependencies. No gameplay changes.
+- Custom sounds have one designated folder: create `Interface\AddOns\BLU_Sounds\` beside the addon folder and put your .ogg, .mp3 or .wav files there. Updates never touch it, files named a name you add is looked for there first. `/blu folder` shows the folder and what was found. The not-found message and the Add Custom Sound dialog say where to put files and that a full game restart is needed. Older folders keep working.
 
 ## v1.4.4 - 2026-11-14
 - BLU Classic follows the RGX-Framework theme override (beta, off by default): while it is on, the brand cyan in the options becomes the framework's main colour, and the options change as soon as the theme changes, without a reload. With it off BLU Classic looks exactly as before. Requires RGX-Framework 2.19.0.
